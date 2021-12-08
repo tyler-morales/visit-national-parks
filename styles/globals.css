@@ -2,11 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito;700&display=swap');
-
 html,
 body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Quincy', sans-serif;
+}
+
+@font-face {
+  font-family: 'Quincy';
+  src: url('/fonts/QuincyCF-Regular.woff');
+  font-style: normal;
+  font-weight: regular;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Quincy';
+  src: url('/fonts/QuincyCF-Bold.woff');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-Regular.ttf');
+  font-style: normal;
+  font-weight: regular;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-Bold.ttf');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
 }

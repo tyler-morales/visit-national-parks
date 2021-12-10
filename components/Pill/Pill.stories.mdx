@@ -1,0 +1,62 @@
+import {Pill} from './Pill'
+import {Canvas, Meta, Story} from '@storybook/addon-docs'
+
+<Meta title="micro/Pill" component={Pill} />
+
+export const Template = (args) => <Pill {...args} />
+
+# This is your first mdx component file
+
+The Canvas `<Canvas>{stories}</Canvas>` enables code snippets
+
+<Canvas>
+  <Story
+    name="success"
+    args={{
+      label: 'Success',
+      bgColor: 'lime',
+      emoji: '🙌',
+      textColor: '#000',
+    }}>
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="success with no emoji"
+    args={{
+      label: 'Success',
+      bgColor: 'forestgreen',
+      textColor: '#fff',
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## A Warning Pill Button
+
+Use this when the user is about to cause some harm, but not too much
+
+<Canvas>
+  <Story
+    name="warning"
+    args={{
+      label: 'Warning',
+      bgColor: 'orange',
+      emoji: '⚠️',
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Another pill
+
+<Canvas>
+  <Story
+    name="alert"
+    args={{
+      label: 'Alert',
+      bgColor: 'red',
+      emoji: '🚨',
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>

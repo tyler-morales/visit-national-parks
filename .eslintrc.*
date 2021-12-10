@@ -4,6 +4,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "react/jsx-closing-tag-location",
-    "react/jsx-closing-bracket-location"
+    "react/jsx-closing-bracket-location",
+    "plugin:storybook/recommended"
   ]
 }

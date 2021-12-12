@@ -1,6 +1,5 @@
 import {useState, useLayoutEffect} from 'react'
 import Link from 'next/link'
-import Hamburger from '../Hamburger/Hamburger'
 
 // import PropTypes from 'prop-types'
 
@@ -8,12 +7,10 @@ import logo from '../../public/images/logo.svg'
 
 export const Nav = () => {
   const [showNavOnClick, setShowNavOnClick] = useState(false)
-  const [hamburgerOpen, setHamburgerOpen] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
 
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)
-    setHamburgerOpen(!hamburgerOpen)
   }
 
   useLayoutEffect(() => {

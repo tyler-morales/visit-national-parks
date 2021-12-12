@@ -23,3 +23,11 @@ describe('Nav links', () => {
     cy.get('#parks').should('be.visible')
   })
 })
+
+describe('Focus nav links', () => {
+  it('should be focusable on tabs', () => {
+    cy.get('nav a').each(($el, index, $list) => {
+      cy.wrap($el).focus()
+    })
+  })
+})

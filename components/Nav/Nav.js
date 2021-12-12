@@ -48,7 +48,7 @@ export const Nav = () => {
             </a>
           </Link>
           <button
-            id="menu-icon"
+            data-cy="hamburger-icon"
             onClick={toggleMenu}
             className="cursor-pointer md:hidden">
             🍔
@@ -58,7 +58,7 @@ export const Nav = () => {
         <div className="flex flex-col w-full md:gap-6 md:flex-row md:w-min">
           <Link href="/parks">
             <a
-              id="parks"
+              data-cy="parks"
               className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-4
                 ${
                   showNavOnScreenSize ||
@@ -72,6 +72,7 @@ export const Nav = () => {
           </Link>
           <Link href="/about">
             <a
+              data-cy="about-page"
               className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-4
                 ${
                   showNavOnScreenSize ||

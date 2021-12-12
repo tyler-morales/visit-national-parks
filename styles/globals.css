@@ -52,8 +52,30 @@ h6 {
   font-display: swap;
 }
 
-// Text Underline
+/* Text Underline */
 @layer components {
+  .pass {
+    position: relative;
+    transition: width 0.6s;
+  }
+  .pass::before {
+    content: '';
+    width: 0;
+    height: 0.1em;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    @apply bg-green-700;
+    transition: all 0.3s;
+  }
+  .pass:hover::before {
+    width: 100%;
+    left: 0;
+    @apply bg-green-500;
+  }
+}
+
+/* @layer components {
   .pass {
     position: relative;
     transition: width 0.6s;
@@ -76,4 +98,4 @@ h6 {
       }
     }
   }
-}
+} */

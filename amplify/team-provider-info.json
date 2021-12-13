@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-visitnationalparks-dev-172130-authRole",
+      "UnauthRoleArn": "arn:aws:iam::391385230535:role/amplify-visitnationalparks-dev-172130-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::391385230535:role/amplify-visitnationalparks-dev-172130-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-visitnationalparks-dev-172130-deployment",
+      "UnauthRoleName": "amplify-visitnationalparks-dev-172130-unauthRole",
+      "StackName": "amplify-visitnationalparks-dev-172130",
+      "StackId": "arn:aws:cloudformation:us-east-2:391385230535:stack/amplify-visitnationalparks-dev-172130/68e029a0-5c6b-11ec-a960-0ac7b30214bc",
+      "AmplifyAppId": "d1l52v88wa3nh2"
+    }
+  }
+}

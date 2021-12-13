@@ -1,0 +1,20 @@
+import {Nav} from './Nav'
+import {Canvas, Meta, Story} from '@storybook/addon-docs'
+
+<Meta title="micro/Nav" component={Nav} />
+
+export const Template = (args) => <Nav {...args} />
+
+# The Nav
+
+## Unauthenticated user
+
+<Canvas>
+  <Story name="nav-unauthenticated">{Template.bind({})}</Story>
+</Canvas>
+
+## Authenticated user
+
+<Canvas>
+  <Story name="nav-authenticated">{Template.bind({})}</Story>
+</Canvas>

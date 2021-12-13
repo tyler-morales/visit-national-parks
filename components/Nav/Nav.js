@@ -8,7 +8,7 @@ export const Nav = () => {
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
   const [isOpen, setOpen] = useState(false)
-  console.log(isOpen)
+
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)
   }
@@ -34,7 +34,7 @@ export const Nav = () => {
   }, [])
 
   return (
-    <nav className="flex justify-between py-5 lg:w-10/12 m-auto items-center max-w-[1080px] px-5 lg:px-0 flex-col md:flex-row w-full">
+    <nav className="flex justify-between py-5 lg:w-10/12 m-auto items-center max-w-[1080px] px-5 lg:px-0 flex-col md:flex-row w-full bg-[#f5f5ee]">
       <div className="flex flex-col items-center w-full md:flex-row">
         <div className="flex items-center justify-between w-full md:w-max md:pr-8">
           <Link href="/">

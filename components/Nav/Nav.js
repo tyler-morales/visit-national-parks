@@ -1,13 +1,14 @@
 import {useState, useLayoutEffect} from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import {Cross as Hamburger} from 'hamburger-react'
 
 // import PropTypes from 'prop-types'
 
 export const Nav = () => {
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
-
+  const [isOpen, setOpen] = useState(false)
+  console.log(isOpen)
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)
   }
@@ -19,6 +20,7 @@ export const Nav = () => {
       if (window.innerWidth > 768) {
         setShowNavOnScreenSize(true)
         setShowNavOnClick(false)
+        setOpen(false)
       } else if (window.innerWidth < 768) {
         setShowNavOnScreenSize(false)
       }
@@ -45,11 +47,16 @@ export const Nav = () => {
               />
             </a>
           </Link>
+
           <button
             data-cy="hamburger-icon"
             onClick={toggleMenu}
             className="cursor-pointer md:hidden">
-            🍔
+            <Hamburger
+              color="rgb(22 101 52)"
+              toggled={isOpen}
+              toggle={setOpen}
+            />
           </button>
         </div>
 

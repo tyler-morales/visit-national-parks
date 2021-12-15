@@ -1,13 +1,27 @@
-import {useState, useLayoutEffect} from 'react'
+import {useState, useEffect, useLayoutEffect} from 'react'
 import Link from 'next/link'
+import {Auth} from 'aws-amplify'
 import {Cross as Hamburger} from 'hamburger-react'
-
 // import PropTypes from 'prop-types'
 
 export const Nav = () => {
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
   const [isOpen, setOpen] = useState(false)
+
+const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    checkUser()
+    async function checkUser() {
+      try {
+        const user = await Auth.currentAuthenticatedUser()
+        setUser(user)
+      } catch (err) {
+        setUser(null)
+      }
+    }
+  }, [])
 
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)
@@ -93,9 +107,10 @@ export const Nav = () => {
       </div>
 
       <div className="flex flex-col w-full text-center md:flex-row md:text-left md:justify-end md:gap-6">
-        <Link href="/log-in">
-          <a
-            className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 
+        {user ? (
+          <Link href="/profile">
+            <a
+              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -103,12 +118,14 @@ export const Nav = () => {
                   : 'hidden'
               }
             `}>
-            Log in
-          </a>
-        </Link>
-        <Link href="/sign-up">
-          <a
-            className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2
+              Profile
+            </a>
+          </Link>
+        ) : (
+          <>
+            <Link href="/login">
+              <a
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -116,13 +133,25 @@ export const Nav = () => {
                   : 'hidden'
               }
             `}>
-            Sign up
-          </a>
-        </Link>
+                Log in
+              </a>
+            </Link>
+            <Link href="/signup">
+              <a
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 
+              ${
+                showNavOnScreenSize ||
+                (showNavOnClick && showNavOnScreenSize != showNavOnClick)
+                  ? 'visible'
+                  : 'hidden'
+              }
+            `}>
+                Sign Up
+              </a>
+            </Link>
+          </>
+        )}
       </div>
-
-      {/* <img alt="Logo" src="/logo.svg" width={200} height={200} /> */}
-      {/* <img src="/logo.svg" alt="Vercel Logo" /> */}
     </nav>
   )
 }

@@ -1,24 +1,20 @@
+import {withSSRContext} from 'aws-amplify'
 import {Auth} from 'aws-amplify'
-import {useState, useContext} from 'react'
+import {useState} from 'react'
 import {useRouter} from 'next/router'
 import Link from 'next/link'
 import {Formik, Form, Field} from 'formik'
 import {SignInWithGoogle} from '../components/GoogleSignIn/SignInWithGoogle'
-
-import Input from '../components/Input/Input'
 
 import {AiOutlineEyeInvisible} from 'react-icons/ai'
 import {AiOutlineEye} from 'react-icons/ai'
 
 import {Nav} from '../components/Nav/Nav'
 
-// import {useUser} from '../contexts/UserContext'
-
 import {SignInValues, SignInSchema} from '../formik/SignInValidation'
 
 function Login() {
   const router = useRouter()
-  //   const {login} = useUser
 
   const [signingIn, setSigningIn] = useState(false)
   const [serverError, setServerError] = useState(null)
@@ -38,7 +34,6 @@ function Login() {
   const signIn = async ({email, password}) => {
     try {
       setSigningIn(true)
-      //   await login(email, password)
       await Auth.signIn(email, password)
 
       router.push('/')
@@ -150,6 +145,24 @@ function Login() {
       </div>
     </>
   )
+}
+
+export async function getServerSideProps({req, res}) {
+  const {Auth} = withSSRContext({req})
+  try {
+    const user = await Auth.currentAuthenticatedUser()
+    if (user) {
+      return {
+        redirect: {
+          destination: '/profile',
+          statusCode: 302,
+        },
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    return {props: {}}
+  }
 }
 
 export default Login

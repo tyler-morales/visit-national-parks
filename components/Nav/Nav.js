@@ -2,26 +2,14 @@ import {useState, useEffect, useLayoutEffect} from 'react'
 import Link from 'next/link'
 import {Auth} from 'aws-amplify'
 import {Cross as Hamburger} from 'hamburger-react'
+import checkUser from '../../hooks/checkUser'
 // import PropTypes from 'prop-types'
 
 export const Nav = () => {
+  const user = checkUser()
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
   const [isOpen, setOpen] = useState(false)
-
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    checkUser()
-    async function checkUser() {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        setUser(user)
-      } catch (err) {
-        setUser(null)
-      }
-    }
-  }, [])
 
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)
@@ -102,9 +90,6 @@ export const Nav = () => {
               `}>
               About
             </a>
-          </Link>
-          <Link href="/protected">
-            <a>Protected route</a>
           </Link>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import {withSSRContext} from 'aws-amplify'
 import {useState, useEffect} from 'react'
 import {Auth} from 'aws-amplify'
 import {useRouter} from 'next/router'
@@ -248,6 +249,24 @@ const StepTwo = (props) => {
       </Formik>
     </section>
   )
+}
+
+export async function getServerSideProps({req, res}) {
+  const {Auth} = withSSRContext({req})
+  try {
+    const user = await Auth.currentAuthenticatedUser()
+    if (user) {
+      return {
+        redirect: {
+          destination: '/profile',
+          statusCode: 302,
+        },
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    return {props: {}}
+  }
 }
 
 export default SignUp

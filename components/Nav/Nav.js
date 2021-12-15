@@ -9,7 +9,7 @@ export const Nav = () => {
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
   const [isOpen, setOpen] = useState(false)
 
-const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     checkUser()
@@ -103,6 +103,9 @@ const [user, setUser] = useState(null)
               About
             </a>
           </Link>
+          <Link href="/protected">
+            <a>Protected route</a>
+          </Link>
         </div>
       </div>
 
@@ -138,7 +141,7 @@ const [user, setUser] = useState(null)
             </Link>
             <Link href="/signup">
               <a
-                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md focus:ring-green-500 focus:outline-none focus:ring-2 p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -146,7 +149,7 @@ const [user, setUser] = useState(null)
                   : 'hidden'
               }
             `}>
-                Sign Up
+                Create Account
               </a>
             </Link>
           </>

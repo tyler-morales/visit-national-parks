@@ -143,6 +143,8 @@ const StepOne = (props) => {
                 ) : null}
               </div>
 
+              {serverError && <span className="text-error">{serverError}</span>}
+
               <button
                 type="submit"
                 disabled={signingIn ? true : false}
@@ -174,6 +176,7 @@ const StepOne = (props) => {
 }
 
 const StepTwo = (props) => {
+  // console.log(props.data)
   const [signingIn, setSigningIn] = useState(false)
   const [serverError, setServerError] = useState(null)
 
@@ -193,6 +196,8 @@ const StepTwo = (props) => {
     setSigningIn(true)
     try {
       await Auth.confirmSignUp(username, confirmationCode)
+      await Auth.signIn(username, password)
+
       props.next(username, true)
     } catch (err) {
       setSigningIn(false)

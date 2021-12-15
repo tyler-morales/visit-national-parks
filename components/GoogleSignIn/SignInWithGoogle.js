@@ -1,4 +1,3 @@
-import React, {useEffect} from 'react'
 import {Auth} from 'aws-amplify'
 import {FcGoogle} from 'react-icons/fc'
 

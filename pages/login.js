@@ -53,7 +53,12 @@ function Login() {
         </h1>
         <SignInWithGoogle type="Log in" />
 
-        <span className="text-center">Or Log in with Email & Password</span>
+        <div className="flex items-center">
+          <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+          <div className="flex-grow-0 mx-5 text-gray-300 text">or</div>
+          <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+        </div>
+
         <Formik
           validationSchema={SignInSchema}
           initialValues={SignInValues}
@@ -69,12 +74,17 @@ function Login() {
                   name="email"
                   placeholder="theodore_roosevelt@gmail.com"
                   className="py-3 pl-3 transition-all border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  data-cy="email"
                 />
                 {serverError && (
-                  <span className="text-error">{serverError}</span>
+                  <span className="text-red-700" data-cy="login-server-error">
+                    {serverError}
+                  </span>
                 )}
                 {errors.email && touched.email ? (
-                  <span className="text-sm text-error">{errors.email}</span>
+                  <span className="text-sm text-error" data-cy="email-error">
+                    {errors.email}
+                  </span>
                 ) : null}
               </div>
               <div className="flex flex-col gap-2">
@@ -97,6 +107,7 @@ function Login() {
                     placeholder="iluvnature123"
                     id="password"
                     className="w-full py-3 pl-3 transition-all border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    data-cy="password"
                   />
                   {isPasswordVisible ? (
                     <button
@@ -109,6 +120,7 @@ function Login() {
                     <button
                       type="button"
                       onClick={toggle}
+                      data-cy="password-toggle"
                       className="absolute p-1 transition-all cursor-pointer right-3">
                       <AiOutlineEyeInvisible size="1.5em" color="grey" />
                     </button>
@@ -116,7 +128,9 @@ function Login() {
                 </div>
 
                 {errors.password && touched.password ? (
-                  <span className="text-sm text-error">{errors.password}</span>
+                  <span className="text-sm text-error" data-cy="password-error">
+                    {errors.password}
+                  </span>
                 ) : null}
               </div>
               <button
@@ -125,7 +139,8 @@ function Login() {
                   signingIn ? 'opacity-50 cursor-wait' : 'opacity-100'
                 }`}
                 disabled={signingIn ? true : false}
-                title="Log In">
+                title="Log In"
+                data-cy="submit-login">
                 {signingIn ? 'Loading...' : 'Sign in'}
               </button>
             </Form>
@@ -151,6 +166,7 @@ export async function getServerSideProps({req, res}) {
   const {Auth} = withSSRContext({req})
   try {
     const user = await Auth.currentAuthenticatedUser()
+    console.log(user)
     if (user) {
       return {
         redirect: {

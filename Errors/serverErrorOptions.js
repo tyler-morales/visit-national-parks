@@ -8,6 +8,10 @@ export const serverErrorOptions = (error, setServerError) => {
       setServerError('Account name is not recognized.')
       break
 
+    case 'LimitExceededException':
+      setServerError('Sever error. Please try again later.')
+      break
+
     case 'InvalidParameterException':
       setServerError(
         'Email is not in our system. Please contact us to reset your account.'

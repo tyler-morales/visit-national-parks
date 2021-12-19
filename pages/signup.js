@@ -25,11 +25,20 @@ function SignUp() {
   const [data, setData] = useState(SignUpValues)
   const [currentStep, setCurrentStep] = useState(0)
 
+  console.log(data?.username, data?.password)
+
   const handleNextStep = async (newData, final = false) => {
     setData((prev) => ({...prev, ...newData}))
 
+    // redirect to login, recgonize user is authenticated and send them to their profile
     if (final) {
-      router.push('/')
+      try {
+        router.push('/profile')
+        await Auth.signIn(data?.username, data?.password)
+        console.log('Finish')
+      } catch (err) {
+        console.error(err)
+      }
       return
     }
 
@@ -68,6 +77,7 @@ const StepOne = (props) => {
   }
 
   const handleSubmit = async ({username, password}) => {
+    console.log('First step')
     setSigningIn(true)
     try {
       await Auth.signUp({username, password})
@@ -176,7 +186,8 @@ const StepOne = (props) => {
 }
 
 const StepTwo = (props) => {
-  // console.log(props.data)
+  console.log('Second step')
+  // console.log(props?.data.username, props?.data.password)
   const [signingIn, setSigningIn] = useState(false)
   const [serverError, setServerError] = useState(null)
 
@@ -186,6 +197,7 @@ const StepTwo = (props) => {
     useEffect(() => {
       // Submit the form imperatively as an effect as soon as form values. confirmationCode is 6 digits long
       if (values.confirmationCode.length === 6) {
+        console.log('Form auto submited')
         submitForm()
       }
     }, [values, submitForm])
@@ -193,11 +205,13 @@ const StepTwo = (props) => {
   }
 
   const handleSubmit = async ({username, confirmationCode}) => {
+    console.log(username, confirmationCode)
+    console.log('Trying to log in')
     setSigningIn(true)
     try {
+      console.log('AWS logging in')
       await Auth.confirmSignUp(username, confirmationCode)
-      await Auth.signIn(username, password)
-
+      console.log('Account confirmed')
       props.next(username, true)
     } catch (err) {
       setSigningIn(false)

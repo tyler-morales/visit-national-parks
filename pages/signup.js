@@ -33,8 +33,9 @@ function SignUp() {
     // redirect to login, recgonize user is authenticated and send them to their profile
     if (final) {
       try {
+        console.log('Move to profile if there')
         router.push('/profile')
-        await Auth.signIn(data?.username, data?.password)
+        // await Auth.signIn(data?.username, data?.password)
         console.log('Finish')
       } catch (err) {
         console.error(err)
@@ -92,18 +93,24 @@ const StepOne = (props) => {
 
   return (
     <div className="flex flex-col gap-10 md:flex-row-reverse">
-      <section className="flex flex-col gap-4 md:w-full">
+      <section className="flex flex-col gap-9 md:w-full">
         <Formik
           validationSchema={SignUpStepOneSchema}
           initialValues={props.data}
           onSubmit={handleSubmit}>
           {({errors, touched}) => (
             <Form className="flex flex-col gap-4">
-              <h1 className="text-3xl font-bold text-green-800 md:text-left">
+              <h1 className="mb-4 text-3xl font-bold text-green-800 md:text-left">
                 Create an Account
               </h1>
 
               <SignInWithGoogle type="Sign up" />
+
+              <div className="flex items-center my-6">
+                <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+                <div className="flex-grow-0 mx-5 text-gray-300 text">or</div>
+                <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+              </div>
 
               <div className="flex flex-col gap-3">
                 <label className="text-sm text-green-800" htmlFor="username">

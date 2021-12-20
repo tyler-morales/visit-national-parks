@@ -76,7 +76,7 @@ const StepOne = (props) => {
           onSubmit={handleSubmit}>
           {({errors, touched}) => (
             <Form className="flex flex-col gap-4">
-              <h1 className="text-3xl font-bold text-green-800 md:text-left">
+              <h1 className="mb-4 text-3xl font-bold text-green-800 md:text-left">
                 Reset Password
               </h1>
               <div className="flex flex-col gap-3">

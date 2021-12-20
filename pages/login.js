@@ -48,7 +48,7 @@ function Login() {
     <>
       <Nav />
       <div className="flex flex-col justify-center w-11/12 py-6 m-auto mt-9 md:mt-10 md:max-w-md gap-9">
-        <h1 className="mb-4 text-3xl font-bold text-green-800 md:text-left">
+        <h1 className="text-3xl font-bold text-green-800 md:text-left">
           Log in
         </h1>
         <SignInWithGoogle type="Log in" />

@@ -1,12 +1,4 @@
 describe('Login Tests', () => {
-  it('Successfull Login', () => {
-    cy.visit('/login')
-    cy.get('[data-cy=email]').type('tets@gmail.com')
-    cy.get('[data-cy=password]').type('qwerty123')
-    cy.get('[data-cy=submit-login]').click()
-    cy.location('pathname').should('include', '/')
-  })
-
   it('Empty fields', () => {
     cy.visit('/login')
     cy.get('[data-cy=submit-login]').click()
@@ -34,5 +26,14 @@ describe('Login Tests', () => {
       'have.text',
       'Incorrect username or password.'
     )
+  })
+
+  it('Successfull Login', () => {
+    cy.visit('/login')
+    cy.get('[data-cy=email]').type('tets@gmail.com')
+    cy.get('[data-cy=password]').type('qwerty123')
+    cy.get('[data-cy=submit-login]').click()
+    // Redirect to home page
+    cy.location('pathname').should('include', '/')
   })
 })

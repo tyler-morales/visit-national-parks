@@ -18,6 +18,8 @@ import {AiOutlineEyeInvisible} from 'react-icons/ai'
 import {AiOutlineEye} from 'react-icons/ai'
 import {Nav} from '../components/Nav/Nav'
 import {SignInWithGoogle} from '../components/GoogleSignIn/SignInWithGoogle'
+import Button from '../components/Button/Button'
+import Input from '../components/Forms/Input/Input'
 
 function SignUp() {
   const router = useRouter()
@@ -116,10 +118,9 @@ const StepOne = (props) => {
                 <label className="text-sm text-green-800" htmlFor="username">
                   Email
                 </label>
-                <Field
+                <Input
                   type="email"
                   name="username"
-                  className="py-3 pl-3 transition-all border-2 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="theodore_roosevelt@gmail.com"
                 />
                 {errors.username && touched.username ? (
@@ -161,15 +162,7 @@ const StepOne = (props) => {
               </div>
 
               {serverError && <span className="text-error">{serverError}</span>}
-
-              <button
-                type="submit"
-                disabled={signingIn ? true : false}
-                className={`transition-all transform hover:translate-y-1 w-full rounded-md py-3 mt-6 text-white bg-green-800 cursor-pointer border-2 border-transparent ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  signingIn ? 'opacity-50 cursor-wait' : 'opacity-100'
-                }`}>
-                {signingIn ? 'Loading...' : 'Next'}
-              </button>
+              <Button title="Next" type="submit" state={signingIn} />
             </Form>
           )}
         </Formik>
@@ -260,14 +253,7 @@ const StepTwo = (props) => {
                 </span>
               ) : null}
             </div>
-            <button
-              type="submit"
-              disabled={signingIn ? true : false}
-              className={`transition-all transform hover:translate-y-1 rounded-md bg-green-800 text-white py-3 mt-6 cursor-pointer border-2 border-transparent ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                signingIn ? 'opacity-50 cursor-wait' : 'opacity-100'
-              }`}>
-              {signingIn ? 'Confirming...' : 'Submit'}
-            </button>
+            <Button title="Submit" type="submit" state={signingIn} />
           </Form>
         )}
       </Formik>

@@ -12,6 +12,9 @@ import {AiOutlineEye} from 'react-icons/ai'
 import {Nav} from '../components/Nav/Nav'
 
 import {SignInValues, SignInSchema} from '../formik/SignInValidation'
+import Label from '../components/Forms/Label/Label'
+import Input from '../components/Forms/Input/Input'
+import Button from '../components/Button/Button'
 
 function Login() {
   const router = useRouter()
@@ -66,15 +69,12 @@ function Login() {
           {({errors, touched}) => (
             <Form className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
-                <label className="text-sm text-green-800" htmlFor="email">
-                  Email
-                </label>
-                <Field
+                <Label title="Email" name="email" />
+                <Input
                   type="text"
                   name="email"
                   placeholder="theodore_roosevelt@gmail.com"
-                  className="py-3 pl-3 transition-all border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  data-cy="email"
+                  dataId="email"
                 />
                 {serverError && (
                   <span className="text-red-700" data-cy="login-server-error">
@@ -88,26 +88,22 @@ function Login() {
                 ) : null}
               </div>
               <div className="flex flex-col gap-2">
-                <label
-                  className="flex flex-row justify-between text-sm text-green-800"
-                  htmlFor="password">
-                  Password{' '}
-                  <span className="text-green-800 font-body">
+                <div className="flex justify-between">
+                  <Label title="Password" name="password" />
+                  <span className="text-sm text-green-800 font-body">
                     <Link href="/forgot-password">
                       <a className="ml-2 cursor-pointer text-quad ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Forget your password?
                       </a>
                     </Link>
                   </span>
-                </label>
+                </div>
                 <div className="relative flex items-center w-full">
-                  <Field
-                    name="password"
+                  <Input
                     type="password"
+                    name="password"
                     placeholder="iluvnature123"
-                    id="password"
-                    className="w-full py-3 pl-3 transition-all border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    data-cy="password"
+                    dataId="password"
                   />
                   {isPasswordVisible ? (
                     <button
@@ -133,16 +129,12 @@ function Login() {
                   </span>
                 ) : null}
               </div>
-              <button
+              <Button
+                title="Sign in"
                 type="submit"
-                className={`transition-all transform hover:translate-y-1 rounded-md bg-green-800 text-white py-3 mt-6 cursor-pointer border-2 border-transparent ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  signingIn ? 'opacity-50 cursor-wait' : 'opacity-100'
-                }`}
-                disabled={signingIn ? true : false}
-                title="Log In"
-                data-cy="submit-login">
-                {signingIn ? 'Loading...' : 'Sign in'}
-              </button>
+                dataId="submit-login"
+                state={signingIn}
+              />
             </Form>
           )}
         </Formik>

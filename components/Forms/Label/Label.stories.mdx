@@ -1,0 +1,18 @@
+import Label from './Label'
+import {Canvas, Meta, Story} from '@storybook/addon-docs'
+
+<Meta title="forms/Label" component={Label} />
+
+export const Template = (args) => <Label {...args} />
+
+# A form label
+
+<Canvas>
+  <Story
+    name="input-label"
+    args={{
+      title: 'Email',
+    }}>
+    >{Template.bind({})}
+  </Story>
+</Canvas>

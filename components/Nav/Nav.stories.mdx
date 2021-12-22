@@ -10,11 +10,23 @@ export const Template = (args) => <Nav {...args} />
 ## Unauthenticated user
 
 <Canvas>
-  <Story name="nav-unauthenticated">{Template.bind({})}</Story>
+  <Story
+    name="nav-unauthenticated"
+    args={{
+      mockUser: false,
+    }}>
+    >{Template.bind({})}
+  </Story>
 </Canvas>
 
 ## Authenticated user
 
 <Canvas>
-  <Story name="nav-authenticated">{Template.bind({})}</Story>
+  <Story
+    name="nav-authenticated"
+    args={{
+      mockUser: true,
+    }}>
+    >{Template.bind({})}
+  </Story>
 </Canvas>

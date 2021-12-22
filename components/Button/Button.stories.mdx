@@ -1,0 +1,21 @@
+import {Button} from './Button'
+import {Canvas, Meta, Story} from '@storybook/addon-docs'
+
+<Meta title="micro/Button" component={Button} />
+
+export const Template = (args) => <Button {...args} />
+
+# The Button
+
+<Canvas>
+  <Story
+    name="button-submit"
+    args={{
+      title: 'Sign up',
+      type='submit'
+      state: null,
+      dataId: 'data',
+    }}>
+    >{Template.bind({})}
+  </Story>
+</Canvas>

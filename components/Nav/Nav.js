@@ -39,7 +39,7 @@ export const Nav = ({mockUser}) => {
       <div className="flex flex-col items-center w-full md:flex-row">
         <div className="flex items-center justify-between w-full md:w-max md:pr-8">
           <Link href="/">
-            <a className="md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2">
+            <a className="md:rounded-md ">
               <img
                 src="/images/logo.svg"
                 alt="Parkway logo"
@@ -65,7 +65,7 @@ export const Nav = ({mockUser}) => {
           <Link href="/parks">
             <a
               data-cy="parks"
-              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2 p-4 md:py-2
+              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md  p-4 md:py-2
                 ${
                   showNavOnScreenSize ||
                   (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -79,7 +79,7 @@ export const Nav = ({mockUser}) => {
           <Link href="/about">
             <a
               data-cy="about-page"
-              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2 p-4 md:py-2
+              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-b border-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 py-4   w-full text-center hover:bg-green-800 hover:text-white lg:pass md:rounded-md  p-4 md:py-2
                 ${
                   showNavOnScreenSize ||
                   (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -97,7 +97,7 @@ export const Nav = ({mockUser}) => {
         {user || mockUser ? (
           <Link href="/profile">
             <a
-              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2 p-4 md:py-2 
+              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md  p-4 md:py-2 
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -112,7 +112,7 @@ export const Nav = ({mockUser}) => {
           <>
             <Link href="/login">
               <a
-                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2 p-4 md:py-2 
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md  p-4 md:py-2 
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -125,7 +125,7 @@ export const Nav = ({mockUser}) => {
             </Link>
             <Link href="/signup">
               <a
-                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md focus-visible:ring-green-500 focus-visible:outline-none focus-visible:ring-2 p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md  p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white focus:
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)

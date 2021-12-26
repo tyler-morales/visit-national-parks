@@ -5,14 +5,14 @@ export default function Park({park}) {
   const {url, altText, caption, credit} = images[0]
 
   return (
-    <div className="max-w-[1080px] m-auto grid gap-20">
+    <div className="max-w-[1080px] m-auto">
       <span className="block mb-2 text-center">{designation}</span>
-      <h1 className="font-bold text-center text-green-800 text-7xl">
+      <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {fullName}
       </h1>
       <figure>
         <img
-          className="object-cover w-full m-auto max-h-96 rounded-xl"
+          className="object-cover w-full m-auto max-h-[550px] object-top rounded-xl"
           src={url}
           alt={altText}
         />
@@ -22,10 +22,14 @@ export default function Park({park}) {
         </figcaption>
       </figure>
       <p>{description}</p>
-      <div className="h-[2000px] gap-5 columns-3">
+
+      <h3 className="mt-24 text-3xl font-bold text-green-800 mb-7">
+        More Images
+      </h3>
+      <div className="gap-10 columns-3">
         {images.map((img, index) => {
           return (
-            <figure key={index} className="mt-5 mb-6 mr-4 text-center">
+            <figure key={index} className="mb-10 text-center">
               <img className="rounded-xl" src={img.url} alt={img.altText} />
               <figcaption className="mt-4 text-sm italic text-gray-600 ">
                 {img.altText}

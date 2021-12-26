@@ -433,7 +433,7 @@ export default function SearchBar() {
 
   const tabStyles = {
     active:
-      'bg-green-600 text-white hover:shadow-md hover:shadow-green-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none',
+      'bg-green-600 text-white focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none',
     inActive:
       'bg-green-200 text-green-500 hover:shadow-md hover:shadow-green-200 hover:-translate-y-1 hover:border-2 hover:border-green-700 hover:text-green-700',
   }
@@ -448,14 +448,14 @@ export default function SearchBar() {
         <div className="flex gap-10">
           <button
             onClick={() => setTab('name')}
-            className={`transition-all px-6 py-3 text-lg rounded-full text-md w-40 font-bold border-transparent border-2 ${
+            className={`transition-all px-6 py-3 text-lg rounded-xl text-md w-40 font-bold border-transparent border-2 ${
               tab == 'name' ? tabStyles.active : tabStyles.inActive
             }`}>
             Park Name
           </button>
           <button
             onClick={() => setTab('filter')}
-            className={`transition-all px-6 py-3 text-lg rounded-full text-md w-40 font-bold border-transparent border-2 ${
+            className={`transition-all px-6 py-3 text-lg rounded-xl text-md w-40 font-bold border-transparent border-2 ${
               tab == 'filter' ? tabStyles.active : tabStyles.inActive
             }`}>
             Filters
@@ -470,16 +470,16 @@ export default function SearchBar() {
             <label className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
               Park Name
             </label>
-            <div className="flex justify-between gap-3">
+            <div className="flex justify-between gap-5">
               <input
                 type="text"
                 name="parkName"
                 placeholder="Yellowstone"
-                className="w-full px-6 py-3 bg-gray-100 rounded-full"
+                className="w-full px-6 py-3 bg-gray-100 rounded-xl"
               />
               <button
                 type="submit"
-                className="px-4 py-3 text-white bg-green-700 rounded-full w-36 ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
+                className="px-4 py-3 text-white bg-green-700 rounded-full w-36 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
                 Search
               </button>
             </div>
@@ -527,7 +527,7 @@ export default function SearchBar() {
             </div>
             <button
               type="submit"
-              className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
+              className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               Search
             </button>
           </div>

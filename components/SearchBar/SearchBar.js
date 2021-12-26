@@ -1093,13 +1093,6 @@ export default function SearchBar() {
       background: '#eaeaea',
       borderRadius: '10px',
     }),
-
-    singleValue: (provided, state) => {
-      const opacity = state.isDisabled ? 0.5 : 1
-      const transition = 'opacity 300ms'
-
-      return {...provided, opacity, transition}
-    },
   }
   const dropdownStyles = {
     option: (provided, state) => ({
@@ -1124,15 +1117,13 @@ export default function SearchBar() {
       padding: '5px 10px',
       display: 'flex',
       background: '#eaeaea',
-      borderRadius: '10px',
+      // borderRadius: '10px',
     }),
 
-    singleValue: (provided, state) => {
-      const opacity = state.isDisabled ? 0.5 : 1
-      const transition = 'opacity 300ms'
-
-      return {...provided, opacity, transition}
-    },
+    multiValueLabel: (provided) => ({
+      ...provided,
+      background: '#eaeaea',
+    }),
   }
 
   const tabStyles = {
@@ -1184,7 +1175,7 @@ export default function SearchBar() {
               />
               <button
                 type="submit"
-                className="px-4 py-3 text-white bg-green-700 rounded-full w-36 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
                 Search
               </button>
             </div>
@@ -1193,10 +1184,10 @@ export default function SearchBar() {
       )}
       {tab == 'filter' && (
         <form className="mt-8">
-          <div className="flex w-full gap-4">
+          <div className="flex w-full gap-5">
             <div className="flex flex-col w-full gap-4">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
-                States
+                State
               </label>
               <Select
                 options={states}

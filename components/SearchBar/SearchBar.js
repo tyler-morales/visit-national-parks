@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
-import {FaSearch} from 'react-icons/fa'
+import {useRouter} from 'next/router'
 
 import parks from '../../data/parks.json'
 import states from '../../data/states.json'
@@ -9,6 +9,8 @@ import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
 export default function SearchBar() {
+  const router = useRouter()
+
   const [tab, setTab] = useState('name')
   const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
@@ -21,7 +23,7 @@ export default function SearchBar() {
     // console.log('submitted')
     try {
       setParams({parkCode: selectedPark.value})
-      // console.log(params)
+      router.push(`/parks/${selectedPark.value}`)
     } catch (err) {
       console.error(err)
     }

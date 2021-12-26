@@ -1137,10 +1137,10 @@ export default function SearchBar() {
     <div className="p-8 pt-4 bg-white border-2 border-gray-200 rounded-3xl">
       {/* Nav Buttons */}
       <div className="pb-8 border-b-2 border-gray-200">
-        <span className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
+        <span className="block mb-4 text-xs tracking-widest text-center text-gray-400 uppercase">
           Search by
         </span>
-        <div className="flex gap-10">
+        <div className="flex justify-center gap-10">
           <button
             onClick={() => setTab('name')}
             className={`transition-all px-6 py-3 text-lg rounded-xl text-md w-40 font-bold border-transparent border-2 ${

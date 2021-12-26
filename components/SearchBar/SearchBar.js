@@ -26,7 +26,7 @@ export default function SearchBar() {
     console.log(loading)
     try {
       // setParams({parkCode: selectedPark.value})
-      router.push(`/parks/${selectedPark.value}`)
+      router.push(`/park/${selectedPark.value}`)
       // setLoading(false)
     } catch (err) {
       setLoading(false)

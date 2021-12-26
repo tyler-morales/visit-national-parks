@@ -27,7 +27,7 @@ export default function SearchBar() {
     }
   }
 
-  console.log(params)
+  // console.log(params)
 
   const tabStyles = {
     active:

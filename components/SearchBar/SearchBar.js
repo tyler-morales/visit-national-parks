@@ -2,6 +2,7 @@ import {useState} from 'react'
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
 import {useRouter} from 'next/router'
+import {ImSpinner8} from 'react-icons/im'
 
 import parks from '../../data/parks.json'
 import states from '../../data/states.json'
@@ -16,20 +17,22 @@ export default function SearchBar() {
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
-  const [params, setParams] = useState(null)
+  // const [params, setParams] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // console.log('submitted')
+    setLoading(true)
+    console.log(loading)
     try {
-      setParams({parkCode: selectedPark.value})
+      // setParams({parkCode: selectedPark.value})
       router.push(`/parks/${selectedPark.value}`)
+      // setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
-
-  // console.log(params)
 
   const tabStyles = {
     active:
@@ -81,7 +84,11 @@ export default function SearchBar() {
               <button
                 type="submit"
                 className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-                Search
+                {!loading ? (
+                  <span>Search</span>
+                ) : (
+                  <ImSpinner8 size="1.5em" className="animate-spin-slow" />
+                )}
               </button>
             </div>
           </div>
@@ -132,7 +139,11 @@ export default function SearchBar() {
             <button
               type="submit"
               className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              Search
+              {!loading ? (
+                <span>Search</span>
+              ) : (
+                <ImSpinner8 size="1.5em" className="animate-spin-slow" />
+              )}
             </button>
           </div>
         </form>

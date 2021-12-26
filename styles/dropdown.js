@@ -47,7 +47,7 @@ const dropdownStyles = {
     padding: '5px 10px',
     display: 'flex',
     background: '#eaeaea',
-    // borderRadius: '10px',
+    borderRadius: '10px',
   }),
 
   multiValueLabel: (provided) => ({

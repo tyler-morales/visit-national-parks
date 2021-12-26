@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
+import {FaSearch} from 'react-icons/fa'
 
 import parks from '../../data/parks.json'
 import states from '../../data/states.json'
@@ -77,7 +78,7 @@ export default function SearchBar() {
               />
               <button
                 type="submit"
-                className="self-end w-full py-3 text-white bg-green-700 rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
                 Search
               </button>
             </div>
@@ -87,7 +88,7 @@ export default function SearchBar() {
       {tab == 'filter' && (
         <form className="mt-8">
           <div className="flex flex-col w-full gap-5 lg:flex-row">
-            <div className="flex flex-col w-full gap-4">
+            <div className="flex flex-col w-full gap-5">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
                 State
               </label>
@@ -100,7 +101,7 @@ export default function SearchBar() {
                 isMulti
               />
             </div>
-            <div className="flex flex-col w-full gap-4">
+            <div className="flex flex-col w-full gap-5">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
                 Activity
               </label>
@@ -113,7 +114,7 @@ export default function SearchBar() {
                 isMulti
               />
             </div>
-            <div className="flex flex-col w-full gap-4">
+            <div className="flex flex-col w-full gap-5">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
                 Topic
               </label>
@@ -128,7 +129,7 @@ export default function SearchBar() {
             </div>
             <button
               type="submit"
-              className="self-end w-full py-3 text-white bg-green-700 rounded-full lg:px-12 lg:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+              className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               Search
             </button>
           </div>

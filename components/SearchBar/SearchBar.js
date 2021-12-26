@@ -9,15 +9,24 @@ import topics from '../../data/topics.json'
 
 export default function SearchBar() {
   const [tab, setTab] = useState('name')
-  const [selectedPark, setselectedPark] = useState('')
+  const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
+  const [params, setParams] = useState(null)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('prevent default')
+    // console.log('submitted')
+    try {
+      setParams({parkCode: selectedPark.value})
+      // console.log(params)
+    } catch (err) {
+      console.error(err)
+    }
   }
+
+  console.log(params)
 
   const tabStyles = {
     active:
@@ -27,23 +36,23 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="p-8 pt-4 bg-white border-2 border-gray-200 rounded-3xl">
+    <div className="p-4 pt-4 bg-white border-2 border-gray-200 sm:p-8 rounded-3xl">
       {/* Nav Buttons */}
       <div className="pb-8 border-b-2 border-gray-200">
         <span className="block mb-4 text-xs tracking-widest text-center text-gray-400 uppercase">
           Search by
         </span>
-        <div className="flex justify-center gap-10">
+        <div className="flex justify-center gap-4 md:gap-10">
           <button
             onClick={() => setTab('name')}
-            className={`transition-all px-6 py-3 text-lg rounded-xl text-md w-40 font-bold border-transparent border-2 ${
+            className={`transition-all text-md md:px-6 px-2 py-3 md:text-lg rounded-xl md:w-40 w-full font-bold border-transparent border-2 ${
               tab == 'name' ? tabStyles.active : tabStyles.inActive
             }`}>
             Park Name
           </button>
           <button
             onClick={() => setTab('filter')}
-            className={`transition-all px-6 py-3 text-lg rounded-xl text-md w-40 font-bold border-transparent border-2 ${
+            className={`transition-all text-md md:px-6 px-2 py-3 md:text-lg rounded-xl md:w-40 w-full font-bold border-transparent border-2 ${
               tab == 'filter' ? tabStyles.active : tabStyles.inActive
             }`}>
             Filters
@@ -57,7 +66,7 @@ export default function SearchBar() {
             <label className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
               Park Name
             </label>
-            <div className="flex items-center justify-between gap-5">
+            <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
               <Select
                 options={parks}
                 defaultValue={selectedPark}
@@ -68,7 +77,7 @@ export default function SearchBar() {
               />
               <button
                 type="submit"
-                className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                className="self-end w-full py-3 text-white bg-green-700 rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
                 Search
               </button>
             </div>
@@ -77,7 +86,7 @@ export default function SearchBar() {
       )}
       {tab == 'filter' && (
         <form className="mt-8">
-          <div className="flex w-full gap-5">
+          <div className="flex flex-col w-full gap-5 lg:flex-row">
             <div className="flex flex-col w-full gap-4">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
                 State
@@ -119,7 +128,7 @@ export default function SearchBar() {
             </div>
             <button
               type="submit"
-              className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+              className="self-end w-full py-3 text-white bg-green-700 rounded-full lg:px-12 lg:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               Search
             </button>
           </div>

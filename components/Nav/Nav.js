@@ -125,7 +125,7 @@ export const Nav = ({mockUser}) => {
             </Link>
             <Link href="/signup">
               <a
-                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md  p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white focus:
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md  p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)

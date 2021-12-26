@@ -432,26 +432,31 @@ export default function SearchBar() {
   const [selectedTopic, setselectedTopic] = useState(null)
 
   const tabStyles = {
-    active: 'bg-green-200 backdrop-opacity-10',
+    active:
+      'bg-green-600 text-white hover:shadow-md hover:shadow-green-200 hover:-translate-y-1 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none',
+    inActive:
+      'bg-green-200 text-green-500 hover:shadow-md hover:shadow-green-200 hover:-translate-y-1 hover:border-2 hover:border-green-700 hover:text-green-700',
   }
 
   return (
     <div className="p-8 pt-4 bg-white border-2 border-gray-200 rounded-3xl">
       {/* Nav Buttons */}
       <div className="pb-8 border-b-2 border-gray-200">
-        <span className="block mb-6 text-sm text-gray-500">Search by</span>
+        <span className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
+          Search by
+        </span>
         <div className="flex gap-10">
           <button
             onClick={() => setTab('name')}
-            className={`transition-all px-6 py-3  text-green-800 text-lg rounded-full text-md w-40 font-bold hover:border-green-800 hover:border-2 border-2 border-transparent ${
-              tab == 'name' ? tabStyles.active : null
+            className={`transition-all px-6 py-3 text-lg rounded-full text-md w-40 font-bold border-transparent border-2 ${
+              tab == 'name' ? tabStyles.active : tabStyles.inActive
             }`}>
             Park Name
           </button>
           <button
             onClick={() => setTab('filter')}
-            className={`transition-all px-6 py-3  text-green-800 text-lg rounded-full text-md w-40 font-bold hover:border-green-800 hover:border-2 border-2 border-transparent ${
-              tab == 'filter' ? tabStyles.active : null
+            className={`transition-all px-6 py-3 text-lg rounded-full text-md w-40 font-bold border-transparent border-2 ${
+              tab == 'filter' ? tabStyles.active : tabStyles.inActive
             }`}>
             Filters
           </button>
@@ -460,9 +465,12 @@ export default function SearchBar() {
       {/* Input and filters */}
       {tab == 'name' && (
         <form className="mt-8">
-          <div className="flex flex-col justify-between gap-4">
-            <Label title="Park Name" for="parkName" />
-            <div className="flex justify-between gap-4">
+          <div className="flex flex-col justify-between">
+            {/* <Label title="Park Name" for="parkName" /> */}
+            <label className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
+              Park Name
+            </label>
+            <div className="flex justify-between gap-3">
               <input
                 type="text"
                 name="parkName"
@@ -471,7 +479,7 @@ export default function SearchBar() {
               />
               <button
                 type="submit"
-                className="px-4 py-3 text-white bg-green-800 rounded-full w-36 ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
+                className="px-4 py-3 text-white bg-green-700 rounded-full w-36 ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
                 Search
               </button>
             </div>
@@ -482,7 +490,9 @@ export default function SearchBar() {
         <form className="mt-8">
           <div className="flex w-full gap-4">
             <div className="flex flex-col w-full gap-4">
-              <Label title="States" for="states" />
+              <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                States
+              </label>
               <Select
                 options={states}
                 defaultValue={selectedState}
@@ -492,7 +502,9 @@ export default function SearchBar() {
               />
             </div>
             <div className="flex flex-col w-full gap-4">
-              <Label title="Activity" for="activity" />
+              <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                Activity
+              </label>
               <Select
                 options={activities}
                 defaultValue={selectedActivity}
@@ -502,7 +514,9 @@ export default function SearchBar() {
               />
             </div>
             <div className="flex flex-col w-full gap-4">
-              <Label title="Topics" for="topic" />
+              <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                Topic
+              </label>
               <Select
                 options={topics}
                 defaultValue={selectedTopic}
@@ -513,7 +527,7 @@ export default function SearchBar() {
             </div>
             <button
               type="submit"
-              className="self-end w-48 px-4 py-3 text-white bg-green-800 rounded-full h-min ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
+              className="self-end px-12 py-3 text-white bg-green-700 rounded-full h-min ring-blue-500 ring-offset-white ring-offset-2 focus:outline-none focus:ring-2">
               Search
             </button>
           </div>

@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div>
       <div className="max-w-screen-lg px-5 m-auto">
-        <SearchBar />
+        <SearchBar fullSearchBar={true} />
       </div>
     </div>
   )

@@ -12,7 +12,7 @@ import topics from '../../data/topics.json'
 export default function SearchBar() {
   const router = useRouter()
 
-  const [tab, setTab] = useState('name')
+  const [tab, setTab] = useState('filter')
   const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
@@ -20,14 +20,31 @@ export default function SearchBar() {
   // const [params, setParams] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const paramsString = ''
+  let searchParams = new URLSearchParams(paramsString)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
-    console.log(loading)
     try {
-      // setParams({parkCode: selectedPark.value})
       router.push(`/park/${selectedPark.value}`)
       // setLoading(false)
+    } catch (err) {
+      setLoading(false)
+      console.error(err)
+    }
+  }
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      if (selectedState)
+        searchParams.append('stateCode', selectedState[0].value)
+      if (selectedActivity) searchParams.append('q', selectedActivity[0].value)
+      // console.log(searchParams.toString())
+      router.push(`/results/?${searchParams.toString()}`)
+      setLoading(false)
     } catch (err) {
       setLoading(false)
       console.error(err)
@@ -95,7 +112,7 @@ export default function SearchBar() {
         </form>
       )}
       {tab == 'filter' && (
-        <form className="mt-8">
+        <form onSubmit={handleFilterSubmit} className="mt-8">
           <div className="flex flex-col w-full gap-5 lg:flex-row">
             <div className="flex flex-col w-full gap-5">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">

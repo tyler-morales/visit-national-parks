@@ -1,14 +1,14 @@
 import {Parallax} from 'react-parallax'
 
 export default function Park({park}) {
-  const {fullName, description, designation, images} = park?.data[0]
+  const {name, description, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
 
   return (
     <div className="max-w-[1080px] m-auto">
       <span className="block mb-2 text-center">{designation}</span>
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
-        {fullName}
+        {name}
       </h1>
 
       {/* Image */}
@@ -83,6 +83,7 @@ export async function getStaticProps(context) {
   const URL = 'https://developer.nps.gov/api/v1/'
 
   const {params} = context
+  // console.log(params)
 
   const res = await fetch(
     `${URL}parks?parkCode=${params.parkCode}&limit=465&api_key=${process.env.API_KEY}`,

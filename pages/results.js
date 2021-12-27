@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 
 export default function results({parks}) {
-  console.log(parks)
   return (
     <div className="max-w-[1080px] m-auto px-5">
       <span className="block mb-2 text-xs tracking-wider text-gray-500">

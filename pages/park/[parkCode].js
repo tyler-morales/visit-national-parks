@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import {Parallax} from 'react-parallax'
 
 export default function Park({park}) {
   const {fullName, description, designation, images} = park?.data[0]
@@ -10,18 +10,27 @@ export default function Park({park}) {
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {fullName}
       </h1>
+
+      {/* Image */}
       <figure>
-        <img
-          className="object-cover w-full m-auto max-h-[550px] object-top rounded-xl"
-          src={url}
-          alt={altText}
-        />
-        <figcaption className="mt-3 text-sm text-center">
+        <Parallax
+          bgImage={url}
+          bgImageAlt={altText}
+          strength={100}
+          style={{borderRadius: '12px'}}>
+          <div className="h-[450px]" />
+        </Parallax>
+        <figcaption className="mt-3 text-sm italic text-center">
           <span>{caption}</span>
           <span className="italic"> {credit}</span>
         </figcaption>
       </figure>
-      <p>{description}</p>
+
+      <hr className="my-12 border-gray-400" />
+
+      {/* Description */}
+      <h3 className="mb-3 text-3xl font-bold text-green-800">Overview</h3>
+      <p className="mt-4">{description}</p>
 
       <h3 className="mt-24 text-3xl font-bold text-green-800 mb-7">
         More Images

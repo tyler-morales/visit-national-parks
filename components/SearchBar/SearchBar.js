@@ -1,7 +1,8 @@
 import {useState} from 'react'
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
-import {FaSearch} from 'react-icons/fa'
+import {useRouter} from 'next/router'
+import {ImSpinner8} from 'react-icons/im'
 
 import parks from '../../data/parks.json'
 import states from '../../data/states.json'
@@ -9,25 +10,46 @@ import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
 export default function SearchBar() {
-  const [tab, setTab] = useState('name')
+  const router = useRouter()
+
+  const [tab, setTab] = useState('filter')
   const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
-  const [params, setParams] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  const paramsString = ''
+  let searchParams = new URLSearchParams(paramsString)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // console.log('submitted')
+    setLoading(true)
     try {
-      setParams({parkCode: selectedPark.value})
-      // console.log(params)
+      router.push(`/park/${selectedPark.value}`)
+      // setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
 
-  // console.log(params)
+  const handleFilterSubmit = (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      if (selectedState)
+        searchParams.append('stateCode', selectedState[0].value)
+      if (selectedActivity) searchParams.append('q', selectedActivity[0].value)
+      if (selectedTopic) searchParams.append('q', selectedTopic[0].value)
+      // console.log(searchParams.toString())
+      router.push(`/results/?${searchParams.toString()}`)
+      // setLoading(false)
+    } catch (err) {
+      setLoading(false)
+      console.error(err)
+    }
+  }
 
   const tabStyles = {
     active:
@@ -79,14 +101,18 @@ export default function SearchBar() {
               <button
                 type="submit"
                 className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-                Search
+                {!loading ? (
+                  <span>Search</span>
+                ) : (
+                  <ImSpinner8 size="1.5em" className="animate-spin-slow" />
+                )}
               </button>
             </div>
           </div>
         </form>
       )}
       {tab == 'filter' && (
-        <form className="mt-8">
+        <form onSubmit={handleFilterSubmit} className="mt-8">
           <div className="flex flex-col w-full gap-5 lg:flex-row">
             <div className="flex flex-col w-full gap-5">
               <label className="block text-xs tracking-widest text-gray-400 uppercase">
@@ -130,7 +156,11 @@ export default function SearchBar() {
             <button
               type="submit"
               className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              Search
+              {!loading ? (
+                <span>Search</span>
+              ) : (
+                <ImSpinner8 size="1.5em" className="animate-spin-slow" />
+              )}
             </button>
           </div>
         </form>

@@ -10,6 +10,11 @@ module.exports = {
       sans: ['Nunito', 'Arial', 'sans-serif'],
       display: ['Quincy', 'serif'],
     },
+    extend: {
+      animation: {
+        'spin-slow': 'spin 2s linear infinite',
+      },
+    },
   },
   variants: {
     extend: {},

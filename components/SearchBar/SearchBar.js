@@ -17,7 +17,6 @@ export default function SearchBar() {
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
-  // const [params, setParams] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const paramsString = ''
@@ -42,9 +41,10 @@ export default function SearchBar() {
       if (selectedState)
         searchParams.append('stateCode', selectedState[0].value)
       if (selectedActivity) searchParams.append('q', selectedActivity[0].value)
+      if (selectedTopic) searchParams.append('q', selectedTopic[0].value)
       // console.log(searchParams.toString())
       router.push(`/results/?${searchParams.toString()}`)
-      setLoading(false)
+      // setLoading(false)
     } catch (err) {
       setLoading(false)
       console.error(err)

@@ -9,7 +9,7 @@ import states from '../../data/states.json'
 import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
-export default function SearchBar({fullSearchBar}) {
+export default function SearchBar({fullSearchBar, state}) {
   const router = useRouter()
 
   const [tab, setTab] = useState('filter')
@@ -34,19 +34,29 @@ export default function SearchBar({fullSearchBar}) {
   }
 
   const handleFilterSubmit = (e) => {
+    console.log('submitting')
     e.preventDefault()
     setLoading(true)
     try {
       if (selectedState) searchParams.append('stateCode', selectedState.value)
       if (selectedActivity) searchParams.append('q', selectedActivity.value)
       if (selectedTopic) searchParams.append('q', selectedTopic.value)
-      // console.log(searchParams.toString())
       router.push(`/results/?${searchParams.toString()}`)
       setLoading(false)
     } catch (err) {
       setLoading(false)
       console.error(err)
     }
+  }
+
+  // clear filter inputs
+  const clearInputs = (e) => {
+    e.preventDefault
+    console.log('Clear')
+    setselectedPark(null)
+    setselectedState(null)
+    setselectedActivity(null)
+    setselectedTopic(null)
   }
 
   const tabStyles = {
@@ -58,8 +68,8 @@ export default function SearchBar({fullSearchBar}) {
 
   return (
     <div
-      className={`w-full rounded-3xl ${
-        fullSearchBar ? 'p-8 bg-white border-2 border-gray-200' : 'p-6'
+      className={`w-full p-6 rounded-3xl ${
+        fullSearchBar ? ' pb-4 bg-white border-2 border-gray-200' : 'null'
       }`}>
       {/* Nav Buttons */}
       {fullSearchBar && (
@@ -88,20 +98,92 @@ export default function SearchBar({fullSearchBar}) {
 
       {/* Input and filters */}
       {tab == 'name' && (
-        <form className="mt-8" onSubmit={handleSubmit}>
-          <div className="flex flex-col justify-between">
-            <label className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
-              Park Name
-            </label>
-            <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
-              <Select
-                options={parks}
-                defaultValue={setselectedPark}
-                onChange={setselectedPark}
-                id="parks"
-                className="w-full cursor-text"
-                styles={searchStyles}
-              />
+        <div>
+          <form className="mt-8" onSubmit={handleSubmit}>
+            <div className="flex flex-col justify-between">
+              <label className="block mb-4 text-xs tracking-widest text-gray-400 uppercase">
+                Park Name
+              </label>
+              <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
+                <Select
+                  options={parks}
+                  value={selectedPark}
+                  onChange={setselectedPark}
+                  id="parks"
+                  className="w-full cursor-text"
+                  styles={searchStyles}
+                />
+                <button
+                  type="submit"
+                  className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none hover:bg-green-600">
+                  {!loading ? (
+                    <span>Search</span>
+                  ) : (
+                    <ImSpinner8 size="1.5em" className="animate-spin-slow" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+          <button
+            onClick={(e) => clearInputs(e)}
+            className="w-full mt-4 text-sm text-center">
+            x Clear
+          </button>
+        </div>
+      )}
+
+      {tab == 'filter' && (
+        <div>
+          <form
+            onSubmit={handleFilterSubmit}
+            className={fullSearchBar ? 'mt-8' : null}>
+            <div className="flex flex-col w-full gap-5 lg:flex-row">
+              <div
+                className={`flex flex-col w-full ${
+                  fullSearchBar ? 'gap-5' : 'gap-3'
+                }`}>
+                <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                  State
+                </label>
+                <Select
+                  options={states}
+                  value={selectedState}
+                  onChange={setselectedState}
+                  styles={dropdownStyles}
+                  id="states"
+                />
+              </div>
+              <div
+                className={`flex flex-col w-full ${
+                  fullSearchBar ? 'gap-5' : 'gap-3'
+                }`}>
+                <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                  Activity
+                </label>
+                <Select
+                  options={activities}
+                  value={selectedActivity}
+                  onChange={setselectedActivity}
+                  styles={dropdownStyles}
+                  id="activity"
+                />
+              </div>
+              <div
+                className={`flex flex-col w-full ${
+                  fullSearchBar ? 'gap-5' : 'gap-3'
+                }`}>
+                <label className="block text-xs tracking-widest text-gray-400 uppercase">
+                  Topic
+                </label>
+                <Select
+                  options={topics}
+                  value={selectedTopic}
+                  onChange={setselectedTopic}
+                  styles={dropdownStyles}
+                  id="topic"
+                />
+              </div>
               <button
                 type="submit"
                 className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none hover:bg-green-600">
@@ -112,71 +194,15 @@ export default function SearchBar({fullSearchBar}) {
                 )}
               </button>
             </div>
-          </div>
-        </form>
-      )}
-
-      {tab == 'filter' && (
-        <form
-          onSubmit={handleFilterSubmit}
-          className={fullSearchBar ? 'mt-8' : null}>
-          <div className="flex flex-col w-full gap-5 lg:flex-row">
-            <div
-              className={`flex flex-col w-full ${
-                fullSearchBar ? 'gap-5' : 'gap-3'
-              }`}>
-              <label className="block text-xs tracking-widest text-gray-400 uppercase">
-                State
-              </label>
-              <Select
-                options={states}
-                defaultValue={selectedState}
-                onChange={setselectedState}
-                styles={dropdownStyles}
-                id="states"
-              />
-            </div>
-            <div
-              className={`flex flex-col w-full ${
-                fullSearchBar ? 'gap-5' : 'gap-3'
-              }`}>
-              <label className="block text-xs tracking-widest text-gray-400 uppercase">
-                Activity
-              </label>
-              <Select
-                options={activities}
-                defaultValue={selectedActivity}
-                onChange={setselectedActivity}
-                styles={dropdownStyles}
-                id="activity"
-              />
-            </div>
-            <div
-              className={`flex flex-col w-full ${
-                fullSearchBar ? 'gap-5' : 'gap-3'
-              }`}>
-              <label className="block text-xs tracking-widest text-gray-400 uppercase">
-                Topic
-              </label>
-              <Select
-                options={topics}
-                defaultValue={selectedTopic}
-                onChange={setselectedTopic}
-                styles={dropdownStyles}
-                id="topic"
-              />
-            </div>
-            <button
-              type="submit"
-              className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none hover:bg-green-600">
-              {!loading ? (
-                <span>Search</span>
-              ) : (
-                <ImSpinner8 size="1.5em" className="animate-spin-slow" />
-              )}
-            </button>
-          </div>
-        </form>
+          </form>
+          <button
+            onClick={(e) => clearInputs(e)}
+            className={`mt-4 text-sm text-center ${
+              !fullSearchBar ? 'absolute' : 'text-center w-full'
+            }`}>
+            x Clear
+          </button>
+        </div>
       )}
     </div>
   )

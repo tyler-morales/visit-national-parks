@@ -22,7 +22,7 @@ export default function results({parks, params}) {
     <div className="max-w-[1080px] m-auto px-5">
       <div className="flex items-end w-full mb-8">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
-        <SearchBar fullSearchBar={false} />
+        <SearchBar fullSearchBar={false} state={state} />
       </div>
 
       <span className="block mb-6 text-xs tracking-wider text-gray-500">

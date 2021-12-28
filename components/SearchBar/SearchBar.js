@@ -14,8 +14,8 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   const router = useRouter()
 
   useImperativeHandle(ref, () => ({
-    paginate() {
-      paginate()
+    paginate(direction) {
+      paginate(direction)
     },
   }))
 
@@ -59,8 +59,11 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
     }
   }
 
-  const paginate = () => {
-    setIncrementPage((incrementPage += 20))
+  const paginate = (direction) => {
+    direction == 'increment'
+      ? setIncrementPage((incrementPage += 20))
+      : setIncrementPage((incrementPage -= 20))
+
     try {
       if (selectedState) searchParams.append('stateCode', selectedState.value)
       if (selectedActivity) searchParams.append('q', selectedActivity.value)

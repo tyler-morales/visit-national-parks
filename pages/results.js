@@ -19,7 +19,9 @@ const convertValueToLabel = (code, arr) => {
 export default function results({parks, params}) {
   const childCompRef = useRef(null)
 
-  const {state, q} = params
+  const {state, q, start} = params
+  console.log(state, q, start)
+  console.log(start != 0)
 
   return (
     <Layout>
@@ -51,9 +53,16 @@ export default function results({parks, params}) {
           </Link>
         ))}
       </div>
+      {start != 0 && (
+        <button
+          onClick={() => childCompRef.current.paginate('decrement')}
+          className="mt-4 text-sm text-center">
+          Back
+        </button>
+      )}
 
       <button
-        onClick={() => childCompRef.current.paginate()}
+        onClick={() => childCompRef.current.paginate('increment')}
         className="mt-4 text-sm text-center">
         Next
       </button>
@@ -70,6 +79,7 @@ export async function getServerSideProps(context) {
     let obj = {}
     if (stateCode) obj = {...obj, state}
     if (q) obj = {...obj, q}
+    if (start) obj = {...obj, start}
     return obj
   }
 
@@ -92,7 +102,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       parks: data,
-      params: createParamsObj(stateCode, q),
+      params: createParamsObj(stateCode, q, start),
     },
   }
 }

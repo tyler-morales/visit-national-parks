@@ -26,7 +26,7 @@ export default function results({parks, params}) {
 
   return (
     <Layout>
-      <div className="flex items-end w-full mb-8">
+      <div className="flex flex-col w-full mb-8 ">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
         <SearchBar fullSearchBar={false} ref={childCompRef} />
       </div>
@@ -59,7 +59,7 @@ export default function results({parks, params}) {
           {start != 0 && (
             <button
               onClick={() => childCompRef.current.paginate('decrement')}
-              className="flex items-center justify-center gap-3 py-3 pr-3 text-lg text-center text-white transition-all bg-green-700 rounded-lg shadow-md w-28 hover:bg-green-600 hover:-translate-x-1">
+              className="flex items-center justify-center gap-3 py-3 pr-3 text-lg text-center text-white transition-all bg-green-700 rounded-lg shadow-md w-28 hover:bg-green-600 hover:-translate-x-1 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <IoChevronBack />
               Back
             </button>
@@ -67,7 +67,7 @@ export default function results({parks, params}) {
           {total - start > start && (
             <button
               onClick={() => childCompRef.current.paginate('increment')}
-              className="flex items-center justify-center gap-3 py-3 pl-3 text-lg text-center text-white transition-all bg-green-700 rounded-lg shadow-md w-28 hover:bg-green-600 hover:translate-x-1">
+              className="flex items-center justify-center gap-3 py-3 pl-3 text-lg text-center text-white transition-all bg-green-700 rounded-lg shadow-md w-28 hover:bg-green-600 hover:translate-x-1 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               Next
               <IoChevronForward />
             </button>

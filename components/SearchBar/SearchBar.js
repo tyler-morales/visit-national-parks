@@ -93,8 +93,8 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
 
   return (
     <div
-      className={`w-full p-6 rounded-3xl ${
-        fullSearchBar ? ' pb-4 bg-white border-2 border-gray-200' : 'null'
+      className={`w-full rounded-3xl ${
+        fullSearchBar ? ' pb-4 bg-white border-2 border-gray-200' : 'pb-6'
       }`}>
       {/* Nav Buttons */}
       {fullSearchBar && (
@@ -163,7 +163,7 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
           <form
             onSubmit={handleFilterSubmit}
             className={fullSearchBar ? 'mt-8' : null}>
-            <div className="flex flex-col w-full gap-5 lg:flex-row">
+            <div className="flex flex-col w-full gap-5 md:flex-row">
               <div
                 className={`flex flex-col w-full ${
                   fullSearchBar ? 'gap-5' : 'gap-3'

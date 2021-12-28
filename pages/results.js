@@ -65,21 +65,19 @@ export async function getServerSideProps(context) {
     return obj
   }
 
-  console.log(createParamsObj(stateCode, q))
-
   if (stateCode) URLWithParams.searchParams.append('stateCode', stateCode)
   if (q) URLWithParams.searchParams.append('q', q)
+  URLWithParams.searchParams.append('limit', 2)
+  URLWithParams.searchParams.append('start', 0)
+  URLWithParams.searchParams.append('api_key', process.env.API_KEY)
 
-  const res = await fetch(
-    `${URLWithParams.href}&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  const res = await fetch(URLWithParams.href, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent': '*',
+    },
+  })
 
   const data = await res.json()
 

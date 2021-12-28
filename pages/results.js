@@ -17,19 +17,38 @@ const convertValueToLabel = (code, arr) => {
   return str
 }
 
+const Giphy = () => {
+  return (
+    <div className="flex justify-center mt-8 ">
+      <div
+        style={{
+          width: '300px',
+          height: 'auto',
+          paddingBottom: '30%',
+          position: 'relative',
+        }}>
+        <iframe
+          src="https://giphy.com/embed/v2nT3Wb6yteT5M8VR0"
+          width="100%"
+          height="100%"
+          style={{position: 'absolute'}}></iframe>
+      </div>
+    </div>
+  )
+}
+
 export default function results({parks, params}) {
   const childCompRef = useRef(null)
   const {data, total} = parks
   const {state, q, start} = params
-  console.log(state, q, start)
-  console.log(start != 0)
+  console.log(total)
 
   return (
     <Layout>
-      <div className="flex flex-col w-full mb-8 ">
+      <header className="flex flex-col w-full mb-8 ">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
         <SearchBar fullSearchBar={false} ref={childCompRef} />
-      </div>
+      </header>
 
       <span className="block mb-6 text-xs tracking-wider text-gray-500">
         {total} results for{' '}
@@ -38,22 +57,32 @@ export default function results({parks, params}) {
         <span className="font-bold">{convertValueToLabel(q, ids)}</span>
       </span>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {data.map(({parkCode, fullName, images}) => (
-          <Link href={`/park/${parkCode}`} key={parkCode}>
-            <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
-              <img
-                src={images[0].url}
-                alt={images[0].altText}
-                className="object-cover w-full h-64 rounded-md"
-              />
-              <h3 className="mt-2 text-2xl font-bold text-green-800">
-                {fullName}
-              </h3>
-            </a>
-          </Link>
-        ))}
-      </div>
+      <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {total > 0 &&
+          data.map(({parkCode, fullName, images}) => (
+            <Link href={`/park/${parkCode}`} key={parkCode}>
+              <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
+                <img
+                  src={images[0].url}
+                  alt={images[0].altText}
+                  className="object-cover w-full h-64 rounded-md"
+                />
+                <h3 className="mt-2 text-2xl font-bold text-green-800">
+                  {fullName}
+                </h3>
+              </a>
+            </Link>
+          ))}
+      </section>
+      {total == 0 && (
+        <section>
+          <h2 className="w-full mt-10 text-3xl font-bold text-center text-green-800">
+            No results, try a different search
+          </h2>
+          <Giphy />
+        </section>
+      )}
+
       {total > 20 && (
         <div className="flex justify-center gap-5 mt-12">
           {start != 0 && (

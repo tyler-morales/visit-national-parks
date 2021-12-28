@@ -1,12 +1,19 @@
 import {Parallax} from 'react-parallax'
 import Layout from '../../components/Layout'
+import {useRouter} from 'next/router'
 
 export default function Park({park}) {
+  const router = useRouter()
   const {name, description, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
 
   return (
     <Layout>
+      <button
+        onClick={() => router.back()}
+        className="text-sm text-gray-600-700">
+        ↞Back to Results
+      </button>
       <span className="block mb-2 text-center">{designation}</span>
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {name}

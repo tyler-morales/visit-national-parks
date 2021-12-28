@@ -1,4 +1,4 @@
-import React from 'react'
+import {useRef, forwardRef} from 'react'
 import Link from 'next/link'
 import SearchBar from '../components/SearchBar/SearchBar'
 import states from '../data/states.json'
@@ -17,13 +17,15 @@ const convertValueToLabel = (code, arr) => {
 }
 
 export default function results({parks, params}) {
+  const childCompRef = useRef(null)
+
   const {state, q} = params
 
   return (
     <Layout>
       <div className="flex items-end w-full mb-8">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
-        <SearchBar fullSearchBar={false} state={state} />
+        <SearchBar fullSearchBar={false} ref={childCompRef} />
       </div>
 
       <span className="block mb-6 text-xs tracking-wider text-gray-500">
@@ -49,6 +51,12 @@ export default function results({parks, params}) {
           </Link>
         ))}
       </div>
+
+      <button
+        onClick={() => childCompRef.current.paginate()}
+        className="mt-4 text-sm text-center">
+        Next
+      </button>
     </Layout>
   )
 }
@@ -56,7 +64,7 @@ export default function results({parks, params}) {
 export async function getServerSideProps(context) {
   const URLWithParams = new URL('https://developer.nps.gov/api/v1/parks')
   const {params, query} = context
-  const {stateCode, q} = query
+  const {stateCode, q, start} = query
 
   const createParamsObj = (state, q) => {
     let obj = {}
@@ -67,8 +75,8 @@ export async function getServerSideProps(context) {
 
   if (stateCode) URLWithParams.searchParams.append('stateCode', stateCode)
   if (q) URLWithParams.searchParams.append('q', q)
-  URLWithParams.searchParams.append('limit', 2)
-  URLWithParams.searchParams.append('start', 0)
+  URLWithParams.searchParams.append('limit', 20)
+  URLWithParams.searchParams.append('start', start)
   URLWithParams.searchParams.append('api_key', process.env.API_KEY)
 
   const res = await fetch(URLWithParams.href, {

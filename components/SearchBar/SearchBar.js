@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, forwardRef, useImperativeHandle} from 'react'
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
 import {useRouter} from 'next/router'
@@ -9,14 +9,22 @@ import states from '../../data/states.json'
 import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
-export default function SearchBar({fullSearchBar, state}) {
+// export default function SearchBar({fullSearchBar, ref}) {
+const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   const router = useRouter()
+
+  useImperativeHandle(ref, () => ({
+    paginate() {
+      paginate()
+    },
+  }))
 
   const [tab, setTab] = useState('filter')
   const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
+  const [incrementPage, setIncrementPage] = useState(0)
   const [loading, setLoading] = useState(false)
 
   const paramsString = ''
@@ -34,17 +42,32 @@ export default function SearchBar({fullSearchBar, state}) {
   }
 
   const handleFilterSubmit = (e) => {
-    console.log('submitting')
+    setIncrementPage(0)
+
     e.preventDefault()
     setLoading(true)
     try {
       if (selectedState) searchParams.append('stateCode', selectedState.value)
       if (selectedActivity) searchParams.append('q', selectedActivity.value)
       if (selectedTopic) searchParams.append('q', selectedTopic.value)
+      searchParams.append('start', 0)
       router.push(`/results/?${searchParams.toString()}`)
       setLoading(false)
     } catch (err) {
       setLoading(false)
+      console.error(err)
+    }
+  }
+
+  const paginate = () => {
+    setIncrementPage((incrementPage += 20))
+    try {
+      if (selectedState) searchParams.append('stateCode', selectedState.value)
+      if (selectedActivity) searchParams.append('q', selectedActivity.value)
+      if (selectedTopic) searchParams.append('q', selectedTopic.value)
+      searchParams.append('start', incrementPage)
+      router.push(`/results/?${searchParams.toString()}`)
+    } catch (err) {
       console.error(err)
     }
   }
@@ -195,15 +218,26 @@ export default function SearchBar({fullSearchBar, state}) {
               </button>
             </div>
           </form>
-          <button
-            onClick={(e) => clearInputs(e)}
-            className={`mt-4 text-sm text-center ${
-              !fullSearchBar ? 'absolute' : 'text-center w-full'
-            }`}>
-            x Clear
-          </button>
+          <div className="relative">
+            <button
+              onClick={clearInputs}
+              className={`mt-4 text-sm text-center ${
+                !fullSearchBar ? 'absolute' : 'text-center w-full'
+              }`}>
+              x Clear
+            </button>
+            {/* <button
+              onClick={paginate}
+              className={`mt-4 text-sm text-center ${
+                !fullSearchBar ? 'absolute left-16' : 'text-center w-full'
+              }`}>
+              Next
+            </button> */}
+          </div>
         </div>
       )}
     </div>
   )
-}
+})
+
+export default SearchBar

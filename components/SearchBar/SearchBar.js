@@ -77,7 +77,6 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   // clear filter inputs
   const clearInputs = (e) => {
     e.preventDefault
-    console.log('Clear')
     setselectedPark(null)
     setselectedState(null)
     setselectedActivity(null)
@@ -152,7 +151,7 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
           </form>
           <button
             onClick={(e) => clearInputs(e)}
-            className="w-full mt-4 text-sm text-center">
+            className="px-4 py-2 mt-4 text-xs text-center text-gray-800 bg-gray-300 rounded-full w-max">
             x Clear
           </button>
         </div>
@@ -220,11 +219,11 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
               </button>
             </div>
           </form>
-          <div className="relative">
+          <div className={`relative ${fullSearchBar ? null : 'mb-6'}`}>
             <button
               onClick={clearInputs}
-              className={`mt-4 text-sm text-center ${
-                !fullSearchBar ? 'absolute' : 'text-center w-full'
+              className={`mt-4 text-xs text-center bg-gray-300 text-gray-800 py-2 px-4 rounded-full ${
+                !fullSearchBar ? 'absolute' : 'text-center w-max'
               }`}>
               x Clear
             </button>

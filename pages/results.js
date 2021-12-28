@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar/SearchBar'
 import states from '../data/states.json'
 import activities from '../data/activities.json'
 import topics from '../data/topics.json'
+import Layout from '../components/Layout'
 
 let ids = [...activities, ...topics]
 
@@ -19,7 +20,7 @@ export default function results({parks, params}) {
   const {state, q} = params
 
   return (
-    <div className="max-w-[1080px] m-auto px-5">
+    <Layout>
       <div className="flex items-end w-full mb-8">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
         <SearchBar fullSearchBar={false} state={state} />
@@ -48,7 +49,7 @@ export default function results({parks, params}) {
           </Link>
         ))}
       </div>
-    </div>
+    </Layout>
   )
 }
 

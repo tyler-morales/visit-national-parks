@@ -1,11 +1,12 @@
 import {Parallax} from 'react-parallax'
+import Layout from '../../components/Layout'
 
 export default function Park({park}) {
   const {name, description, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
 
   return (
-    <main className="max-w-[1080px] m-auto">
+    <Layout>
       <span className="block mb-2 text-center">{designation}</span>
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {name}
@@ -50,7 +51,7 @@ export default function Park({park}) {
           )
         })}
       </section>
-    </main>
+    </Layout>
   )
 }
 

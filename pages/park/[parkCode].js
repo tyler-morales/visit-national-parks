@@ -1,11 +1,19 @@
 import {Parallax} from 'react-parallax'
+import Layout from '../../components/Layout'
+import {useRouter} from 'next/router'
 
 export default function Park({park}) {
+  const router = useRouter()
   const {name, description, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
 
   return (
-    <div className="max-w-[1080px] m-auto">
+    <Layout>
+      <button
+        onClick={() => router.back()}
+        className="text-sm text-gray-600-700">
+        ↞Back to Results
+      </button>
       <span className="block mb-2 text-center">{designation}</span>
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {name}
@@ -32,13 +40,16 @@ export default function Park({park}) {
       <h3 className="mb-3 text-3xl font-bold text-green-800">Overview</h3>
       <p className="mt-4">{description}</p>
 
+      {/* Images */}
       <h3 className="mt-24 text-3xl font-bold text-green-800 mb-7">
         More Images
       </h3>
-      <div className="gap-10 columns-3">
+      <section className="gap-10 columns-1 sm:columns-2 md:columns-3">
         {images.map((img, index) => {
           return (
-            <figure key={index} className="mb-10 text-center">
+            <figure
+              key={index}
+              className="mb-10 text-center break-inside-avoid-column">
               <img className="rounded-xl" src={img.url} alt={img.altText} />
               <figcaption className="mt-4 text-sm italic text-gray-600 ">
                 {img.altText}
@@ -46,8 +57,8 @@ export default function Park({park}) {
             </figure>
           )
         })}
-      </div>
-    </div>
+      </section>
+    </Layout>
   )
 }
 
@@ -83,7 +94,6 @@ export async function getStaticProps(context) {
   const URL = 'https://developer.nps.gov/api/v1/'
 
   const {params} = context
-  // console.log(params)
 
   const res = await fetch(
     `${URL}parks?parkCode=${params.parkCode}&limit=465&api_key=${process.env.API_KEY}`,

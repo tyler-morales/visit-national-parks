@@ -9,7 +9,6 @@ import states from '../../data/states.json'
 import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
-// export default function SearchBar({fullSearchBar, ref}) {
 const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   const router = useRouter()
 
@@ -229,13 +228,6 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
               }`}>
               x Clear
             </button>
-            {/* <button
-              onClick={paginate}
-              className={`mt-4 text-sm text-center ${
-                !fullSearchBar ? 'absolute left-16' : 'text-center w-full'
-              }`}>
-              Next
-            </button> */}
           </div>
         </div>
       )}

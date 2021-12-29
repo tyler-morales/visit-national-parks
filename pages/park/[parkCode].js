@@ -7,7 +7,11 @@ import {useRouter} from 'next/router'
 import {MdBookmark, MdBookmarkBorder} from 'react-icons/md'
 import {BsCheckLg} from 'react-icons/bs'
 
+import checkUser from '../../hooks/checkUser'
+
 export default function Park({park}) {
+  const user = checkUser()
+
   const router = useRouter()
   const {name, description, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
@@ -15,10 +19,14 @@ export default function Park({park}) {
   const [toggleDropdown, setToggleDropdown] = useState(false)
 
   const openDropdown = () => {
-    if (toggleDropdown) {
-      setToggleDropdown(false)
-    } else {
-      setToggleDropdown(true)
+    if (!user) alert('Please sign in or create an account')
+
+    if (user) {
+      if (toggleDropdown) {
+        setToggleDropdown(false)
+      } else {
+        setToggleDropdown(true)
+      }
     }
   }
 
@@ -62,7 +70,11 @@ export default function Park({park}) {
         <div className="flex">
           {selectedCollection == null && (
             <button
-              onClick={() => setCollection('BOOKMARK')}
+              onClick={() =>
+                user
+                  ? setCollection('BOOKMARK')
+                  : alert('Please sign in or create an account')
+              }
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <span className="flex items-center gap-3 px-4">
                 <MdBookmarkBorder />
@@ -109,7 +121,7 @@ export default function Park({park}) {
         {(selectedCollection == null || selectedCollection == 'BOOKMARK') && (
           <button
             onClick={() => setCollection('VISITED')}
-            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
+            className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
             <span
               className={`flex items-center gap-3 px-4 ${
                 toggleDropdown ? 'flex' : 'hidden'

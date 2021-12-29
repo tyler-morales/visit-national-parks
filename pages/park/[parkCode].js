@@ -7,11 +7,6 @@ import {useRouter} from 'next/router'
 import {MdBookmark, MdBookmarkBorder} from 'react-icons/md'
 import {BsCheckLg} from 'react-icons/bs'
 
-const collectionValues = {
-  visited: 'VISITED',
-  bookmark: 'BOOKMARK',
-}
-
 export default function Park({park}) {
   const router = useRouter()
   const {name, description, designation, images} = park?.data[0]

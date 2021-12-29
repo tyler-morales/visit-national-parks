@@ -62,7 +62,6 @@ export default function Park({park}) {
       <hr className="my-12 border-gray-400" />
 
       {/* Collection */}
-      {/* focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none */}
       <div className="relative my-8 w-max">
         {/* Button */}
         <div className="flex">
@@ -112,20 +111,7 @@ export default function Park({park}) {
         </div>
 
         {/* Dropdown */}
-        {selectedCollection == null && (
-          <button
-            onClick={() => setCollection('VISITED')}
-            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
-            <span
-              className={`flex items-center gap-3 px-4 ${
-                toggleDropdown ? 'flex' : 'hidden'
-              }`}>
-              <BsCheckLg />
-              <span className="py-2">Visited</span>
-            </span>
-          </button>
-        )}
-        {selectedCollection == 'BOOKMARK' && (
+        {(selectedCollection == null || selectedCollection == 'BOOKMARK') && (
           <button
             onClick={() => setCollection('VISITED')}
             className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>

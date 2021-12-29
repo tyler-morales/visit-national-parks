@@ -69,7 +69,7 @@ export default function Park({park}) {
           {selectedCollection == null && (
             <button
               onClick={() => setCollection('BOOKMARK')}
-              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700">
+              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <span className="flex items-center gap-3 px-4">
                 <MdBookmarkBorder />
                 <span>Want to Visit</span>
@@ -80,7 +80,7 @@ export default function Park({park}) {
           {selectedCollection == 'VISITED' && (
             <button
               onClick={() => setCollection(null)}
-              className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700">
+              className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <BsCheckLg />
               <span>Visited</span>
             </button>
@@ -89,7 +89,7 @@ export default function Park({park}) {
           {selectedCollection == 'BOOKMARK' && (
             <button
               onClick={() => setCollection(null)}
-              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700">
+              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <span className="flex items-center gap-3 px-4">
                 <MdBookmark />
                 <span>Bookmarked</span>
@@ -101,7 +101,7 @@ export default function Park({park}) {
           {selectedCollection != 'VISITED' && (
             <button
               onClick={openDropdown}
-              className={`px-4 py-3 pl-4 text-white rounded-r-md  ${
+              className={`px-4 py-3 pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
                 selectedCollection == 'VISITED'
                   ? 'bg-green-600 hover:bg-green-700'
                   : 'bg-blue-600 hover:bg-blue-700'
@@ -115,7 +115,7 @@ export default function Park({park}) {
         {selectedCollection == null && (
           <button
             onClick={() => setCollection('VISITED')}
-            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400`}>
+            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
             <span
               className={`flex items-center gap-3 px-4 ${
                 toggleDropdown ? 'flex' : 'hidden'
@@ -128,7 +128,7 @@ export default function Park({park}) {
         {selectedCollection == 'BOOKMARK' && (
           <button
             onClick={() => setCollection('VISITED')}
-            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400`}>
+            className={`absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
             <span
               className={`flex items-center gap-3 px-4 ${
                 toggleDropdown ? 'flex' : 'hidden'

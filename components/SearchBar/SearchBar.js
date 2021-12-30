@@ -18,7 +18,7 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
     },
   }))
 
-  const [tab, setTab] = useState('filter')
+  const [tab, setTab] = useState('name')
   const [selectedPark, setselectedPark] = useState(null)
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)

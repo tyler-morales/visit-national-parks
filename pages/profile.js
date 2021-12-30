@@ -2,14 +2,11 @@ import {withSSRContext} from 'aws-amplify'
 import {Auth} from 'aws-amplify'
 import {useRouter} from 'next/router'
 
-import {Nav} from '../components/Nav/Nav'
-
 function Profile({username, email}) {
   const router = useRouter()
 
   return (
     <div>
-      <Nav />
       <h1>Profile</h1>
 
       <h2>Welcome, {username}</h2>

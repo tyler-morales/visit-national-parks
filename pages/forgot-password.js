@@ -1,7 +1,6 @@
 import {useState} from 'react'
 import {Auth} from 'aws-amplify'
 import {useRouter} from 'next/router'
-import {Nav} from '../components/Nav/Nav'
 
 import Link from 'next/link'
 import {Formik, Form, Field} from 'formik'
@@ -42,7 +41,6 @@ function ForgotPassword() {
 
   return (
     <>
-      <Nav />
       <div className="flex flex-col justify-center w-11/12 pb-6 m-auto mt-9 md:max-w-4xl">
         {steps[currentStep]}
       </div>

@@ -23,7 +23,17 @@ export default function Park({park, site}) {
   const {name, description, parkCode, designation, images} = park?.data[0]
   const {url, altText, caption, credit} = images[0]
 
-  // console.log(site?.username == user?.username)
+  const checkIfUserHasSite = (siteUser, isLoggedIn) => {
+    if (site?.owner == user?.username) {
+      console.log('Logged in')
+      setCollection('BOOKMARK')
+    } else {
+      console.log('No logged in')
+      setCollection(null)
+    }
+  }
+
+  // console.log(checkIfUserHasSite(site?.owner, user?.username))
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -86,7 +96,10 @@ export default function Park({park, site}) {
   // useEffect(() => handleDBQuery, [selectedCollection])
 
   // Update Collection button state
-  useEffect(() => {}, [selectedCollection])
+  useEffect(() => {
+    checkIfUserHasSite(site?.owner, user?.username)
+    console.log('Checking user')
+  }, [selectedCollection])
 
   return (
     <Layout>
@@ -134,24 +147,23 @@ export default function Park({park, site}) {
             </button>
           )}
 
+          {site?.bookmarked && (
+            <button
+              onClick={handleDBQuery}
+              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+              <span className="flex items-center gap-3 px-4">
+                <MdBookmark />
+                <span>Bookmarked</span>
+              </span>
+            </button>
+          )}
+
           {selectedCollection == 'VISITED' && (
             <button
               onClick={() => setCollection(null)}
               className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <BsCheckLg />
               <span>Visited</span>
-            </button>
-          )}
-
-          {site?.bookmarked && (
-            <button
-              onClick={handleDBQuery}
-              // onClick={() => setCollection(null)}
-              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              <span className="flex items-center gap-3 px-4">
-                <MdBookmark />
-                <span>Bookmarked</span>
-              </span>
             </button>
           )}
 

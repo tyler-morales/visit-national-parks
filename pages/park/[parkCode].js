@@ -9,14 +9,21 @@ import {BsCheckLg} from 'react-icons/bs'
 
 import checkUser from '../../hooks/checkUser'
 
-export default function Park({park}) {
-  const user = checkUser()
+// GraphQL
+import {API, Auth, withSSRContext} from 'aws-amplify'
+import {createSite, updateSite} from '../../src/graphql/mutations'
+import {getSite} from '../../src/graphql/queries'
 
+export default function Park({park, site}) {
+  const user = checkUser()
   const router = useRouter()
-  const {name, description, designation, images} = park?.data[0]
-  const {url, altText, caption, credit} = images[0]
   const [selectedCollection, setCollection] = useState(null)
   const [toggleDropdown, setToggleDropdown] = useState(false)
+
+  const {name, description, parkCode, designation, images} = park?.data[0]
+  const {url, altText, caption, credit} = images[0]
+
+  // console.log(site?.username == user?.username)
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -30,8 +37,56 @@ export default function Park({park}) {
     }
   }
 
+  const handleDBQuery = async () => {
+    try {
+      user
+        ? setCollection('BOOKMARK')
+        : alert('Please sign in or create an account')
+
+      // A site does not exist, create a new entry
+      const siteInfo = {
+        id: parkCode,
+        name: name,
+        bookmarked: true,
+        owner: user?.username,
+      }
+
+      if (!site) {
+        await API.graphql({
+          query: createSite,
+          variables: {input: siteInfo},
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+      }
+
+      if (!site?.bookmarked) {
+        await API.graphql({
+          query: updateSite,
+          variables: {input: {id: parkCode, bookmarked: true}},
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        setCollection('BOOKMARK')
+        console.log(`${name} Bookmarked`)
+      } else {
+        await API.graphql({
+          query: updateSite,
+          variables: {input: {id: parkCode, bookmarked: false}},
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        setCollection(null)
+        console.log(`${name} Unbookmarked`)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   // Close dropdown when user interacts with it
   useEffect(() => setToggleDropdown(false), [selectedCollection])
+  // useEffect(() => handleDBQuery, [selectedCollection])
+
+  // Update Collection button state
+  useEffect(() => {}, [selectedCollection])
 
   return (
     <Layout>
@@ -68,13 +123,9 @@ export default function Park({park}) {
       <div className="relative my-8 w-max">
         {/* Button */}
         <div className="flex">
-          {selectedCollection == null && (
+          {!site?.bookmarked && (
             <button
-              onClick={() =>
-                user
-                  ? setCollection('BOOKMARK')
-                  : alert('Please sign in or create an account')
-              }
+              onClick={handleDBQuery}
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <span className="flex items-center gap-3 px-4">
                 <MdBookmarkBorder />
@@ -92,9 +143,10 @@ export default function Park({park}) {
             </button>
           )}
 
-          {selectedCollection == 'BOOKMARK' && (
+          {site?.bookmarked && (
             <button
-              onClick={() => setCollection(null)}
+              onClick={handleDBQuery}
+              // onClick={() => setCollection(null)}
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <span className="flex items-center gap-3 px-4">
                 <MdBookmark />
@@ -189,7 +241,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const URL = 'https://developer.nps.gov/api/v1/'
-
   const {params} = context
 
   const res = await fetch(
@@ -203,11 +254,20 @@ export async function getStaticProps(context) {
     }
   )
 
-  const data = await res.json()
+  const SSR = withSSRContext()
+  const {data} = await SSR.API.graphql({
+    query: getSite,
+    variables: {
+      id: params.parkCode,
+    },
+  })
+
+  const parkData = await res.json()
 
   return {
     props: {
-      park: data,
+      park: parkData,
+      site: data.getSite,
     },
   }
 }

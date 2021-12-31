@@ -31,6 +31,10 @@ export default function Park({
     router.replace({pathname: router.asPath}, undefined, {scroll: false})
   }
 
+  useEffect(() => {
+    refreshData()
+  }, [])
+
   const [toggleDropdown, setToggleDropdown] = useState(false)
   const [selectedCollection, setCollection] = useState(null)
 
@@ -38,8 +42,6 @@ export default function Park({
 
   // Filter parks that match parkpage to the logged-in user
   let filteredSite = allSites?.owner == user?.username ? allSites : null
-
-  // console.log(filteredSite.bookmarked)
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -52,6 +54,66 @@ export default function Park({
       }
     }
   }
+  console.log(filteredSite)
+
+  const toggleVisitedQuery = async () => {
+    console.log('clicked')
+
+    if (filteredSite?.visited) {
+      setCollection('visited')
+    } else if (filteredSite?.visited == false) {
+      setCollection('UNvisited')
+    } else if (filteredSite?.visited == null) setCollection(null)
+
+    try {
+      const siteInfo = {
+        input: {
+          id: uuidv4(),
+          visited: true,
+          bookmarked: false,
+          owner: user?.username,
+        },
+      }
+      // A site does not exist, create a new entry
+      if (filteredSite == null) {
+        await API.graphql({
+          query: createSite,
+          variables: {input: siteInfo},
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        refreshData()
+        console.log(`${name} added`)
+      }
+      // A site exists, update it
+      else {
+        if (filteredSite?.visited == false || filteredSite?.visited == null) {
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id: filteredSite.id,
+                visited: true,
+                bookmarked: false,
+                owner: user?.username,
+              },
+            },
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+          refreshData()
+          setCollection('VISITED')
+          console.log(`${name} visited`)
+        }
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  console.log({
+    bookmarked: filteredSite?.bookmarked || null,
+    visited: filteredSite?.visited || null,
+  })
+
   const handleDBQuery = async () => {
     if (filteredSite?.bookmarked) {
       setCollection('BOOKMARKED')
@@ -82,13 +144,13 @@ export default function Park({
       }
       // A site exists, update it
       else {
-        console.log(filteredSite?.bookmarked)
-        if (filteredSite?.bookmarked == false) {
+        // BOOKMARK SITE
+        if (!filteredSite?.bookmarked && !filteredSite?.visited) {
           await API.graphql({
             query: updateSite,
             variables: {
               input: {
-                id: filteredSite.id,
+                id: filteredSite?.id,
                 bookmarked: true,
                 owner: user?.username,
               },
@@ -98,7 +160,9 @@ export default function Park({
           refreshData()
           setCollection('BOOKMARK')
           console.log(`${name} Bookmarked`)
-        } else if (filteredSite?.bookmarked == true) {
+        }
+        // REMOVE BOOKMARK SITE
+        if (filteredSite?.bookmarked) {
           await API.graphql({
             query: updateSite,
             variables: {
@@ -113,25 +177,31 @@ export default function Park({
           setCollection(null)
           console.log(`${name} Unbookmarked`)
         }
+        // REMOVE VISIT
+        if (filteredSite?.visited) {
+          console.log('unvisiting')
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id: filteredSite?.id,
+                visited: false,
+                bookmarked: false,
+              },
+            },
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+          refreshData()
+          setCollection(null)
+        }
       }
-      const {data} = await API.graphql({
-        query: listSites,
-        variables: {
-          id: parkCode,
-          filter: {name: {eq: parkCode}},
-        },
-      })
-
-      console.log(
-        `updated data: ${data.listSites.items[0].name} \n Bookmarked: ${data.listSites.items[0].bookmarked} \n  @ ${data.listSites.items[0].updatedAt}`
-      )
     } catch (err) {
       console.error(err)
     }
   }
 
   // Close dropdown when user interacts with it
-  useEffect(() => setToggleDropdown(false), [selectedCollection])
+  useEffect(() => setToggleDropdown(false), [filteredSite])
 
   return (
     <Layout>
@@ -168,8 +238,7 @@ export default function Park({
       <div className="relative my-8 w-max">
         {/* Button */}
         <div className="flex">
-          {(!filteredSite?.bookmarked ||
-            filteredSite?.owner != user?.username) && (
+          {!filteredSite?.bookmarked && !filteredSite?.visited && (
             <button
               onClick={handleDBQuery}
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
@@ -191,9 +260,9 @@ export default function Park({
             </button>
           )}
 
-          {selectedCollection == 'VISITED' && (
+          {filteredSite?.visited && (
             <button
-              onClick={() => setCollection(null)}
+              onClick={handleDBQuery}
               className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
               <BsCheckLg />
               <span>Visited</span>
@@ -201,7 +270,7 @@ export default function Park({
           )}
 
           {/* Arrow */}
-          {selectedCollection != 'VISITED' && (
+          {!filteredSite?.visited && (
             <button
               onClick={openDropdown}
               className={`px-4 py-3 pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
@@ -217,7 +286,8 @@ export default function Park({
         {/* Dropdown */}
         {(selectedCollection == null || selectedCollection == 'BOOKMARK') && (
           <button
-            onClick={() => setCollection('VISITED')}
+            // onClick={() => setCollection('VISITED')}
+            onClick={toggleVisitedQuery}
             className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
             <span
               className={`flex items-center gap-3 px-4 ${

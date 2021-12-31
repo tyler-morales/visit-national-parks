@@ -28,5 +28,31 @@
         ]
       }
     }
+  },
+  "api": {
+    "visitnationalparks": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2022-12-29T20:25:05.768Z",
+              "description": "PARKS_API"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authvisitnationalparksb8e6205d"
+              }
+            }
+          ]
+        }
+      }
+    }
   }
 }

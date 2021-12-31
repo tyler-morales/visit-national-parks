@@ -16,7 +16,6 @@ import {
 
 import {AiOutlineEyeInvisible} from 'react-icons/ai'
 import {AiOutlineEye} from 'react-icons/ai'
-import {Nav} from '../components/Nav/Nav'
 import {SignInWithGoogle} from '../components/GoogleSignIn/SignInWithGoogle'
 import Button from '../components/Button/Button'
 import Input from '../components/Forms/Input/Input'
@@ -55,7 +54,6 @@ function SignUp() {
 
   return (
     <>
-      <Nav />
       <div className="flex flex-col justify-center w-11/12 py-6 m-auto mt-9 md:mt-10 md:max-w-md gap-9">
         {steps[currentStep]}
       </div>

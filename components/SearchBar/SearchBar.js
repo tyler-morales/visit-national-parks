@@ -103,18 +103,18 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
           </span>
           <div className="flex justify-center gap-4 md:gap-10">
             <button
-              onClick={() => setTab('name')}
-              className={`transition-all text-md md:px-6 px-2 py-3 md:text-lg rounded-xl md:w-40 w-full font-bold border-transparent border-2 ${
-                tab == 'name' ? tabStyles.active : tabStyles.inActive
-              }`}>
-              Park Name
-            </button>
-            <button
               onClick={() => setTab('filter')}
               className={`transition-all text-md md:px-6 px-2 py-3 md:text-lg rounded-xl md:w-40 w-full font-bold border-transparent border-2 ${
                 tab == 'filter' ? tabStyles.active : tabStyles.inActive
               }`}>
               Filters
+            </button>
+            <button
+              onClick={() => setTab('name')}
+              className={`transition-all text-md md:px-6 px-2 py-3 md:text-lg rounded-xl md:w-40 w-full font-bold border-transparent border-2 ${
+                tab == 'name' ? tabStyles.active : tabStyles.inActive
+              }`}>
+              Park Name
             </button>
           </div>
         </div>

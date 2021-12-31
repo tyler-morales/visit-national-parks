@@ -1,0 +1,15 @@
+type Site
+  @model
+  @auth(
+    rules: [
+      {allow: owner}
+      {allow: public, operations: [create, read, update, delete]}
+      {allow: private, operations: [create, read, update, delete]}
+    ]
+  ) {
+  id: ID!
+  name: String!
+  visited: Boolean
+  bookmarked: Boolean
+  owner: String!
+}

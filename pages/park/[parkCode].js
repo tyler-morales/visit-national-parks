@@ -15,27 +15,31 @@ import {API, Auth, withSSRContext} from 'aws-amplify'
 import {createSite, updateSite} from '../../src/graphql/mutations'
 import {listSites} from '../../src/graphql/queries'
 
-export default function Park({park, allSites}) {
+export default function Park({
+  name,
+  description,
+  parkCode,
+  designation,
+  images,
+  allSites,
+}) {
   const user = checkUser()
   const router = useRouter()
-  // console.log(allSites)
+
+  // Get updated data
+  const refreshData = () => {
+    router.replace({pathname: router.asPath}, undefined, {scroll: false})
+  }
 
   const [toggleDropdown, setToggleDropdown] = useState(false)
   const [selectedCollection, setCollection] = useState(null)
 
-  const {name, description, parkCode, designation, images} = park
   const {url, altText, caption, credit} = images[0]
 
   // Filter parks that match parkpage to the logged-in user
-  const filteredSite = allSites.owner == user?.username ? allSites : null
+  let filteredSite = allSites?.owner == user?.username ? allSites : null
 
-  useEffect(() => {
-    if (filteredSite?.bookmarked) {
-      setCollection('BOOKMARKED')
-    } else if (filteredSite?.bookmarked == false) {
-      setCollection('UNBOOKMARKED')
-    } else if (filteredSite?.bookmarked == null) setCollection(null)
-  }, [allSites, selectedCollection])
+  // console.log(filteredSite.bookmarked)
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -73,11 +77,12 @@ export default function Park({park, allSites}) {
           variables: {input: siteInfo},
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })
+        refreshData()
         console.log(`${name} added`)
       }
       // A site exists, update it
       else {
-        console.log(filteredSite?.bookmarked);
+        console.log(filteredSite?.bookmarked)
         if (filteredSite?.bookmarked == false) {
           await API.graphql({
             query: updateSite,
@@ -90,6 +95,7 @@ export default function Park({park, allSites}) {
             },
             authMode: 'AMAZON_COGNITO_USER_POOLS',
           })
+          refreshData()
           setCollection('BOOKMARK')
           console.log(`${name} Bookmarked`)
         } else if (filteredSite?.bookmarked == true) {
@@ -103,10 +109,22 @@ export default function Park({park, allSites}) {
             },
             authMode: 'AMAZON_COGNITO_USER_POOLS',
           })
+          refreshData()
           setCollection(null)
           console.log(`${name} Unbookmarked`)
         }
       }
+      const {data} = await API.graphql({
+        query: listSites,
+        variables: {
+          id: parkCode,
+          filter: {name: {eq: parkCode}},
+        },
+      })
+
+      console.log(
+        `updated data: ${data.listSites.items[0].name} \n Bookmarked: ${data.listSites.items[0].bookmarked} \n  @ ${data.listSites.items[0].updatedAt}`
+      )
     } catch (err) {
       console.error(err)
     }
@@ -128,8 +146,6 @@ export default function Park({park, allSites}) {
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {name}
       </h1>
-
-      <code>{selectedCollection}</code>
 
       {/* Image */}
       <figure>
@@ -240,41 +256,12 @@ export default function Park({park, allSites}) {
   )
 }
 
-export async function getStaticPaths() {
+export async function getServerSideProps({params}) {
   const URL = 'https://developer.nps.gov/api/v1/'
-
-  // Call an external API endpoint to get posts
-  const res = await fetch(
-    `${URL}parks?limit=465&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
-
-  const parks = await res.json()
-
-  const paths = parks.data.map((park) => {
-    return {
-      params: {
-        parkCode: `${park.parkCode}`,
-      },
-    }
-  })
-
-  return {paths, fallback: false}
-}
-
-export async function getStaticProps(context) {
-  const URL = 'https://developer.nps.gov/api/v1/'
-  const {params} = context
 
   // Call API Data
   const res = await fetch(
-    `${URL}parks?parkCode=${params.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
+    `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
     {
       method: 'GET',
       headers: {
@@ -286,9 +273,11 @@ export async function getStaticProps(context) {
 
   const parkData = await res.json()
 
-  // Call User Data
-  const SSR = withSSRContext()
-  const {data} = await SSR.API.graphql({
+  const park = parkData?.data[0]
+
+  const {name, description, parkCode, designation, images} = park
+
+  const {data} = await API.graphql({
     query: listSites,
     variables: {
       id: params.parkCode,
@@ -296,14 +285,21 @@ export async function getStaticProps(context) {
     },
   })
 
+  const allSites = data?.listSites?.items[0] || null
+
   console.log('**********************')
   console.log('**********************')
-  // console.log(data.listSites.items[0])
+  console.log(data?.listSites?.items[0])
 
   return {
     props: {
-      park: parkData.data[0],
-      allSites: data.listSites.items[0],
+      name,
+      description,
+      parkCode,
+      designation,
+      images,
+      allSites,
     },
+    // revalidate: 1,
   }
 }

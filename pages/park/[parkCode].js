@@ -287,10 +287,6 @@ export async function getServerSideProps({params}) {
 
   const allSites = data?.listSites?.items[0] || null
 
-  console.log('**********************')
-  console.log('**********************')
-  console.log(data?.listSites?.items[0])
-
   return {
     props: {
       name,
@@ -300,6 +296,5 @@ export async function getServerSideProps({params}) {
       images,
       allSites,
     },
-    // revalidate: 1,
   }
 }

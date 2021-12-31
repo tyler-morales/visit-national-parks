@@ -11,7 +11,6 @@ import {AiOutlineEye} from 'react-icons/ai'
 
 import {SignInValues, SignInSchema} from '../formik/SignInValidation'
 import Label from '../components/Forms/Label/Label'
-import Input from '../components/Forms/Input/Input'
 import Button from '../components/Button/Button'
 
 function Login() {
@@ -23,6 +22,7 @@ function Login() {
 
   const toggle = () => {
     const passwordInput = document.getElementById('password')
+    console.log(passwordInput)
     if (passwordInput.type === 'password') {
       passwordInput.type = 'text'
       setIsPasswordVisible(true)
@@ -34,6 +34,8 @@ function Login() {
 
   const signIn = async ({email, password}) => {
     try {
+      console.log('Signing in')
+      console.log(email, password)
       setSigningIn(true)
       await Auth.signIn(email, password)
 
@@ -67,7 +69,8 @@ function Login() {
             <Form className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
                 <Label title="Email" name="email" />
-                <Input
+                <Field
+                  className="py-3 pl-3 transition-all w-full border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="text"
                   name="email"
                   placeholder="theodore_roosevelt@gmail.com"
@@ -96,9 +99,11 @@ function Login() {
                   </span>
                 </div>
                 <div className="relative flex items-center w-full">
-                  <Input
+                  <Field
+                    className="py-3 pl-3 transition-all w-full border-2 border-gray-300 rounded-md ring-offset-[#f5f5ee] ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     type="password"
                     name="password"
+                    id="password"
                     placeholder="iluvnature123"
                     dataId="password"
                   />

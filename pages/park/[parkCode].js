@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import {Parallax} from 'react-parallax'
 import {AiFillCaretDown} from 'react-icons/ai'
+import {v4 as uuidv4} from 'uuid'
 
 import Layout from '../../components/Layout'
 import {useRouter} from 'next/router'
@@ -12,28 +13,29 @@ import checkUser from '../../hooks/checkUser'
 // GraphQL
 import {API, Auth, withSSRContext} from 'aws-amplify'
 import {createSite, updateSite} from '../../src/graphql/mutations'
-import {getSite} from '../../src/graphql/queries'
+import {listSites} from '../../src/graphql/queries'
 
-export default function Park({park, site}) {
+export default function Park({park, allSites}) {
   const user = checkUser()
   const router = useRouter()
-  const [selectedCollection, setCollection] = useState(null)
-  const [toggleDropdown, setToggleDropdown] = useState(false)
+  // console.log(allSites)
 
-  const {name, description, parkCode, designation, images} = park?.data[0]
+  const [toggleDropdown, setToggleDropdown] = useState(false)
+  const [selectedCollection, setCollection] = useState(null)
+
+  const {name, description, parkCode, designation, images} = park
   const {url, altText, caption, credit} = images[0]
 
-  const checkIfUserHasSite = (siteUser, isLoggedIn) => {
-    if (site?.owner == user?.username) {
-      console.log('Logged in')
-      setCollection('BOOKMARK')
-    } else {
-      console.log('No logged in')
-      setCollection(null)
-    }
-  }
+  // Filter parks that match parkpage to the logged-in user
+  const filteredSite = allSites.owner == user?.username ? allSites : null
 
-  // console.log(checkIfUserHasSite(site?.owner, user?.username))
+  useEffect(() => {
+    if (filteredSite?.bookmarked) {
+      setCollection('BOOKMARKED')
+    } else if (filteredSite?.bookmarked == false) {
+      setCollection('UNBOOKMARKED')
+    } else if (filteredSite?.bookmarked == null) setCollection(null)
+  }, [allSites, selectedCollection])
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -46,45 +48,64 @@ export default function Park({park, site}) {
       }
     }
   }
-
   const handleDBQuery = async () => {
+    if (filteredSite?.bookmarked) {
+      setCollection('BOOKMARKED')
+    } else if (filteredSite?.bookmarked == false) {
+      setCollection('UNBOOKMARKED')
+    } else if (filteredSite?.bookmarked == null) setCollection(null)
+
     try {
       user
         ? setCollection('BOOKMARK')
         : alert('Please sign in or create an account')
 
-      // A site does not exist, create a new entry
       const siteInfo = {
-        id: parkCode,
-        name: name,
+        id: uuidv4(),
+        name: parkCode,
         bookmarked: true,
         owner: user?.username,
       }
-
-      if (!site) {
+      // A site does not exist, create a new entry
+      if (filteredSite == null) {
         await API.graphql({
           query: createSite,
           variables: {input: siteInfo},
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })
+        console.log(`${name} added`)
       }
-
-      if (!site?.bookmarked) {
-        await API.graphql({
-          query: updateSite,
-          variables: {input: {id: parkCode, bookmarked: true}},
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        setCollection('BOOKMARK')
-        console.log(`${name} Bookmarked`)
-      } else {
-        await API.graphql({
-          query: updateSite,
-          variables: {input: {id: parkCode, bookmarked: false}},
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        setCollection(null)
-        console.log(`${name} Unbookmarked`)
+      // A site exists, update it
+      else {
+        console.log(filteredSite?.bookmarked);
+        if (filteredSite?.bookmarked == false) {
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id: filteredSite.id,
+                bookmarked: true,
+                owner: user?.username,
+              },
+            },
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+          setCollection('BOOKMARK')
+          console.log(`${name} Bookmarked`)
+        } else if (filteredSite?.bookmarked == true) {
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id: filteredSite?.id,
+                bookmarked: false,
+              },
+            },
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+          setCollection(null)
+          console.log(`${name} Unbookmarked`)
+        }
       }
     } catch (err) {
       console.error(err)
@@ -93,13 +114,6 @@ export default function Park({park, site}) {
 
   // Close dropdown when user interacts with it
   useEffect(() => setToggleDropdown(false), [selectedCollection])
-  // useEffect(() => handleDBQuery, [selectedCollection])
-
-  // Update Collection button state
-  useEffect(() => {
-    checkIfUserHasSite(site?.owner, user?.username)
-    console.log('Checking user')
-  }, [selectedCollection])
 
   return (
     <Layout>
@@ -114,6 +128,8 @@ export default function Park({park, site}) {
       <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
         {name}
       </h1>
+
+      <code>{selectedCollection}</code>
 
       {/* Image */}
       <figure>
@@ -136,7 +152,8 @@ export default function Park({park, site}) {
       <div className="relative my-8 w-max">
         {/* Button */}
         <div className="flex">
-          {!site?.bookmarked && (
+          {(!filteredSite?.bookmarked ||
+            filteredSite?.owner != user?.username) && (
             <button
               onClick={handleDBQuery}
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
@@ -147,7 +164,7 @@ export default function Park({park, site}) {
             </button>
           )}
 
-          {site?.bookmarked && (
+          {filteredSite?.bookmarked && filteredSite?.owner == user?.username && (
             <button
               onClick={handleDBQuery}
               className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
@@ -255,6 +272,7 @@ export async function getStaticProps(context) {
   const URL = 'https://developer.nps.gov/api/v1/'
   const {params} = context
 
+  // Call API Data
   const res = await fetch(
     `${URL}parks?parkCode=${params.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
     {
@@ -266,20 +284,26 @@ export async function getStaticProps(context) {
     }
   )
 
+  const parkData = await res.json()
+
+  // Call User Data
   const SSR = withSSRContext()
   const {data} = await SSR.API.graphql({
-    query: getSite,
+    query: listSites,
     variables: {
       id: params.parkCode,
+      filter: {name: {eq: params.parkCode}},
     },
   })
 
-  const parkData = await res.json()
+  console.log('**********************')
+  console.log('**********************')
+  // console.log(data.listSites.items[0])
 
   return {
     props: {
-      park: parkData,
-      site: data.getSite,
+      park: parkData.data[0],
+      allSites: data.listSites.items[0],
     },
   }
 }

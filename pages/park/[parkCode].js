@@ -67,12 +67,11 @@ export default function Park({
 
     try {
       const siteInfo = {
-        input: {
-          id: uuidv4(),
-          visited: true,
-          bookmarked: false,
-          owner: user?.username,
-        },
+        id: uuidv4(),
+        name: parkCode,
+        bookmarked: false,
+        visited: true,
+        owner: user?.username,
       }
       // A site does not exist, create a new entry
       if (filteredSite == null) {
@@ -85,24 +84,22 @@ export default function Park({
         console.log(`${name} added`)
       }
       // A site exists, update it
-      else {
-        if (filteredSite?.visited == false || filteredSite?.visited == null) {
-          await API.graphql({
-            query: updateSite,
-            variables: {
-              input: {
-                id: filteredSite.id,
-                visited: true,
-                bookmarked: false,
-                owner: user?.username,
-              },
+      if (filteredSite?.visited == false || filteredSite?.visited == null) {
+        await API.graphql({
+          query: updateSite,
+          variables: {
+            input: {
+              id: filteredSite.id,
+              visited: true,
+              bookmarked: false,
+              owner: user?.username,
             },
-            authMode: 'AMAZON_COGNITO_USER_POOLS',
-          })
-          refreshData()
-          setCollection('VISITED')
-          console.log(`${name} visited`)
-        }
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        refreshData()
+        setCollection('VISITED')
+        console.log(`${name} visited`)
       }
     } catch (err) {
       console.error(err)

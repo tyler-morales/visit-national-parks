@@ -8,8 +8,8 @@ describe('Login Tests', () => {
 
   it('User does not exist', () => {
     cy.visit('/login')
-    cy.get('[data-cy=email]').type('demo@gmail.com')
-    cy.get('[data-cy=password]').type('qwerty123')
+    cy.get('[data-cy=email]').type('blah@gmail.com')
+    cy.get('[data-cy=password]').type('password123')
     cy.get('[data-cy=submit-login]').click()
     cy.get('[data-cy=login-server-error').should(
       'have.text',
@@ -19,7 +19,7 @@ describe('Login Tests', () => {
 
   it('Incorrect email/ password', () => {
     cy.visit('/login')
-    cy.get('[data-cy=email]').type('tets@gmail.com')
+    cy.get('[data-cy=email]').type('moratyle@gmail.com')
     cy.get('[data-cy=password]').type('password123')
     cy.get('[data-cy=submit-login]').click()
     cy.get('[data-cy=login-server-error').should(
@@ -30,7 +30,7 @@ describe('Login Tests', () => {
 
   it('Successfull Login', () => {
     cy.visit('/login')
-    cy.get('[data-cy=email]').type('tets@gmail.com')
+    cy.get('[data-cy=email]').type('moratyle@gmail.com')
     cy.get('[data-cy=password]').type('qwerty123')
     cy.get('[data-cy=submit-login]').click()
     // Redirect to home page

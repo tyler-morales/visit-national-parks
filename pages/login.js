@@ -75,6 +75,7 @@ function Login() {
                   name="email"
                   placeholder="theodore_roosevelt@gmail.com"
                   dataId="email"
+                  data-cy="email"
                 />
                 {serverError && (
                   <span className="text-red-700" data-cy="login-server-error">
@@ -106,6 +107,7 @@ function Login() {
                     id="password"
                     placeholder="iluvnature123"
                     dataId="password"
+                    data-cy="password"
                   />
                   {isPasswordVisible ? (
                     <button

@@ -54,5 +54,13 @@
         }
       }
     }
+  },
+  "function": {
+    "visitnationalparkse65624f8": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    }
   }
 }

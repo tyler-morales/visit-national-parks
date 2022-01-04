@@ -3,8 +3,10 @@ import Link from 'next/link'
 import {Auth} from 'aws-amplify'
 import {Cross as Hamburger} from 'hamburger-react'
 import checkUser from '../../hooks/checkUser'
+import {useRouter} from 'next/router'
 
 export const Nav = ({mockUser}) => {
+  const router = useRouter()
   const user = checkUser()
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
@@ -95,9 +97,26 @@ export const Nav = ({mockUser}) => {
 
       <div className="flex flex-col w-full text-center md:flex-row md:text-left md:justify-end md:gap-6">
         {user || mockUser ? (
-          <Link href="/profile">
-            <a
-              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md  p-4 md:py-2 
+          <>
+            <Link href="/profile">
+              <a
+                className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out md:border-b-0 border-b-green-800 border-b border-green-800 py-4   hover:bg-green-800 hover:text-white md:hover:bg-transparent md:hover:text-green-800 lg:pass md:rounded-md  p-4 md:py-2 
+              ${
+                showNavOnScreenSize ||
+                (showNavOnClick && showNavOnScreenSize != showNavOnClick)
+                  ? 'visible'
+                  : 'hidden'
+              }
+              `}>
+                Profile
+              </a>
+            </Link>
+            <button
+              onClick={() => {
+                Auth.signOut()
+                router.push('/')
+              }}
+              className={`font-display font-bold text-xl cursor-pointer text-green-800 transition-all duration-200 ease-in-out border-b-green-800 border-green-800 py-4 hover:bg-green-800 hover:text-white md:hover:bg-transparent md:rounded-md  p-4 md:py-2 border-2 md:border-green-800 md:hover:bg-green-800 md:hover:text-white focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none
               ${
                 showNavOnScreenSize ||
                 (showNavOnClick && showNavOnScreenSize != showNavOnClick)
@@ -105,9 +124,9 @@ export const Nav = ({mockUser}) => {
                   : 'hidden'
               }
             `}>
-              Profile
-            </a>
-          </Link>
+              Log out
+            </button>
+          </>
         ) : (
           <>
             <Link href="/login">

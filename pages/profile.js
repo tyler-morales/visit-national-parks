@@ -1,12 +1,11 @@
 import {useState} from 'react'
-import {withSSRContext} from 'aws-amplify'
-import {Auth} from 'aws-amplify'
+import {Auth, API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 import Avatar from 'boring-avatars'
 
-// import {listSites} from '../src/graphql/queries'
+import {listSites} from '../src/graphql/queries'
 
-function Profile({username, email, name, bio}) {
+function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [editingUser, setEditingUser] = useState(false)
   const [inputName, setInputName] = useState(name)
   const [inputBio, setInputBio] = useState(bio)
@@ -33,8 +32,8 @@ function Profile({username, email, name, bio}) {
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
 
-      <section className="grid grid-cols-4 mt-20 gap-14 font-display">
-        <div className="">
+      <main className="grid grid-cols-4 mt-20 gap-14 font-display">
+        <section>
           <div className="relative flex items-center justify-center m-auto ">
             <Avatar
               size="100%"
@@ -112,43 +111,97 @@ function Profile({username, email, name, bio}) {
           <div className="pb-6 mt-6 border-b-2 border-green-300 ">
             <h3 className="mb-4 text-xl font-bold text-green-800">Stats</h3>
             <span className="block">
-              Sites Visited: <span>14/463</span>
+              Sites Visited: <span>{visitedSites.length}/463</span>
             </span>
             <span className="block">
               National Parks Visited: <span>73/63</span>
             </span>
           </div>
-        </div>
-      </section>
+        </section>
+        <section>
+          <pre>{username}</pre>
+          <code>{visitedSites.length} visitedSites</code>
+          {visitedSites.map((item) => {
+            return <pre>{item.name}</pre>
+          })}
+
+          <code>{bookmarkedSites.length} bookmarked</code>
+          {bookmarkedSites.map((item) => {
+            return <pre>{item.name}</pre>
+          })}
+        </section>
+      </main>
     </Layout>
   )
 }
 
 export async function getServerSideProps({req, res}) {
   const {Auth} = withSSRContext({req})
+  const SSR = withSSRContext({req})
 
-  try {
-    const user = await Auth.currentAuthenticatedUser()
-    // const {attributes} = user
-    // console.log('********************************')
-    // console.log(attributes)
+  const user = await Auth.currentAuthenticatedUser()
+  const visited = await SSR.API.graphql({
+    query: listSites,
+    variables: {
+      filter: {
+        visited: {eq: true},
+        owner: {eq: user?.username},
+      },
+    },
+  })
+  const bookmarked = await SSR.API.graphql({
+    query: listSites,
+    variables: {
+      filter: {
+        bookmarked: {eq: true},
+        owner: {eq: user?.username},
+      },
+    },
+  })
 
-    return {
-      props: {
-        authenticated: true,
-        username: user.username || null,
-        email: user.attributes.email || null,
-        name: user.attributes.name || null,
-        bio: user.attributes['custom:bio'] || null,
-      },
-    }
-  } catch (err) {
-    return {
-      redirect: {
-        destination: '/login',
-        statusCode: 302,
-      },
-    }
+  // console.log(data)
+  // const {attributes} = user
+  // console.log('********************************')
+  // console.log(attributes)
+
+  return {
+    props: {
+      authenticated: true,
+      username: user.username || null,
+      email: user.attributes.email || null,
+      name: user.attributes.name || null,
+      bio: user.attributes['custom:bio'] || null,
+      visitedSites: visited.data.listSites.items,
+      bookmarkedSites: bookmarked.data.listSites.items,
+    },
   }
+
+  // try {
+  //   const user = await Auth.currentAuthenticatedUser()
+  //   const response = await SSR.API.graphql({query: listSites})
+  //   console.log(response)
+  //   // const {attributes} = user
+  //   // console.log('********************************')
+  //   // console.log(attributes)
+
+  //   return {
+  //     props: {
+  //       authenticated: true,
+  //       username: user.username || null,
+  //       email: user.attributes.email || null,
+  //       name: user.attributes.name || null,
+  //       bio: user.attributes['custom:bio'] || null,
+  //       sites: response.data.listSites.items,
+  //     },
+  //   }
+  // } catch (err) {
+  //   console.error(err)
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       statusCode: 302,
+  //     },
+  //   }
+  // }
 }
 export default Profile

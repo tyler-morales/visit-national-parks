@@ -17,7 +17,9 @@
       },
       "function": {
         "visitnationalparkse65624f8": {
-          "secretsPathAmplifyAppId": "d1tqqy4zlrfx94"
+          "secretsPathAmplifyAppId": "d1tqqy4zlrfx94",
+          "deploymentBucketName": "amplify-visitnationalparks-dev-181857-deployment",
+          "s3Key": "amplify-builds/visitnationalparkse65624f8-4b4c444d63736d6e5478-build.zip"
         }
       }
     }

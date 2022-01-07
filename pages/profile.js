@@ -1,24 +1,32 @@
+import {useState} from 'react'
 import {withSSRContext} from 'aws-amplify'
 import {Auth} from 'aws-amplify'
 import Layout from '../components/Layout'
 import Avatar from 'boring-avatars'
 
-import {listSites} from '../src/graphql/queries'
+// import {listSites} from '../src/graphql/queries'
 
 function Profile({username, email, name}) {
+  const [editingUser, setEditingUser] = useState(false)
+  const [inputName, setInputName] = useState(name)
+  const [inputBio, setInputBio] = useState('')
+
   const handleEditName = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser()
 
       let result = await Auth.updateUserAttributes(user, {
-        name: 'Tyler Morales',
+        name: inputName,
       })
-
-      const {attributes} = user
-      console.log(attributes, result)
     } catch (err) {
       console.error(`ERROR:${err}`)
     }
+  }
+
+  const submitUserChanges = () => {
+    setEditingUser(false)
+    handleEditName()
+    return null
   }
   return (
     <Layout>
@@ -42,14 +50,59 @@ function Profile({username, email, name}) {
 
           {/* User Info */}
           <div className="pb-6 mt-10 border-b-2 border-green-300">
-            <h3 className="text-3xl font-bold text-green-800">{name}</h3>
-            <span className="block mt-2 text-xl text-green-800">{email}</span>
-            <p className="mt-5">Digital nomad</p>
-            <button
-              onClick={handleEditName}
-              className="w-full py-1 m-auto mt-4 text-lg bg-orange-200 rounded-lg">
-              Edit
-            </button>
+            {!editingUser ? (
+              <>
+                <h3 className="text-3xl font-bold text-green-800">
+                  {inputName}
+                </h3>
+                <span className="block mt-2 text-xl text-green-800">
+                  {email}
+                </span>
+                <p className="mt-5">{inputBio}</p>
+                <button
+                  onClick={() => setEditingUser(true)}
+                  className="w-full py-1 m-auto mt-4 text-lg bg-orange-200 rounded-lg">
+                  Edit
+                </button>
+              </>
+            ) : (
+              <div className="grid gap-5">
+                <div>
+                  <label className="block mb-2 text-xl font-bold text-green-800">
+                    Name
+                  </label>
+                  <input
+                    className="w-full py-2 pl-3 text-xl rounded-lg"
+                    type="text"
+                    value={inputName}
+                    onInput={(e) => setInputName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-xl font-bold text-green-800">
+                    Bio
+                  </label>
+                  <textarea
+                    className="w-full py-2 pl-3 text-xl rounded-lg"
+                    type="text"
+                    value={inputBio}
+                    onInput={(e) => setInputBio(e.target.value)}
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setEditingUser(false)}
+                    className="w-full py-1 m-auto mt-4 text-lg text-white bg-red-400 rounded-lg">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={submitUserChanges}
+                    className="w-full py-1 m-auto mt-4 text-lg bg-green-400 rounded-lg">
+                    Save
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Stats */}

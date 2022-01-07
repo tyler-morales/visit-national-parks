@@ -139,69 +139,53 @@ export async function getServerSideProps({req, res}) {
   const {Auth} = withSSRContext({req})
   const SSR = withSSRContext({req})
 
-  const user = await Auth.currentAuthenticatedUser()
-  const visited = await SSR.API.graphql({
-    query: listSites,
-    variables: {
-      filter: {
-        visited: {eq: true},
-        owner: {eq: user?.username},
-      },
-    },
-  })
-  const bookmarked = await SSR.API.graphql({
-    query: listSites,
-    variables: {
-      filter: {
-        bookmarked: {eq: true},
-        owner: {eq: user?.username},
-      },
-    },
-  })
+  try {
+    const user = await Auth.currentAuthenticatedUser()
 
-  // console.log(data)
-  // const {attributes} = user
-  // console.log('********************************')
-  // console.log(attributes)
+    const visited = await SSR.API.graphql({
+      query: listSites,
+      variables: {
+        filter: {
+          visited: {eq: true},
+          owner: {eq: user?.username},
+        },
+      },
+    })
 
-  return {
-    props: {
-      authenticated: true,
-      username: user.username || null,
-      email: user.attributes.email || null,
-      name: user.attributes.name || null,
-      bio: user.attributes['custom:bio'] || null,
-      visitedSites: visited.data.listSites.items,
-      bookmarkedSites: bookmarked.data.listSites.items,
-    },
+    const bookmarked = await SSR.API.graphql({
+      query: listSites,
+      variables: {
+        filter: {
+          bookmarked: {eq: true},
+          owner: {eq: user?.username},
+        },
+      },
+    })
+
+    // console.log(data)
+    // const {attributes} = user
+    // console.log('********************************')
+    // console.log(attributes)
+
+    return {
+      props: {
+        authenticated: true,
+        username: user.username || null,
+        email: user.attributes.email || null,
+        name: user.attributes.name || null,
+        bio: user.attributes['custom:bio'] || null,
+        visitedSites: visited.data.listSites.items,
+        bookmarkedSites: bookmarked.data.listSites.items,
+      },
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      redirect: {
+        destination: '/login',
+        statusCode: 302,
+      },
+    }
   }
-
-  // try {
-  //   const user = await Auth.currentAuthenticatedUser()
-  //   const response = await SSR.API.graphql({query: listSites})
-  //   console.log(response)
-  //   // const {attributes} = user
-  //   // console.log('********************************')
-  //   // console.log(attributes)
-
-  //   return {
-  //     props: {
-  //       authenticated: true,
-  //       username: user.username || null,
-  //       email: user.attributes.email || null,
-  //       name: user.attributes.name || null,
-  //       bio: user.attributes['custom:bio'] || null,
-  //       sites: response.data.listSites.items,
-  //     },
-  //   }
-  // } catch (err) {
-  //   console.error(err)
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       statusCode: 302,
-  //     },
-  //   }
-  // }
 }
 export default Profile

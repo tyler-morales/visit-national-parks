@@ -86,7 +86,7 @@ function Profile({username, email, name, bio}) {
                     Bio
                   </label>
                   <textarea
-                    className="w-full py-2 pl-3 text-xl rounded-lg"
+                    className="w-full px-3 py-2 text-xl rounded-lg"
                     type="text"
                     value={inputBio}
                     onInput={(e) => setInputBio(e.target.value)}

@@ -45,7 +45,9 @@ function Profile({username, email, name, bio}) {
             <span
               className="absolute font-bold text-white text-7xl"
               style={{textShadow: '#e4e3f8 1px 0 10px'}}>
-              {[...inputName][0].toUpperCase()}
+              {inputName
+                ? [...inputName][0].toUpperCase()
+                : [...email][0].toUpperCase()}
             </span>
           </div>
 
@@ -56,7 +58,7 @@ function Profile({username, email, name, bio}) {
                 <h3 className="text-3xl font-bold text-green-800">
                   {inputName}
                 </h3>
-                <span className="block mt-2 text-xl text-green-800">
+                <span className="block mt-2 text-lg text-green-800">
                   {email}
                 </span>
                 <p className="mt-5 text-lg">{inputBio}</p>
@@ -127,17 +129,17 @@ export async function getServerSideProps({req, res}) {
 
   try {
     const user = await Auth.currentAuthenticatedUser()
-    const {attributes} = user
+    // const {attributes} = user
     // console.log('********************************')
     // console.log(attributes)
 
     return {
       props: {
         authenticated: true,
-        username: user.username,
-        email: user.attributes.email,
-        name: user.attributes.name,
-        bio: user.attributes['custom:bio'],
+        username: user.username || null,
+        email: user.attributes.email || null,
+        name: user.attributes.name || null,
+        bio: user.attributes['custom:bio'] || null,
       },
     }
   } catch (err) {

@@ -6,18 +6,19 @@ import Avatar from 'boring-avatars'
 
 // import {listSites} from '../src/graphql/queries'
 
-function Profile({username, email, name}) {
+function Profile({username, email, name, bio}) {
   const [editingUser, setEditingUser] = useState(false)
   const [inputName, setInputName] = useState(name)
-  const [inputBio, setInputBio] = useState('')
+  const [inputBio, setInputBio] = useState(bio)
 
-  const handleEditName = async () => {
+  const updateUserInfo = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser()
+      const attributes = {}
+      if (inputName != name) attributes.name = inputName
+      if (inputBio != bio) attributes['custom:bio'] = inputBio
 
-      let result = await Auth.updateUserAttributes(user, {
-        name: inputName,
-      })
+      await Auth.updateUserAttributes(user, attributes)
     } catch (err) {
       console.error(`ERROR:${err}`)
     }
@@ -25,9 +26,9 @@ function Profile({username, email, name}) {
 
   const submitUserChanges = () => {
     setEditingUser(false)
-    handleEditName()
-    return null
+    updateUserInfo()
   }
+
   return (
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
@@ -37,14 +38,14 @@ function Profile({username, email, name}) {
           <div className="relative flex items-center justify-center m-auto ">
             <Avatar
               size="100%"
-              name={name}
+              name={username}
               variant="marble"
               colors={['#85A29E', '#FFEBBF', '#F0D442', '#F59330', '#B22148']}
             />
             <span
               className="absolute font-bold text-white text-7xl"
               style={{textShadow: '#e4e3f8 1px 0 10px'}}>
-              {[...name][0].toUpperCase()}
+              {[...inputName][0].toUpperCase()}
             </span>
           </div>
 
@@ -58,7 +59,7 @@ function Profile({username, email, name}) {
                 <span className="block mt-2 text-xl text-green-800">
                   {email}
                 </span>
-                <p className="mt-5">{inputBio}</p>
+                <p className="mt-5 text-lg">{inputBio}</p>
                 <button
                   onClick={() => setEditingUser(true)}
                   className="w-full py-1 m-auto mt-4 text-lg bg-orange-200 rounded-lg">
@@ -127,7 +128,8 @@ export async function getServerSideProps({req, res}) {
   try {
     const user = await Auth.currentAuthenticatedUser()
     const {attributes} = user
-    console.log(attributes)
+    // console.log('********************************')
+    // console.log(attributes)
 
     return {
       props: {
@@ -135,6 +137,7 @@ export async function getServerSideProps({req, res}) {
         username: user.username,
         email: user.attributes.email,
         name: user.attributes.name,
+        bio: user.attributes['custom:bio'],
       },
     }
   } catch (err) {

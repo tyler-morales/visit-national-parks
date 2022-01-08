@@ -1,6 +1,6 @@
 {
   "auth": {
-    "visitnationalparksb8e6205d": {
+    "visitnationalparks36a13952": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -38,29 +38,19 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "apiKeyExpirationDate": "2022-12-29T20:25:05.768Z",
-              "description": "PARKS_API"
+              "apiKeyExpirationDays": 7
             }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AMAZON_COGNITO_USER_POOLS",
               "userPoolConfig": {
-                "userPoolId": "authvisitnationalparksb8e6205d"
+                "userPoolId": "authvisitnationalparks36a13952"
               }
             }
           ]
         }
       }
-    }
-  },
-  "function": {
-    "visitnationalparkse65624f8": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
     }
   }
 }

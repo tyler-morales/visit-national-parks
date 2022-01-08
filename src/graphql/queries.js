@@ -5,10 +5,15 @@ export const getSite = /* GraphQL */ `
   query GetSite($id: ID!) {
     getSite(id: $id) {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -23,10 +28,15 @@ export const listSites = /* GraphQL */ `
     listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
+        code
+        owner
         visited
         bookmarked
-        owner
+        name
+        img
+        rating
+        avgRating
+        dateVisited
         createdAt
         updatedAt
       }

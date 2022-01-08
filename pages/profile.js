@@ -11,6 +11,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [inputBio, setInputBio] = useState(bio)
 
   const updateUserInfo = async () => {
+    setEditingUser(false)
     try {
       const user = await Auth.currentAuthenticatedUser()
       const attributes = {}
@@ -23,16 +24,11 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
     }
   }
 
-  const submitUserChanges = () => {
-    setEditingUser(false)
-    updateUserInfo()
-  }
-
   return (
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
 
-      <main className="grid grid-cols-4 mt-20 gap-14 font-display">
+      <main className="grid grid-cols-4 gap-20 mt-20 font-display">
         <section>
           <div className="relative flex items-center justify-center m-auto ">
             <Avatar
@@ -98,7 +94,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
                     Cancel
                   </button>
                   <button
-                    onClick={submitUserChanges}
+                    onClick={updateUserInfo}
                     className="w-full py-1 m-auto mt-4 text-lg bg-green-400 rounded-lg">
                     Save
                   </button>
@@ -114,11 +110,19 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
               Sites Visited: <span>{visitedSites.length}/463</span>
             </span>
             <span className="block">
-              National Parks Visited: <span>73/63</span>
+              National Parks Visited: <span>7/63</span>
             </span>
           </div>
         </section>
-        <section>
+        <section className="w-full col-span-3 border">
+          <div className="flex gap-8">
+            <button className="px-4 py-2 text-2xl font-bold bg-orange-200 rounded-lg">
+              Visited
+            </button>
+            <button className="px-4 py-2 text-2xl font-bold bg-orange-200 rounded-lg">
+              Want to Visit
+            </button>
+          </div>
           <pre>{username}</pre>
           <code>{visitedSites.length} visitedSites</code>
           {visitedSites.map((item) => {
@@ -189,3 +193,28 @@ export async function getServerSideProps({req, res}) {
   }
 }
 export default Profile
+
+
+/*
+type Site
+  @model
+  @auth(
+    rules: [
+      {allow: owner}
+      {allow: public, operations: [create, read, update, delete]}
+      {allow: private, operations: [create, read, update, delete]}
+    ]
+  ) {
+  id: ID!
+  code: String!
+  owner: String!
+  visited: Boolean
+  bookmarked: Boolean
+  name: String
+  img: String
+  rating: String
+  avgRating: String
+  dateVisited: String
+}
+
+*/

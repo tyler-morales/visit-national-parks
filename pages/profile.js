@@ -2,6 +2,8 @@ import {useState} from 'react'
 import {Auth, API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 import Avatar from 'boring-avatars'
+import {RiDeleteBinLine} from 'react-icons/ri'
+import {RiEdit2Line} from 'react-icons/ri'
 
 import {listSites} from '../src/graphql/queries'
 
@@ -22,6 +24,87 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
     } catch (err) {
       console.error(`ERROR:${err}`)
     }
+  }
+
+  const VisitedSiteItems = ({site}) => {
+    return (
+      <tr className="w-full">
+        <td data-th="Image" className="text-base font-thin text-left">
+          <img
+            src={site.img}
+            alt={site.fullName}
+            className="rounded-lg w-[150px] h-auto"
+          />
+        </td>
+        <td
+          data-th="Name"
+          className="max-w-[150px] text-base font-thin text-left">
+          <span className="text-lg font-bold text-green-800">{site.name}</span>
+        </td>
+        <td data-th="Name" className="text-base font-thin text-left ">
+          <span className="text-lg font-bold text-green-800">N/A</span>
+        </td>
+        <td data-th="Name" className="text-base font-thin text-left ">
+          <span className="text-lg font-bold text-green-800">N/A</span>
+        </td>
+        <td data-th="Name" className="text-base font-thin text-left ">
+          <span className="text-lg font-bold text-green-800">N/A</span>
+        </td>
+        <td data-th="Name" className="text-base font-thin text-left ">
+          <span className="text-lg font-bold text-green-800">N/A</span>
+        </td>
+        <td data-th="Settings" className="text-base font-thin text-left">
+          <div className="flex flex-col gap-2">
+            <button className="flex items-center w-full gap-2 items-between text-small">
+              <RiEdit2Line size="1.25em" />
+              <span>Edit</span>
+            </button>
+            <button className="flex items-center w-full gap-2 items-between text-small">
+              <RiDeleteBinLine size="1.25em" />
+              <span>Delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    )
+  }
+  const visitedSiteItems = visitedSites.map((site, index) => (
+    <VisitedSiteItems key={index} site={site} />
+  ))
+
+  const VisitedTable = () => {
+    return (
+      <table
+        className="w-full mt-12 border-separate"
+        style={{borderSpacing: '15px'}}>
+        <tbody>
+          <tr className="w-full">
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Image
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Name
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Avg. Rating
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Your Rating
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              List
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Visited
+            </th>
+            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              Settings
+            </th>
+          </tr>
+          {visitedSiteItems}
+        </tbody>
+      </table>
+    )
   }
 
   return (
@@ -123,16 +206,8 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
               Want to Visit
             </button>
           </div>
-          <pre>{username}</pre>
-          <code>{visitedSites.length} visitedSites</code>
-          {visitedSites.map((item) => {
-            return <pre>{item.name}</pre>
-          })}
-
-          <code>{bookmarkedSites.length} bookmarked</code>
-          {bookmarkedSites.map((item) => {
-            return <pre>{item.name}</pre>
-          })}
+          {/* TABLE */}
+          <VisitedTable />
         </section>
       </main>
     </Layout>
@@ -193,7 +268,6 @@ export async function getServerSideProps({req, res}) {
   }
 }
 export default Profile
-
 
 /*
 type Site

@@ -25,6 +25,23 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [tab, setTab] = useState('visited')
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
+  const [sortDir, setSortDir] = useState('ASC')
+
+  const sort = () => {
+    if (sortDir == 'ASC') {
+      setSortDir('DEC')
+      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name > b.name)
+      currentBookmarkedSites = currentBookmarkedSites.sort(
+        (a, b) => a.name > b.name
+      )
+    } else {
+      setSortDir('ASC')
+      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name < b.name)
+      currentBookmarkedSites = currentBookmarkedSites.sort(
+        (a, b) => a.name < b.name
+      )
+    }
+  }
 
   const removeSite = async ({id, name}) => {
     try {
@@ -113,31 +130,31 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
         className="w-full mt-12 border-separate"
         style={{borderSpacing: '15px'}}>
         <tbody>
-          <tr className="w-full">
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+          <tr onClick={sort} className="w-full">
+            <th className="text-sm font-thin text-left text-green-800 uppercase">
               Image
             </th>
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
-              Name
+            <th className="text-sm font-thin text-left text-green-800 uppercase cursor-pointer">
+              <span>Name {sortDir == 'ASC' ? '🔼' : '🔽'}</span>
             </th>
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+            <th className="text-sm font-thin text-left text-green-800 uppercase">
               Avg. Rating
             </th>
             {tab == 'visited' && (
-              <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              <th className="text-sm font-thin text-left text-green-800 uppercase">
                 Your Rating
               </th>
             )}
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+            <th className="text-sm font-thin text-left text-green-800 uppercase">
               List
             </th>
             {tab == 'visited' && (
-              <th className="text-sm font-thin text-left text-green-800 uppercase ">
+              <th className="text-sm font-thin text-left text-green-800 uppercase">
                 Visited
               </th>
             )}
 
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
+            <th className="text-sm font-thin text-left text-green-800 uppercase">
               Settings
             </th>
           </tr>

@@ -98,9 +98,6 @@ export default function UserInfo({username, email, name, bio, visitedSites}) {
         <span className="block">
           Sites Visited: <span>{visitedSites}/463</span>
         </span>
-        {/* <span className="block">
-          National Parks Visited: <span>7/63</span>
-        </span> */}
       </div>
     </section>
   )

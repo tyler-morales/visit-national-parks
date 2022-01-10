@@ -78,10 +78,10 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             </a>
           </Link>
         </td>
-        <td data-th="Name" className="max-w-[150px] text-left">
+        <td data-th="Name" className="group max-w-[150px] text-left">
           <Link href={`/park/${site.code}`}>
             <a>
-              <span className="text-lg font-bold text-green-800 hover:underline hover:underline-offset-4 hover:decoration-wavy">
+              <span className="text-lg font-bold text-green-800 group-hover:underline group-hover:underline-offset-4 group-hover:decoration-wavy">
                 {site.name}
               </span>
             </a>

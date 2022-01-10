@@ -17,6 +17,7 @@ import {listSites} from '../../src/graphql/queries'
 
 export default function Park({
   name,
+  fullName,
   description,
   parkCode,
   designation,
@@ -54,7 +55,6 @@ export default function Park({
       }
     }
   }
-  console.log(filteredSite)
 
   const toggleVisitedQuery = async () => {
     console.log('clicked')
@@ -68,10 +68,12 @@ export default function Park({
     try {
       const siteInfo = {
         id: uuidv4(),
-        name: parkCode,
+        code: parkCode,
+        owner: user?.username,
+        name: fullName,
+        img: url,
         bookmarked: false,
         visited: true,
-        owner: user?.username,
       }
       // A site does not exist, create a new entry
       if (filteredSite == null) {
@@ -106,11 +108,6 @@ export default function Park({
     }
   }
 
-  console.log({
-    bookmarked: filteredSite?.bookmarked || null,
-    visited: filteredSite?.visited || null,
-  })
-
   const handleDBQuery = async () => {
     if (filteredSite?.bookmarked) {
       setCollection('BOOKMARKED')
@@ -125,10 +122,13 @@ export default function Park({
 
       const siteInfo = {
         id: uuidv4(),
-        name: parkCode,
+        name: fullName,
+        code: parkCode,
+        img: url,
         bookmarked: true,
         owner: user?.username,
       }
+
       // A site does not exist, create a new entry
       if (filteredSite == null) {
         await API.graphql({
@@ -342,7 +342,7 @@ export async function getServerSideProps({params}) {
 
   const park = parkData?.data[0]
 
-  const {name, description, parkCode, designation, images} = park
+  const {name, description, parkCode, designation, images, fullName} = park
 
   const {data} = await API.graphql({
     query: listSites,
@@ -357,6 +357,7 @@ export async function getServerSideProps({params}) {
   return {
     props: {
       name,
+      fullName,
       description,
       parkCode,
       designation,

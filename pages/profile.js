@@ -1,8 +1,11 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {RiEdit2Line} from 'react-icons/ri'
+import {ToastContainer, toast} from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 import Link from 'next/link'
 
@@ -20,12 +23,36 @@ const tabStyles = {
 
 function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [tab, setTab] = useState('visited')
+  const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
+  const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
 
-  const removeSite = async (e) => {
-    API.graphql({query: deleteSite, variables: {input: {id: e.target.id}}})
+  console.log(tab, currentVisitedSites.length, currentBookmarkedSites.length)
+
+  const removeSite = async ({id, name}) => {
+    try {
+      // Delete site from database
+      API.graphql({query: deleteSite, variables: {input: {id}}})
+
+      // Filter site from local state
+      let collection =
+        tab == 'visited' ? currentVisitedSites : currentBookmarkedSites
+
+      let newSites = collection.filter((item) => {
+        return item.id != id
+      })
+
+      tab == 'visited'
+        ? setVisitedSites(newSites)
+        : setBookmarkedSites(newSites)
+
+      toast(`${name} removed`)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  const VisitedSiteItems = ({site}) => {
+  const VisitedSiteItems = ({site, num}) => {
+    // console.log(num)
     return (
       <tr className="w-full">
         <td data-th="Image" className="text-left ">
@@ -73,10 +100,10 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
               <span>Edit</span>
             </button>
             <button
-              onClick={(e) => removeSite(e)}
+              onClick={() => removeSite(site, num)}
               className="flex items-center w-full gap-2 items-between text-small">
               <RiDeleteBinLine size="1.25em" />
-              <span id={site.id}>Delete</span>
+              <span>Delete</span>
             </button>
           </div>
         </td>
@@ -87,6 +114,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const VisitedTable = ({data}) => {
     return (
       <table
+        id="table"
         className="w-full mt-12 border-separate"
         style={{borderSpacing: '15px'}}>
         <tbody>
@@ -119,7 +147,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             </th>
           </tr>
           {data?.map((site, index) => (
-            <VisitedSiteItems key={index} site={site} />
+            <VisitedSiteItems key={index} site={site} num={index} />
           ))}
         </tbody>
       </table>
@@ -157,10 +185,13 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
           </div>
           {/* TABLE */}
           <VisitedTable
-            data={tab == 'visited' ? visitedSites : bookmarkedSites}
+            data={
+              tab == 'visited' ? currentVisitedSites : currentBookmarkedSites
+            }
           />
         </section>
       </main>
+      <ToastContainer />
     </Layout>
   )
 }

@@ -22,13 +22,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [tab, setTab] = useState('visited')
 
   const removeSite = async (e) => {
-    console.log('deleting')
-
-    // const id = e.target.id
-    const siteId = {
-      id: e.target.id,
-    }
-    API.graphql({query: deleteSite, variables: {input: siteId}})
+    API.graphql({query: deleteSite, variables: {input: {id: e.target.id}}})
   }
 
   const VisitedSiteItems = ({site}) => {

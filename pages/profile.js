@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Auth, API, withSSRContext} from 'aws-amplify'
+import {API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {RiEdit2Line} from 'react-icons/ri'
@@ -7,13 +7,34 @@ import {RiEdit2Line} from 'react-icons/ri'
 import Link from 'next/link'
 
 import {listSites} from '../src/graphql/queries'
+import {deleteSite} from '../src/graphql/mutations'
+
 import UserInfo from '../components/UserInfo/UserInfo'
 
+const tabStyles = {
+  active:
+    'bg-green-600 text-white focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none',
+  inActive:
+    'text-green-800 hover:shadow-md hover:shadow-green-200 hover:border-2 hover:border-green-700 hover:text-green-800',
+}
+
 function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
+  const [tab, setTab] = useState('visited')
+
+  const removeSite = async (e) => {
+    console.log('deleting')
+
+    // const id = e.target.id
+    const siteId = {
+      id: e.target.id,
+    }
+    API.graphql({query: deleteSite, variables: {input: siteId}})
+  }
+
   const VisitedSiteItems = ({site}) => {
     return (
       <tr className="w-full">
-        <td data-th="Image" className="text-base font-thin text-left">
+        <td data-th="Image" className="text-left ">
           <Link href={`/park/${site.code}`}>
             <a>
               <img
@@ -24,9 +45,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             </a>
           </Link>
         </td>
-        <td
-          data-th="Name"
-          className="max-w-[150px] text-base font-thin text-left">
+        <td data-th="Name" className="max-w-[150px] text-left">
           <Link href={`/park/${site.code}`}>
             <a>
               <span className="text-lg font-bold text-green-800 hover:underline hover:underline-offset-4 hover:decoration-wavy">
@@ -35,38 +54,43 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             </a>
           </Link>
         </td>
-        <td data-th="Name" className="text-base font-thin text-left ">
-          <span className="text-lg font-bold text-green-800">N/A</span>
+        <td data-th="Average-rating" className="text-left ">
+          <span className="text-lg font-bold text-green-800">3.8</span>
         </td>
-        <td data-th="Name" className="text-base font-thin text-left ">
-          <span className="text-lg font-bold text-green-800">N/A</span>
+        {tab == 'visited' && (
+          <td data-th="Your-rating" className="text-left ">
+            <span className="text-lg font-bold text-green-800">4.5</span>
+          </td>
+        )}
+
+        <td data-th="list" className="text-left ">
+          <span className="text-green-800 text-md">2017 Grand Canyon Trip</span>
         </td>
-        <td data-th="Name" className="text-base font-thin text-left ">
-          <span className="text-lg font-bold text-green-800">N/A</span>
-        </td>
-        <td data-th="Name" className="text-base font-thin text-left ">
-          <span className="text-lg font-bold text-green-800">N/A</span>
-        </td>
-        <td data-th="Settings" className="text-base font-thin text-left">
+        {tab == 'visited' && (
+          <td data-th="visited" className="text-left">
+            <span className="text-lg text-green-800">6/2017</span>
+          </td>
+        )}
+
+        <td data-th="Settings" className="text-left ">
           <div className="flex flex-col gap-2 text-gray-700">
             <button className="flex items-center w-full gap-2 items-between text-small">
               <RiEdit2Line size="1.25em" />
               <span>Edit</span>
             </button>
-            <button className="flex items-center w-full gap-2 items-between text-small">
+            <button
+              onClick={(e) => removeSite(e)}
+              className="flex items-center w-full gap-2 items-between text-small">
               <RiDeleteBinLine size="1.25em" />
-              <span>Delete</span>
+              <span id={site.id}>Delete</span>
             </button>
           </div>
         </td>
       </tr>
     )
   }
-  const visitedSiteItems = visitedSites.map((site, index) => (
-    <VisitedSiteItems key={index} site={site} />
-  ))
 
-  const VisitedTable = () => {
+  const VisitedTable = ({data}) => {
     return (
       <table
         className="w-full mt-12 border-separate"
@@ -82,20 +106,27 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             <th className="text-sm font-thin text-left text-green-800 uppercase ">
               Avg. Rating
             </th>
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
-              Your Rating
-            </th>
+            {tab == 'visited' && (
+              <th className="text-sm font-thin text-left text-green-800 uppercase ">
+                Your Rating
+              </th>
+            )}
             <th className="text-sm font-thin text-left text-green-800 uppercase ">
               List
             </th>
-            <th className="text-sm font-thin text-left text-green-800 uppercase ">
-              Visited
-            </th>
+            {tab == 'visited' && (
+              <th className="text-sm font-thin text-left text-green-800 uppercase ">
+                Visited
+              </th>
+            )}
+
             <th className="text-sm font-thin text-left text-green-800 uppercase ">
               Settings
             </th>
           </tr>
-          {visitedSiteItems}
+          {data?.map((site, index) => (
+            <VisitedSiteItems key={index} site={site} />
+          ))}
         </tbody>
       </table>
     )
@@ -115,15 +146,25 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
         />
         <section className="w-full col-span-3">
           <div className="flex gap-8">
-            <button className="px-4 py-2 text-2xl font-bold bg-orange-200 rounded-lg">
+            <button
+              onClick={() => setTab('visited')}
+              className={`transition-all px-4 py-2 text-2xl font-bold rounded-lg border-transparent border-2 ${
+                tab == 'visited' ? tabStyles.active : tabStyles.inActive
+              }`}>
               Visited
             </button>
-            <button className="px-4 py-2 text-2xl font-bold bg-orange-200 rounded-lg">
+            <button
+              onClick={() => setTab('bookmark')}
+              className={`transition-all px-4 py-2 text-2xl font-bold rounded-lg border-transparent border-2 ${
+                tab == 'bookmark' ? tabStyles.active : tabStyles.inActive
+              }`}>
               Want to Visit
             </button>
           </div>
           {/* TABLE */}
-          <VisitedTable />
+          <VisitedTable
+            data={tab == 'visited' ? visitedSites : bookmarkedSites}
+          />
         </section>
       </main>
     </Layout>

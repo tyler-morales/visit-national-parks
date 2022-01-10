@@ -37,7 +37,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
               <img
                 src={site.img}
                 alt={site.fullName}
-                className="rounded-lg w-[150px] h-auto"
+                className="rounded-lg w-[150px] h-[100px] object-cover"
               />
             </a>
           </Link>

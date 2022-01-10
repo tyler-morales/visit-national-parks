@@ -26,8 +26,6 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
 
-  console.log(tab, currentVisitedSites.length, currentBookmarkedSites.length)
-
   const removeSite = async ({id, name}) => {
     try {
       // Delete site from database
@@ -37,9 +35,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
       let collection =
         tab == 'visited' ? currentVisitedSites : currentBookmarkedSites
 
-      let newSites = collection.filter((item) => {
-        return item.id != id
-      })
+      let newSites = collection.filter((item) => item.id != id)
 
       tab == 'visited'
         ? setVisitedSites(newSites)
@@ -52,7 +48,6 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
   }
 
   const VisitedSiteItems = ({site, num}) => {
-    // console.log(num)
     return (
       <tr className="w-full">
         <td data-th="Image" className="text-left ">

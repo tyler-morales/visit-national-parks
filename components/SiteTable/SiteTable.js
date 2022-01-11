@@ -49,6 +49,10 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     }
   }
 
+  const editSite = ({id, name}) => {
+    console.log(`Editing ${name} | id:${id} `)
+  }
+
   const TableItems = ({site, num}) => {
     return (
       <tr className="w-full">
@@ -92,7 +96,9 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
 
         <td data-th="Settings" className="text-left ">
           <div className="flex flex-col gap-2 text-gray-700">
-            <button className="flex items-center w-full gap-2 items-between text-small">
+            <button
+              onClick={() => editSite(site, num)}
+              className="flex items-center w-full gap-2 items-between text-small">
               <RiEdit2Line size="1.25em" />
               <span>Edit</span>
             </button>

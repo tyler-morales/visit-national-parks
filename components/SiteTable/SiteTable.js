@@ -2,15 +2,21 @@ import {useState} from 'react'
 import Link from 'next/link'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {RiEdit2Line} from 'react-icons/ri'
-import {deleteSite} from '../../src/graphql/mutations'
+import {deleteSite, updateSite} from '../../src/graphql/mutations'
 import {API} from 'aws-amplify'
 import {ToastContainer, toast} from 'react-toastify'
+import useModal from '../../hooks/useModal'
+import Modal from '../../components/Modal/Modal'
+
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
+  // Modal state
+  const {modalOpen, close, open} = useModal()
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
   const [sortDir, setSortDir] = useState('ASC')
+  const [modalSite, setModalSite] = useState(null)
 
   const sort = () => {
     if (sortDir == 'ASC') {
@@ -49,8 +55,30 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     }
   }
 
-  const editSite = ({id, name}) => {
-    console.log(`Editing ${name} | id:${id} `)
+  const editSite = (site) => {
+    setModalSite(site)
+    open()
+  }
+
+  const editRating = async (site, rating) => {
+    console.log(site.id, site.rating, site.owner)
+
+    try {
+      // Edit site rating to database
+      await API.graphql({
+        query: updateSite,
+        variables: {
+          input: {
+            id: site?.id,
+            rating,
+            owner: site?.username,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const TableItems = ({site, num}) => {
@@ -81,7 +109,9 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
         </td>
         {tab == 'visited' && (
           <td data-th="Your-rating" className="text-left ">
-            <span className="text-lg font-bold text-green-800">4.5</span>
+            <span className="text-lg font-bold text-green-800">
+              {site.rating || 'n/a'}
+            </span>
           </td>
         )}
 
@@ -183,6 +213,15 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
   }
   return (
     <>
+      {modalOpen && (
+        <Modal
+          modalOpen={modalOpen}
+          handleClose={close}
+          site={modalSite}
+          editRating={editRating}
+          // onChangeText={onChangeText}
+        />
+      )}
       <SitesTable
         data={tab == 'visited' ? currentVisitedSites : currentBookmarkedSites}
       />

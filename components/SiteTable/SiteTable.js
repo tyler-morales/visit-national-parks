@@ -61,6 +61,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
   }
 
   const editRating = async (site, rating) => {
+    console.log(rating)
     console.log(site.id, site.rating, site.owner)
 
     try {

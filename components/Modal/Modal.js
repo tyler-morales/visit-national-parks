@@ -1,13 +1,13 @@
 import {useState} from 'react'
+import StarRating from '../StarRating/StarRating'
 import Backdrop from './Backdrop'
 
 const Modal = ({handleClose, site, editRating}) => {
   const [rating, setRating] = useState(site?.rating)
 
-  const changeRating = () => {
-    rating = +rating
-    setRating((rating += 1))
-    editRating(site, rating)
+  const changeRating = (stars) => {
+    setRating(stars)
+    editRating(site, stars)
   }
 
   return (
@@ -31,8 +31,9 @@ const Modal = ({handleClose, site, editRating}) => {
           {/* Rating and Collection */}
           <div className="flex w-full gap-8">
             <div className="flex items-center gap-2 font-bold text-green-800 uppercase">
-              <span onClick={changeRating}>Your Rating</span>
-              <span>{rating}</span>
+              <span>
+                <StarRating rating={rating} changeRating={changeRating} />
+              </span>
             </div>
             <div className="font-bold text-green-800 uppercase">Collection</div>
           </div>

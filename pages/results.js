@@ -41,7 +41,6 @@ export default function results({parks, params}) {
   const childCompRef = useRef(null)
   const {data, total} = parks
   const {state, q, start} = params
-  console.log(total)
 
   return (
     <Layout>

@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react'
 import {Parallax} from 'react-parallax'
 import {AiFillCaretDown} from 'react-icons/ai'
 import {v4 as uuidv4} from 'uuid'
-
 import Layout from '../../components/Layout'
 import {useRouter} from 'next/router'
 import {MdBookmark, MdBookmarkBorder} from 'react-icons/md'
@@ -27,14 +26,18 @@ export default function Park({
   const user = checkUser()
   const router = useRouter()
 
+  if (router.isFallback) {
+    return 'loading'
+  }
+
   // Get updated data
   const refreshData = () => {
     router.replace({pathname: router.asPath}, undefined, {scroll: false})
   }
 
-  useEffect(() => {
-    refreshData()
-  }, [])
+  // useEffect(() => {
+  //   refreshData()
+  // }, [])
 
   const [toggleDropdown, setToggleDropdown] = useState(false)
   const [selectedCollection, setCollection] = useState(null)
@@ -323,7 +326,14 @@ export default function Park({
   )
 }
 
-export async function getServerSideProps({params}) {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
+
+export async function getStaticProps({params}) {
   const URL = 'https://developer.nps.gov/api/v1/'
 
   // Call API Data
@@ -339,6 +349,10 @@ export async function getServerSideProps({params}) {
   )
 
   const parkData = await res.json()
+
+  if (!parkData) {
+    return {notFound: true}
+  }
 
   const park = parkData?.data[0]
 
@@ -364,5 +378,6 @@ export async function getServerSideProps({params}) {
       images,
       allSites,
     },
+    revalidate: 10,
   }
 }

@@ -21,7 +21,7 @@ const Modal = ({handleClose, site, editRating}) => {
             <img
               src={site.img}
               alt={site.name}
-              className="w-[300px] h-auto object-cover rounded-md"
+              className="w-[300px] h-[200px] object-cover rounded-md"
             />
             <h2 className="text-4xl font-bold text-green-800 align-end">
               {site.name}

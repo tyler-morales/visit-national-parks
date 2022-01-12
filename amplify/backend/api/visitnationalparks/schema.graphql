@@ -8,8 +8,13 @@ type Site
     ]
   ) {
   id: ID!
-  name: String!
+  code: String!
+  owner: String!
   visited: Boolean
   bookmarked: Boolean
-  owner: String!
+  name: String
+  img: String
+  rating: String
+  avgRating: String
+  dateVisited: String
 }

@@ -5,10 +5,15 @@ export const onCreateSite = /* GraphQL */ `
   subscription OnCreateSite {
     onCreateSite {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -18,10 +23,15 @@ export const onUpdateSite = /* GraphQL */ `
   subscription OnUpdateSite {
     onUpdateSite {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -31,10 +41,15 @@ export const onDeleteSite = /* GraphQL */ `
   subscription OnDeleteSite {
     onDeleteSite {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }

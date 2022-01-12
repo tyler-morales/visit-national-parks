@@ -8,10 +8,15 @@ export const createSite = /* GraphQL */ `
   ) {
     createSite(input: $input, condition: $condition) {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -24,10 +29,15 @@ export const updateSite = /* GraphQL */ `
   ) {
     updateSite(input: $input, condition: $condition) {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -40,10 +50,15 @@ export const deleteSite = /* GraphQL */ `
   ) {
     deleteSite(input: $input, condition: $condition) {
       id
-      name
+      code
+      owner
       visited
       bookmarked
-      owner
+      name
+      img
+      rating
+      avgRating
+      dateVisited
       createdAt
       updatedAt
     }

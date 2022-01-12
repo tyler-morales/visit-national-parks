@@ -22,7 +22,6 @@ function Login() {
 
   const toggle = () => {
     const passwordInput = document.getElementById('password')
-    console.log(passwordInput)
     if (passwordInput.type === 'password') {
       passwordInput.type = 'text'
       setIsPasswordVisible(true)
@@ -34,8 +33,6 @@ function Login() {
 
   const signIn = async ({email, password}) => {
     try {
-      console.log('Signing in')
-      console.log(email, password)
       setSigningIn(true)
       await Auth.signIn(email, password)
 
@@ -162,7 +159,6 @@ export async function getServerSideProps({req, res}) {
   const {Auth} = withSSRContext({req})
   try {
     const user = await Auth.currentAuthenticatedUser()
-    console.log(user)
     if (user) {
       return {
         redirect: {

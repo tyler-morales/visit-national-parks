@@ -94,6 +94,8 @@ export default function Park({
   // Only call the fetchUserSite method if `user` exists
   const {data} = useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
+
+  // My latest attempt at updating the button state on an initial page occurance is using subscriptions
   useEffect(() => {
     subscribe(parkCode, user?.username)
   }, [user])
@@ -388,19 +390,4 @@ export async function getStaticProps({params}) {
     },
     revalidate: 1,
   }
-}
-
-const handleDBQuery = async () => {
-  await API.graphql({
-    query: updateSite,
-    variables: {
-      input: {
-        id: data?.id,
-        bookmarked: true,
-        owner: user?.username,
-      },
-    },
-    authMode: 'AMAZON_COGNITO_USER_POOLS',
-  })
-  console.log(`${name} Bookmarked`)
 }

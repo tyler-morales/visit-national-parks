@@ -31,8 +31,7 @@ export default function Park({
   const [toggleDropdown, setToggleDropdown] = useState(false)
   const [visited, setVisited] = useState(null)
   const [bookmarked, setBookmarked] = useState(null)
-
-  // console.log({bookmarked, visited})
+  const [id, setId] = useState(uuidv4())
 
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
@@ -65,7 +64,7 @@ export default function Park({
         setVisited(false)
 
         const siteInfo = {
-          id: uuidv4(),
+          id,
           name: fullName,
           code: parkCode,
           img: url,
@@ -90,33 +89,8 @@ export default function Park({
       console.log('Site not added by user', data, err)
     }
   }
-
   // Only call the fetchUserSite method if `user` exists
   const {data} = useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
-
-
-  // My latest attempt at updating the button state on an initial page occurance is using subscriptions
-  useEffect(() => {
-    subscribe(parkCode, user?.username)
-  }, [user])
-
-  async function subscribe(code, owner) {
-    console.log(code, owner)
-    await API.graphql({query: onCreateSite}).subscribe({
-      next: (siteData) => {
-        console.log(
-          'Subscribed to data',
-          siteData?.value?.data?.onCreateSite?.id
-        )
-      },
-    })
-  }
-
-  // if (data) {
-  //   console.log(data?.id)
-  // } else {
-  //   console.log('waiting for data', error)
-  // }
 
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
@@ -137,7 +111,7 @@ export default function Park({
           query: updateSite,
           variables: {
             input: {
-              id: data.id,
+              id,
               visited: true,
               bookmarked: false,
               owner: user?.username,
@@ -153,7 +127,6 @@ export default function Park({
       console.error(err)
     }
   }
-
   // When the user clicks on the button, update the state in the UI and database
   const handleDBQuery = async () => {
     try {
@@ -170,9 +143,8 @@ export default function Park({
           query: updateSite,
           variables: {
             input: {
-              id: data?.id,
+              id,
               bookmarked: true,
-              owner: user?.username,
             },
           },
           authMode: 'AMAZON_COGNITO_USER_POOLS',
@@ -187,7 +159,7 @@ export default function Park({
           query: updateSite,
           variables: {
             input: {
-              id: data?.id,
+              id,
               bookmarked: false,
             },
           },
@@ -203,7 +175,7 @@ export default function Park({
           query: updateSite,
           variables: {
             input: {
-              id: data?.id,
+              id,
               visited: false,
               bookmarked: false,
             },
@@ -214,7 +186,7 @@ export default function Park({
         setBookmarked(false)
       }
     } catch (err) {
-      console.error(err)
+      console.error('errored out', err)
     }
   }
 

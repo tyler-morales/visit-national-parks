@@ -6,7 +6,7 @@ import {AiFillCaretDown} from 'react-icons/ai'
 import {v4 as uuidv4} from 'uuid'
 
 import checkUser from '../../hooks/checkUser'
-import {API, graphqlOperation} from 'aws-amplify'
+import {API} from 'aws-amplify'
 
 import {MdBookmark, MdBookmarkBorder} from 'react-icons/md'
 import {BsCheckLg} from 'react-icons/bs'
@@ -14,7 +14,6 @@ import {BsCheckLg} from 'react-icons/bs'
 import useSWR from 'swr'
 import {createSite, updateSite} from '../../src/graphql/mutations'
 import {listSites, getSite} from '../../src/graphql/queries'
-import {onCreateSite, onUpdateSite} from '../../src/graphql/subscriptions'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
 
 export default function Park({

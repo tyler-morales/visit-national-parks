@@ -33,6 +33,8 @@ export default function Park({
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
 
+  console.log({bookmarked, visited, toggleDropdown})
+
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
     try {
@@ -56,6 +58,10 @@ export default function Park({
       // Site is visited, set UI to visited
       if (userData?.visited) {
         setVisited(true)
+      }
+
+      if (userData != null) {
+        setId(userData?.id)
       }
 
       // Create site object if no site exists
@@ -86,13 +92,14 @@ export default function Park({
       }
       return userData
     } catch (err) {
-      console.log('Site not added by user', data, err)
+      console.log('Site not added by user', err)
     }
   }
   // Only call the fetchUserSite method if `user` exists
   const {data} = useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
   const openDropdown = () => {
+    console.log('dropdown clicked')
     if (!user) alert('Please sign in or create an account')
 
     if (user) {
@@ -103,6 +110,7 @@ export default function Park({
       }
     }
   }
+
   const toggleVisitedQuery = async () => {
     try {
       // A site exists, update it
@@ -121,6 +129,7 @@ export default function Park({
         })
         setVisited(true)
         setBookmarked(false)
+        setToggleDropdown(false)
         console.log(`${name} visited`)
       }
     } catch (err) {
@@ -277,20 +286,22 @@ export default function Park({
         </div>
 
         {/* Dropdown */}
-        {bookmarked ||
-          (!bookmarked && !visited && (
-            <button
-              onClick={toggleVisitedQuery}
-              className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black bg-blue-300 rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
-              <span
-                className={`flex items-center gap-3 px-4 ${
-                  toggleDropdown ? 'flex' : 'hidden'
-                }`}>
-                <BsCheckLg />
-                <span className="py-2">Visited</span>
-              </span>
-            </button>
-          ))}
+        {/* {bookmarked ||
+          (!visited && ( */}
+        <button
+          onClick={toggleVisitedQuery}
+          className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
+          <span
+            className={`flex items-center gap-3 px-4 ${
+              toggleDropdown
+                ? 'flex bg-white border-2 border-blue-600 rounded-md hover:bg-green-600 hover:border-green-800 hover:text-white'
+                : 'hidden'
+            }`}>
+            <BsCheckLg />
+            <span className="py-2">Visited</span>
+          </span>
+        </button>
+        {/* ))} */}
       </div>
 
       {/* Description */}

@@ -6,6 +6,7 @@ import activities from '../data/activities.json'
 import topics from '../data/topics.json'
 import Layout from '../components/Layout'
 import {IoChevronBack, IoChevronForward} from 'react-icons/io5'
+import Image from 'next/image'
 
 let ids = [...activities, ...topics]
 
@@ -41,7 +42,6 @@ export default function results({parks, params}) {
   const childCompRef = useRef(null)
   const {data, total} = parks
   const {state, q, start} = params
-  console.log(total)
 
   return (
     <Layout>
@@ -62,11 +62,14 @@ export default function results({parks, params}) {
           data.map(({parkCode, fullName, images}) => (
             <Link href={`/park/${parkCode}`} key={parkCode}>
               <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
-                <img
-                  src={images[0].url}
-                  alt={images[0].altText}
-                  className="object-cover w-full h-64 rounded-md"
-                />
+                <div className="relative h-64">
+                  <Image
+                    layout="fill"
+                    src={images[0].url}
+                    alt={images[0].altText}
+                    className="object-cover w-full rounded-md"
+                  />
+                </div>
                 <h3 className="mt-2 text-2xl font-bold text-green-800">
                   {fullName}
                 </h3>

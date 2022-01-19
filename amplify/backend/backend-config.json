@@ -38,7 +38,9 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2023-01-17T03:32:56.090Z",
+              "description": "visit national parks api-key"
             }
           },
           "additionalAuthenticationProviders": [

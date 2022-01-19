@@ -22,8 +22,9 @@
     "react-parallax": "^3.3.0",
     "react-select": "^5.2.1",
     "react-toastify": "^8.1.0",
+    "sharp": "^0.29.3",
     "storybook-formik": "^2.2.0",
-    "swr": "^1.1.1",
+    "swr": "^1.1.2",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },

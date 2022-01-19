@@ -33,8 +33,6 @@ export default function Park({
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
 
-  console.log({bookmarked, visited, toggleDropdown})
-
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
     try {
@@ -286,8 +284,6 @@ export default function Park({
         </div>
 
         {/* Dropdown */}
-        {/* {bookmarked ||
-          (!visited && ( */}
         <button
           onClick={toggleVisitedQuery}
           className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
@@ -301,7 +297,6 @@ export default function Park({
             <span className="py-2">Visited</span>
           </span>
         </button>
-        {/* ))} */}
       </div>
 
       {/* Description */}

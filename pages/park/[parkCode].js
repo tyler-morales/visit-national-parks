@@ -232,14 +232,23 @@ export default function Park({
         </h1>
 
         {/* Image */}
-        <figure>
-          <Parallax
+        <figure className="block">
+          <Image
+            src={url}
+            alt={altText}
+            height={450}
+            width={1080}
+            layout="responsive"
+            className="object-cover rounded-md"
+            // style={{transform: 'translateX(${offset / 2}px)'}}
+          />
+          {/* <Parallax
             bgImage={url}
             bgImageAlt={altText}
             strength={100}
             style={{borderRadius: '12px'}}>
             <div className="h-[450px]" />
-          </Parallax>
+          </Parallax> */}
           <figcaption className="mt-3 text-sm italic text-center">
             <span>{caption}</span>
             <span className="italic"> {credit}</span>

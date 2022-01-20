@@ -4,6 +4,7 @@ import Layout from '../../components/Layout'
 import {useRouter} from 'next/router'
 import {AiFillCaretDown} from 'react-icons/ai'
 import {v4 as uuidv4} from 'uuid'
+import Head from 'next/head'
 
 import checkUser from '../../hooks/checkUser'
 import {API} from 'aws-amplify'
@@ -14,6 +15,8 @@ import {BsCheckLg} from 'react-icons/bs'
 import useSWR from 'swr'
 import {createSite, updateSite} from '../../src/graphql/mutations'
 import {listSites, getSite} from '../../src/graphql/queries'
+
+import Image from 'next/image'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
 
 export default function Park({
@@ -203,124 +206,150 @@ export default function Park({
   const {url, altText, caption, credit} = images[0]
 
   return (
-    <Layout>
-      <button
-        onClick={() => router.back()}
-        className="text-sm text-gray-600-700">
-        ↞Back to Results
-      </button>
+    <>
+      <Head>
+        <title>{fullName}</title>
+        <meta property="og:title" content={fullName} key="title" />
+        <meta
+          name="description"
+          content={
+            'Explore ' + fullName + ' and discover the great American outdoors'
+          }></meta>
+      </Head>
 
-      {/* Title */}
-      <span className="block mb-2 text-center">{designation}</span>
-      <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
-        {name}
-      </h1>
+      <Layout>
+        <button
+          onClick={() => router.back()}
+          aria-label="Back to results"
+          className="text-sm text-gray-600-700">
+          ↞Back to Results
+        </button>
 
-      {/* Image */}
-      <figure>
-        <Parallax
-          bgImage={url}
-          bgImageAlt={altText}
-          strength={100}
-          style={{borderRadius: '12px'}}>
-          <div className="h-[450px]" />
-        </Parallax>
-        <figcaption className="mt-3 text-sm italic text-center">
-          <span>{caption}</span>
-          <span className="italic"> {credit}</span>
-        </figcaption>
-      </figure>
+        {/* Title */}
+        <span className="block mb-2 text-center">{designation}</span>
+        <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
+          {name}
+        </h1>
 
-      <hr className="my-12 border-gray-400" />
+        {/* Image */}
+        <figure>
+          <Parallax
+            bgImage={url}
+            bgImageAlt={altText}
+            strength={100}
+            style={{borderRadius: '12px'}}>
+            <div className="h-[450px]" />
+          </Parallax>
+          <figcaption className="mt-3 text-sm italic text-center">
+            <span>{caption}</span>
+            <span className="italic"> {credit}</span>
+          </figcaption>
+        </figure>
 
-      {/* Collection */}
-      <div className="relative my-8 w-max">
-        {/* Button */}
-        <div className="flex">
-          {!bookmarked && !visited && (
-            <button
-              onClick={handleDBQuery}
-              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              <span className="flex items-center gap-3 px-4">
-                <MdBookmarkBorder />
-                <span>Want to Visit</span>
-              </span>
-            </button>
-          )}
+        <hr className="my-12 border-gray-400" />
 
-          {bookmarked && (
-            <button
-              onClick={handleDBQuery}
-              className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              <span className="flex items-center gap-3 px-4">
-                <MdBookmark />
-                <span>Bookmarked</span>
-              </span>
-            </button>
-          )}
+        {/* Collection */}
+        <div className="relative my-8 w-max">
+          {/* Button */}
+          <div className="flex">
+            {!bookmarked && !visited && (
+              <button
+                aria-label="Bookmark"
+                onClick={handleDBQuery}
+                className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                <span className="flex items-center gap-3 px-4">
+                  <MdBookmarkBorder />
+                  <span>Want to Visit</span>
+                </span>
+              </button>
+            )}
 
-          {visited && (
-            <button
-              onClick={handleDBQuery}
-              className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-              <BsCheckLg />
-              <span>Visited</span>
-            </button>
-          )}
+            {bookmarked && (
+              <button
+                aria-label="Bookmarked"
+                onClick={handleDBQuery}
+                className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                <span className="flex items-center gap-3 px-4">
+                  <MdBookmark />
+                  <span>Bookmarked</span>
+                </span>
+              </button>
+            )}
 
-          {/* Arrow */}
-          {!visited && (
-            <button
-              onClick={openDropdown}
-              className={`px-4 py-3 pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
-                visited
-                  ? 'bg-green-600 hover:bg-green-700'
-                  : 'bg-blue-600 hover:bg-blue-700'
+            {visited && (
+              <button
+                aria-label="Visited"
+                onClick={handleDBQuery}
+                className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+                <BsCheckLg />
+                <span>Visited</span>
+              </button>
+            )}
+
+            {/* Arrow */}
+            {!visited && (
+              <button
+                aria-label="Dropdown arrow"
+                onClick={openDropdown}
+                className={`px-4 py-3 pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
+                  visited
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-blue-600 hover:bg-blue-700'
+                }`}>
+                <AiFillCaretDown />
+              </button>
+            )}
+          </div>
+
+          {/* Dropdown */}
+          <button
+            aria-label="Visited"
+            onClick={toggleVisitedQuery}
+            className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
+            <span
+              className={`flex items-center gap-3 px-4 ${
+                toggleDropdown
+                  ? 'flex bg-white border-2 border-blue-600 rounded-md hover:bg-green-600 hover:border-green-800 hover:text-white'
+                  : 'hidden'
               }`}>
-              <AiFillCaretDown />
-            </button>
-          )}
+              <BsCheckLg />
+              <span className="py-2">Visited</span>
+            </span>
+          </button>
         </div>
 
-        {/* Dropdown */}
-        <button
-          onClick={toggleVisitedQuery}
-          className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
-          <span
-            className={`flex items-center gap-3 px-4 ${
-              toggleDropdown
-                ? 'flex bg-white border-2 border-blue-600 rounded-md hover:bg-green-600 hover:border-green-800 hover:text-white'
-                : 'hidden'
-            }`}>
-            <BsCheckLg />
-            <span className="py-2">Visited</span>
-          </span>
-        </button>
-      </div>
+        {/* Description */}
+        <h2 className="mb-3 text-3xl font-bold text-green-800">Overview</h2>
+        <p className="mt-4">{description}</p>
 
-      {/* Description */}
-      <h3 className="mb-3 text-3xl font-bold text-green-800">Overview</h3>
-      <p className="mt-4">{description}</p>
-
-      {/* Images */}
-      <h3 className="mt-24 text-3xl font-bold text-green-800 mb-7">
-        More Images
-      </h3>
-      <section className="gap-10 columns-1 sm:columns-2 md:columns-3">
-        {images.map((img, index) => {
-          return (
-            <figure
-              key={index}
-              className="mb-10 text-center break-inside-avoid-column">
-              <img className="rounded-xl" src={img.url} alt={img.altText} />
-              <figcaption className="mt-4 text-sm italic text-gray-600 ">
-                {img.altText}
-              </figcaption>
-            </figure>
-          )
-        })}
-      </section>
-    </Layout>
+        {/* Images */}
+        <h2 className="mt-24 text-3xl font-bold text-green-800 mb-7">
+          More Images
+        </h2>
+        <section className="gap-10 columns-1 sm:columns-2 md:columns-3">
+          {images.map((img, index) => {
+            return (
+              // Next Image tag
+              <figure
+                key={index}
+                className="block mb-10 text-center break-inside-avoid-column">
+                <Image
+                  layout="responsive"
+                  width="100%"
+                  height="100%"
+                  className="object-cover w-full rounded-xl"
+                  src={img.url}
+                  alt={img.altText}
+                />
+                <figcaption className="z-10 mt-4 text-sm italic text-gray-600">
+                  {img.altText}
+                </figcaption>
+              </figure>
+            )
+          })}
+        </section>
+      </Layout>
+    </>
   )
 }
 

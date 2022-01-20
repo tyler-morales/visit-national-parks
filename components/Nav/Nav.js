@@ -45,8 +45,9 @@ export const Nav = ({mockUser}) => {
               <img
                 src="/images/logo.svg"
                 alt="Parkway logo"
+                width="200px"
+                height="64px"
                 className="cursor-pointer"
-                style={{width: '200px', height: 'auto'}}
               />
             </a>
           </Link>

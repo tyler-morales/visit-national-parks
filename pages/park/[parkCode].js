@@ -1,5 +1,4 @@
-import {useState, useEffect} from 'react'
-import {Parallax} from 'react-parallax'
+import {useState} from 'react'
 import Layout from '../../components/Layout'
 import {useRouter} from 'next/router'
 import {AiFillCaretDown} from 'react-icons/ai'
@@ -14,7 +13,7 @@ import {BsCheckLg} from 'react-icons/bs'
 
 import useSWR from 'swr'
 import {createSite, updateSite} from '../../src/graphql/mutations'
-import {listSites, getSite} from '../../src/graphql/queries'
+import {listSites} from '../../src/graphql/queries'
 
 import Image from 'next/image'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
@@ -96,7 +95,7 @@ export default function Park({
     }
   }
   // Only call the fetchUserSite method if `user` exists
-  const {data} = useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
+  useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
   const openDropdown = () => {
     console.log('dropdown clicked')
@@ -240,15 +239,8 @@ export default function Park({
             width={1080}
             layout="responsive"
             className="object-cover rounded-md"
-            // style={{transform: 'translateX(${offset / 2}px)'}}
+            style={{transform: 'translateY(${offset / 2}px)'}}
           />
-          {/* <Parallax
-            bgImage={url}
-            bgImageAlt={altText}
-            strength={100}
-            style={{borderRadius: '12px'}}>
-            <div className="h-[450px]" />
-          </Parallax> */}
           <figcaption className="mt-3 text-sm italic text-center">
             <span>{caption}</span>
             <span className="italic"> {credit}</span>
@@ -372,7 +364,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({params}) {
   const URL = 'https://developer.nps.gov/api/v1/'
 
-  // Call API Data
+  // Call API Data for /PARK
   const res = await fetch(
     `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
     {

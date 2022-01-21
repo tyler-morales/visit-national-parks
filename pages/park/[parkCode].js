@@ -91,7 +91,7 @@ export default function Park({
         </div>
 
         {/* Map */}
-        <MapBox latitude={latitude} longitude={longitude} title="Map" />
+        <MapBox coordinates={{latitude, longitude}} title="Map" />
 
         {/* Images */}
         <Images images={images} title="More Images" />

@@ -5,12 +5,14 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 mapboxgl.accessToken =
   'pk.eyJ1IjoidHlsZXItbW9yYWxlcyIsImEiOiJja3lvcmVxZTkwMHN0MnVzMmtpdzcxZXVxIn0.X7-oB5R1wF2YFD294ThFaQ'
 
-export default function MapBox({latitude, longitude, title}) {
+export default function MapBox({coordinates, title}) {
+  const {longitude, latitude} = coordinates
+
   const mapContainer = useRef(null)
   const map = useRef(null)
   const [lng, setLng] = useState(longitude)
   const [lat, setLat] = useState(latitude)
-  const [zoom, setZoom] = useState(9)
+  const [zoom, setZoom] = useState(7)
 
   useEffect(() => {
     if (map.current) return // initialize map only once
@@ -35,7 +37,10 @@ export default function MapBox({latitude, longitude, title}) {
     <section className="mt-24">
       <h2 className="text-3xl font-bold text-green-800">{title}</h2>
       {/* Map */}
-      <div ref={mapContainer} className="h-[500px] w-full rounded-md mt-10" />
+      <div
+        ref={mapContainer}
+        className="h-[500px] w-full rounded-md mt-10 border-2 border-green-700"
+      />
     </section>
   )
 }

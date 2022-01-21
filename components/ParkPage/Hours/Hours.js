@@ -43,13 +43,27 @@ export default function Hours({operatingHours, title}) {
         </div>
       </div>
       <ul className="mt-4 text-lg text-black font-display">
-        <li>Sunday:&nbsp;{sunday}</li>
-        <li>Monday:&nbsp;{monday}</li>
-        <li>Tuesday:&nbsp;{tuesday}</li>
-        <li>Wednesday:&nbsp;{wednesday}</li>
-        <li>Thursday:&nbsp;{thursday}</li>
-        <li>Friday:&nbsp;{friday}</li>
-        <li>Saturday:&nbsp;{saturday}</li>
+        <li>
+          <span className="font-bold">Sunday:</span>&nbsp;{sunday}
+        </li>
+        <li>
+          <span className="font-bold">Monday:</span>&nbsp;{monday}
+        </li>
+        <li>
+          <span className="font-bold">Tuesday:</span>&nbsp;{tuesday}
+        </li>
+        <li>
+          <span className="font-bold">Wednesday:</span>&nbsp;{wednesday}
+        </li>
+        <li>
+          <span className="font-bold">Thursday:</span>&nbsp;{thursday}
+        </li>
+        <li>
+          <span className="font-bold">Friday:</span>&nbsp;{friday}
+        </li>
+        <li>
+          <span className="font-bold">Saturday:</span>&nbsp;{saturday}
+        </li>
       </ul>
     </section>
   )

@@ -77,7 +77,7 @@ export default function Park({
           title="Overview"
         />
 
-        <div className="grid gap-10 mt-10 col-1 md:grid-cols-4">
+        <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
           {/* Hours */}
           <Hours operatingHours={operatingHours} title="Hours" />
           <Fees

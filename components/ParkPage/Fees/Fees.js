@@ -42,7 +42,7 @@ export default function Fees({entranceFees, entrancePasses, title}) {
 
   return (
     <section className="col-span-2">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col w-full gap-4 md:items-center md:flex-row">
         <h2 className="text-3xl font-bold text-green-800">{title}</h2>
         {/* Buttons */}
         <div>

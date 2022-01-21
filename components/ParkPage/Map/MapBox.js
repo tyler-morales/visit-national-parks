@@ -2,13 +2,14 @@ import {useState} from 'react'
 import MapGL, {Marker, Popup} from 'react-map-gl'
 
 import {FaMapMarkerAlt} from 'react-icons/fa'
+import {IoMdMap} from 'react-icons/io'
 
 // mapboxgl.accessToken =
 //   'pk.eyJ1IjoidHlsZXItbW9yYWxlcyIsImEiOiJja3lvcmVxZTkwMHN0MnVzMmtpdzcxZXVxIn0.X7-oB5R1wF2YFD294ThFaQ'
 const MAPBOX_TOKEN =
   'pk.eyJ1IjoidHlsZXItbW9yYWxlcyIsImEiOiJja3lvcmVxZTkwMHN0MnVzMmtpdzcxZXVxIn0.X7-oB5R1wF2YFD294ThFaQ'
 
-export default function MapBox({coordinates, fullName, title}) {
+export default function MapBox({coordinates, fullName, parkCode: code, title}) {
   const {latitude, longitude} = coordinates
 
   const [viewport, setViewport] = useState({
@@ -21,7 +22,7 @@ export default function MapBox({coordinates, fullName, title}) {
 
   return (
     <section className="mt-24">
-      <h2 className="text-3xl font-bold text-green-800">{title}</h2>
+      <h2 className="mb-10 text-3xl font-bold text-green-800">{title}</h2>
       {/* Map */}
       <MapGL
         {...viewport}
@@ -53,14 +54,24 @@ export default function MapBox({coordinates, fullName, title}) {
             style={{background: 'purple'}}
             anchor="top">
             <div className="px-4">
-              <h3 className="mb-2 text-lg">{fullName}</h3>
-              <a
-                className=""
-                href={`http://maps.google.com/maps?q=${latitude}+${longitude}`}>
-                <span className="block w-full py-2 text-center text-white bg-blue-700 rounded-md font-display">
-                  Directions
-                </span>
-              </a>
+              <h3 className="px-4 mb-2 text-lg">{fullName}</h3>
+              <div className="flex flex-col gap-2">
+                <a
+                  target="_blank"
+                  href={`http://maps.google.com/maps?q=${latitude}+${longitude}`}>
+                  <div className="flex items-center justify-center w-full gap-4 py-2 text-center text-white bg-blue-700 rounded-md font-display">
+                    <IoMdMap color="#fff" size="1.25em" />
+                    <span>Google Maps</span>
+                  </div>
+                </a>
+                <a
+                  target="_blank"
+                  href={`https://www.nps.gov/${code}/planyourvisit/driving.htm`}>
+                  <div className="flex items-center justify-center w-full gap-2 py-2 text-center text-blue-700 underline cursor-pointer font-display">
+                    <span>NPS Link</span>
+                  </div>
+                </a>
+              </div>
             </div>
           </Popup>
         )}

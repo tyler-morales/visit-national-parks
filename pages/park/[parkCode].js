@@ -94,6 +94,7 @@ export default function Park({
         <MapBox
           coordinates={{latitude, longitude}}
           fullName={fullName}
+          parkCode={parkCode}
           title="Map"
         />
 

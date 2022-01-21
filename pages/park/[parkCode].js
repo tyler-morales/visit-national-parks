@@ -17,6 +17,7 @@ import {createSite, updateSite} from '../../src/graphql/mutations'
 import {listSites} from '../../src/graphql/queries'
 
 import Image from 'next/image'
+import Images from '../../components/ParkPage/Images/Images'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
 
 export default function Park({
@@ -327,47 +328,27 @@ export default function Park({
         {/* General Info */}
         <h2 className="mb-3 text-3xl font-bold text-green-800">Overview</h2>
         <p className="mt-4">{description}</p>
-        <span className="block mt-4">
-          {states?.length > 2
-            ? `States: ${states.split(',').map((state) => `\n${state}`)}` //add space between state abbreviations
-            : `State: ${states}`}
-        </span>
 
-        <a
-          className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-min"
-          href={`tel:+${phoneNumber}`}>
-          <span className="flex flex-row items-center gap-2">
-            <AiFillPhone />
-            {phoneNumber}
+        <div className="flex items-center justify-between mt-8">
+          <span className="block ">
+            {states?.length > 2
+              ? `States: ${states.split(',').map((state) => `\n${state}`)}` //add space between state abbreviations
+              : `State: ${states}`}
           </span>
-        </a>
+
+          <a
+            className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-min"
+            href={`tel:+${phoneNumber}`}
+            name="Phone number">
+            <span className="flex flex-row items-center gap-2">
+              <AiFillPhone />
+              {phoneNumber}
+            </span>
+          </a>
+        </div>
 
         {/* Images */}
-        <h2 className="mt-24 text-3xl font-bold text-green-800 mb-7">
-          More Images
-        </h2>
-        <section className="gap-10 columns-1 sm:columns-2 md:columns-3">
-          {images.map((img, index) => {
-            return (
-              // Next Image tag
-              <figure
-                key={index}
-                className="block mb-10 text-center break-inside-avoid-column">
-                <Image
-                  layout="responsive"
-                  width="100%"
-                  height="100%"
-                  className="object-cover w-full rounded-xl"
-                  src={img.url}
-                  alt={img.altText}
-                />
-                <figcaption className="z-10 mt-4 text-sm italic text-gray-600">
-                  {img.altText}
-                </figcaption>
-              </figure>
-            )
-          })}
-        </section>
+        <Images images={images} title="More Images" />
       </Layout>
     </>
   )

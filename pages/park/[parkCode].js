@@ -4,7 +4,6 @@ import {useRouter} from 'next/router'
 import {AiFillCaretDown} from 'react-icons/ai'
 import {v4 as uuidv4} from 'uuid'
 import Head from 'next/head'
-import {AiFillPhone} from 'react-icons/ai'
 
 import checkUser from '../../hooks/checkUser'
 import {API} from 'aws-amplify'
@@ -18,6 +17,7 @@ import {listSites} from '../../src/graphql/queries'
 
 import Image from 'next/image'
 import Images from '../../components/ParkPage/Images/Images'
+import GeneralInfo from '../../components/ParkPage/GeneralInfo/GeneralInfo'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
 
 export default function Park({
@@ -326,26 +326,12 @@ export default function Park({
         </div>
 
         {/* General Info */}
-        <h2 className="mb-3 text-3xl font-bold text-green-800">Overview</h2>
-        <p className="mt-4">{description}</p>
-
-        <div className="flex items-center justify-between mt-8">
-          <span className="block ">
-            {states?.length > 2
-              ? `States: ${states.split(',').map((state) => `\n${state}`)}` //add space between state abbreviations
-              : `State: ${states}`}
-          </span>
-
-          <a
-            className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-min"
-            href={`tel:+${phoneNumber}`}
-            name="Phone number">
-            <span className="flex flex-row items-center gap-2">
-              <AiFillPhone />
-              {phoneNumber}
-            </span>
-          </a>
-        </div>
+        <GeneralInfo
+          description={description}
+          states={states}
+          phoneNumber={phoneNumber}
+          title="Overview"
+        />
 
         {/* Images */}
         <Images images={images} title="More Images" />

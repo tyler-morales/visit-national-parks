@@ -7,6 +7,7 @@ import Images from '../../components/ParkPage/Images/Images'
 import GeneralInfo from '../../components/ParkPage/GeneralInfo/GeneralInfo'
 import HeroImage from '../../components/ParkPage/HeroImage/HeroImage'
 import CollectionButton from '../../components/ParkPage/CollectionButton/CollectionButton'
+import Hours from '../../components/ParkPage/Hours/Hours'
 
 export default function Park({
   name,
@@ -17,6 +18,7 @@ export default function Park({
   images,
   states,
   contacts,
+  operatingHours,
   thingsToDo,
 }) {
   const router = useRouter()
@@ -72,6 +74,9 @@ export default function Park({
           title="Overview"
         />
 
+        {/* Hours */}
+        <Hours operatingHours={operatingHours} title="Hours" />
+
         {/* Images */}
         <Images images={images} title="More Images" />
       </Layout>
@@ -118,6 +123,7 @@ export async function getStaticProps({params}) {
     fullName,
     states,
     contacts,
+    operatingHours,
   } = park
 
   // Call API Data for /THINGS-TO-DO
@@ -149,6 +155,7 @@ export async function getStaticProps({params}) {
       images,
       states,
       contacts,
+      operatingHours,
       thingsToDo,
     },
     revalidate: 60,

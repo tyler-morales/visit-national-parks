@@ -10,7 +10,6 @@ const tabStyles = {
 export default function Fees({entranceFees, entrancePasses, title}) {
   const [tab, setTab] = useState('fees')
 
-  console.log(entranceFees.length)
   function Fees() {
     return (
       <ul>

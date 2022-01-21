@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 import {AiFillCaretDown} from 'react-icons/ai'
 import {v4 as uuidv4} from 'uuid'
 import Head from 'next/head'
+import {AiFillPhone} from 'react-icons/ai'
 
 import checkUser from '../../hooks/checkUser'
 import {API} from 'aws-amplify'
@@ -25,6 +26,9 @@ export default function Park({
   parkCode,
   designation,
   images,
+  states,
+  contacts,
+  thingsToDo,
 }) {
   const router = useRouter()
   const user = checkUser()
@@ -33,6 +37,8 @@ export default function Park({
   const [visited, setVisited] = useState(null)
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
+
+  const phoneNumber = contacts?.phoneNumbers[0]?.phoneNumber
 
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
@@ -239,7 +245,6 @@ export default function Park({
             width={1080}
             layout="responsive"
             className="object-cover rounded-md"
-            style={{transform: 'translateY(${offset / 2}px)'}}
           />
           <figcaption className="mt-3 text-sm italic text-center">
             <span>{caption}</span>
@@ -319,9 +324,23 @@ export default function Park({
           </button>
         </div>
 
-        {/* Description */}
+        {/* General Info */}
         <h2 className="mb-3 text-3xl font-bold text-green-800">Overview</h2>
         <p className="mt-4">{description}</p>
+        <span className="block mt-4">
+          {states?.length > 2
+            ? `States: ${states.split(',').map((state) => `\n${state}`)}` //add space between state abbreviations
+            : `State: ${states}`}
+        </span>
+
+        <a
+          className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-min"
+          href={`tel:+${phoneNumber}`}>
+          <span className="flex flex-row items-center gap-2">
+            <AiFillPhone />
+            {phoneNumber}
+          </span>
+        </a>
 
         {/* Images */}
         <h2 className="mt-24 text-3xl font-bold text-green-800 mb-7">
@@ -384,7 +403,35 @@ export async function getStaticProps({params}) {
 
   const park = parkData?.data[0]
 
-  const {name, description, parkCode, designation, images, fullName} = park
+  const {
+    name,
+    description,
+    parkCode,
+    designation,
+    images,
+    fullName,
+    states,
+    contacts,
+  } = park
+
+  // Call API Data for /THINGS-TO-DO
+  const res2 = await fetch(
+    `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': '*',
+      },
+    }
+  )
+
+  const thingsToDoData = await res2.json()
+  const thingsToDo = thingsToDoData?.data
+
+  if (!thingsToDo) {
+    return {notFound: true}
+  }
 
   return {
     props: {
@@ -394,7 +441,106 @@ export async function getStaticProps({params}) {
       parkCode,
       designation,
       images,
+      states,
+      contacts,
+      thingsToDo,
     },
-    revalidate: 1,
+    revalidate: 60,
   }
 }
+
+/*
+ACTIVITIES
+
+   const activities = thingsToDo
+     ?.map((thing) => thing?.activities?.map((activity) => activity.name))
+     .flat()
+
+   const countedActivities = activities?.reduce(function (acc, curr) {
+     return acc[curr] ? ++acc[curr] : (acc[curr] = 1), acc
+   }, {})
+   console.log(countedActivities)
+
+{
+  "Snowmobiling": 1,
+  "Hiking": 49,
+  "Front-Country Hiking": 4,
+  "Mountain Biking": 10,
+  "Self-Guided Tours - Walking": 2,
+  "Skiing": 20,
+  "Snowshoeing": 1
+}
+
+{
+  "Biking": 1,
+  "Rock Climbing": 1,
+  "Auto and ATV": 1,
+  "Museum Exhibits": 2,
+  "Junior Ranger Program": 1,
+  "Hiking": 2
+}
+
+{
+  "Cultural Demonstrations": 1,
+  "Guided Tours": 1,
+  "Museum Exhibits": 1,
+  "Hiking": 2,
+  "Scenic Driving": 1
+}
+
+{
+  "Astronomy": 2,
+  "Camping": 2,
+  "Wildlife Watching": 1,
+  "Hiking": 4,
+  "Scenic Driving": 5,
+  "Biking": 1,
+  "Guided Tours": 2,
+  "Junior Ranger Program": 4,
+  "Bookstore and Park Store": 1
+}
+
+{
+  "Stargazing": 5,
+  "Scenic Driving": 2,
+  "Picnicking": 1,
+  "Paddling": 4,
+  "Hiking": 38,
+  "Self-Guided Tours - Walking": 2,
+  "Birdwatching": 13,
+  "Swimming": 3,
+  "Biking": 1,
+  "Wildlife Watching": 5
+}
+
+{
+  "Backcountry Camping": 1,
+  "Snowshoeing": 3,
+  "Mountain Climbing": 1,
+  "Backcountry Hiking": 3,
+  "Biking": 1,
+  "Hiking": 7,
+  "Car or Front Country Camping": 1,
+  "Scenic Driving": 2,
+  "Self-Guided Tours - Walking": 1,
+  "Freshwater Fishing": 1,
+  "Cross-Country Skiing": 1
+}
+
+{
+  "Birdwatching": 3,
+  "Fishing": 1,
+  "Boat Tour": 2,
+  "Guided Tours": 1,
+  "Junior Ranger Program": 1,
+  "Biking": 1,
+  "Front-Country Hiking": 1
+}
+
+{
+  "Paddling": 2,
+  "Hiking": 5,
+  "Hands-On": 2,
+  "Junior Ranger Program": 1
+}
+*/

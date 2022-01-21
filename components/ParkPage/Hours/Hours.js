@@ -19,7 +19,7 @@ export default function Hours({operatingHours, title}) {
   }
 
   return (
-    <section className="relative mt-24 text-3xl font-bold text-green-800 mb-7">
+    <section className="relative">
       <div className="flex flex-row items-center gap-4">
         <h2 className="text-3xl font-bold text-green-800">{title}</h2>
         <div onClick={toggleText}>

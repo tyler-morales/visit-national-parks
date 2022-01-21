@@ -8,6 +8,7 @@ import GeneralInfo from '../../components/ParkPage/GeneralInfo/GeneralInfo'
 import HeroImage from '../../components/ParkPage/HeroImage/HeroImage'
 import CollectionButton from '../../components/ParkPage/CollectionButton/CollectionButton'
 import Hours from '../../components/ParkPage/Hours/Hours'
+import Fees from '../../components/ParkPage/Fees/Fees'
 
 export default function Park({
   name,
@@ -74,8 +75,11 @@ export default function Park({
           title="Overview"
         />
 
-        {/* Hours */}
-        <Hours operatingHours={operatingHours} title="Hours" />
+        <div className="grid grid-cols-3 mt-10">
+          {/* Hours */}
+          <Hours operatingHours={operatingHours} title="Hours" />
+          <Fees title="Fees & Passes" />
+        </div>
 
         {/* Images */}
         <Images images={images} title="More Images" />

@@ -127,7 +127,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
     }
   }
   // When the user clicks on the button, update the state in the UI and database
-  const handleDBQuery = async () => {
+  const handleDBQuery = async (clickType) => {
     try {
       // Make user log in if they are not already
       if (user) {
@@ -136,57 +136,62 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
         alert('Please sign in or create an account')
       }
 
-      // BOOKMARK SITE
-      if (!bookmarked) {
+      const switchCollection = async (clickType) => {
+        console.log(clickType)
+        let newInput
+        if (clickType == 'bookmark') {
+          setVisited(false)
+          setBookmarked(true)
+          newInput = {id, bookmarked: true}
+        }
+        if (clickType == 'unbookmark') {
+          setBookmarked(false)
+          newInput = {id, bookmarked: false}
+        }
+        if (clickType == 'unvisit') {
+          setVisited(false)
+          setBookmarked(false)
+          newInput = {id, visited: false, bookmarked: false}
+        }
+
         await API.graphql({
           query: updateSite,
-          variables: {
-            input: {
-              id,
-              bookmarked: true,
-            },
-          },
+          variables: {input: newInput},
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })
-        setVisited(false)
-        setBookmarked(true)
-        console.log(`${name} Bookmarked`)
+
+        console.log(`${name} ${clickType}`)
+      }
+
+      // BOOKMARK SITE
+      if (!bookmarked) {
+        switchCollection(clickType)
       }
       // REMOVE BOOKMARK SITE
       if (bookmarked) {
-        await API.graphql({
-          query: updateSite,
-          variables: {
-            input: {
-              id,
-              bookmarked: false,
-            },
-          },
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        setBookmarked(false)
-        console.log(`${name} Unbookmarked`)
+        switchCollection(clickType)
       }
       // REMOVE VISIT
       if (visited) {
-        console.log('unvisiting')
-        await API.graphql({
-          query: updateSite,
-          variables: {
-            input: {
-              id,
-              visited: false,
-              bookmarked: false,
-            },
-          },
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        setVisited(false)
-        setBookmarked(false)
+        switchCollection(clickType)
       }
     } catch (err) {
       console.error('errored out', err)
     }
+  }
+
+  function Bookmark({label, icon, type, clickType}) {
+    return (
+      <button
+        aria-label={type}
+        onClick={() => handleDBQuery(clickType)}
+        className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+        <span className="flex items-center gap-3 px-4">
+          {icon}
+          <span>{label}</span>
+        </span>
+      </button>
+    )
   }
 
   return (
@@ -194,33 +199,27 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       {/* Button */}
       <div className="flex">
         {!bookmarked && !visited && (
-          <button
-            aria-label="Bookmark"
-            onClick={handleDBQuery}
-            className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-            <span className="flex items-center gap-3 px-4">
-              <MdBookmarkBorder />
-              <span>Want to Visit</span>
-            </span>
-          </button>
+          <Bookmark
+            label="Want to Visit"
+            type="Bookmark"
+            icon={<MdBookmarkBorder />}
+            clickType="bookmark"
+          />
         )}
 
         {bookmarked && (
-          <button
-            aria-label="Bookmarked"
-            onClick={handleDBQuery}
-            className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
-            <span className="flex items-center gap-3 px-4">
-              <MdBookmark />
-              <span>Bookmarked</span>
-            </span>
-          </button>
+          <Bookmark
+            label="Bookmarked"
+            type="Bookmarked"
+            icon={<MdBookmark />}
+            clickType="unbookmark"
+          />
         )}
 
         {visited && (
           <button
             aria-label="Visited"
-            onClick={handleDBQuery}
+            onClick={() => handleDBQuery('unvisit')}
             className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
             <BsCheckLg />
             <span>Visited</span>

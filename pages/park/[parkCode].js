@@ -20,6 +20,8 @@ export default function Park({
   states,
   contacts,
   operatingHours,
+  entranceFees,
+  entrancePasses,
   thingsToDo,
 }) {
   const router = useRouter()
@@ -78,7 +80,11 @@ export default function Park({
         <div className="grid grid-cols-3 mt-10">
           {/* Hours */}
           <Hours operatingHours={operatingHours} title="Hours" />
-          <Fees title="Fees & Passes" />
+          <Fees
+            title="Fees & Passes"
+            entranceFees={entranceFees}
+            entrancePasses={entrancePasses}
+          />
         </div>
 
         {/* Images */}
@@ -128,6 +134,8 @@ export async function getStaticProps({params}) {
     states,
     contacts,
     operatingHours,
+    entranceFees,
+    entrancePasses,
   } = park
 
   // Call API Data for /THINGS-TO-DO
@@ -160,6 +168,8 @@ export async function getStaticProps({params}) {
       states,
       contacts,
       operatingHours,
+      entranceFees,
+      entrancePasses,
       thingsToDo,
     },
     revalidate: 60,

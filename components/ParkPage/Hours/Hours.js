@@ -24,12 +24,12 @@ export default function Hours({operatingHours, title}) {
         <h2 className="text-3xl font-bold text-green-800">{title}</h2>
         <div onClick={toggleText}>
           <button
-            className="cursor-pointer"
+            className="flex items-center cursor-pointer"
             aria-label="Open hours description">
             {descriptionBox ? (
-              <AiOutlineCloseCircle />
+              <AiOutlineCloseCircle size="1.5em" />
             ) : (
-              <AiOutlineInfoCircle />
+              <AiOutlineInfoCircle size="1.5em" />
             )}
           </button>
           {descriptionBox && (
@@ -42,7 +42,7 @@ export default function Hours({operatingHours, title}) {
           )}
         </div>
       </div>
-      <ul className="text-lg text-black font-display">
+      <ul className="mt-4 text-lg text-black font-display">
         <li>Sunday:&nbsp;{sunday}</li>
         <li>Monday:&nbsp;{monday}</li>
         <li>Tuesday:&nbsp;{tuesday}</li>

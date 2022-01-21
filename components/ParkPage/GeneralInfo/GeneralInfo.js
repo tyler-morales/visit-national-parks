@@ -16,7 +16,7 @@ export default function GeneralInfo({description, states, contacts, title}) {
         </span>
 
         <a
-          className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-min"
+          className="block gap-2 px-4 py-2 text-white bg-blue-600 rounded-md w-max"
           href={`tel:+${phoneNumber}`}
           name="Phone number">
           <span className="flex flex-row items-center gap-2">

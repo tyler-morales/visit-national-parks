@@ -40,8 +40,6 @@ export default function Park({
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
 
-  const phoneNumber = contacts?.phoneNumbers[0]?.phoneNumber
-
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
     try {
@@ -210,8 +208,6 @@ export default function Park({
     return 'loading...'
   }
 
-  // const {url, altText, caption, credit} = images[0]
-
   return (
     <>
       <Head>
@@ -317,7 +313,7 @@ export default function Park({
         <GeneralInfo
           description={description}
           states={states}
-          phoneNumber={phoneNumber}
+          contacts={contacts}
           title="Overview"
         />
 

@@ -1,6 +1,8 @@
 import {AiFillPhone} from 'react-icons/ai'
 
-export default function GeneralInfo({description, states, phoneNumber, title}) {
+export default function GeneralInfo({description, states, contacts, title}) {
+  const phoneNumber = contacts?.phoneNumbers[0]?.phoneNumber
+
   return (
     <section>
       <h2 className="mb-3 text-3xl font-bold text-green-800">{title}</h2>

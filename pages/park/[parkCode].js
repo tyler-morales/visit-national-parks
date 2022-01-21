@@ -18,6 +18,7 @@ import {listSites} from '../../src/graphql/queries'
 import Image from 'next/image'
 import Images from '../../components/ParkPage/Images/Images'
 import GeneralInfo from '../../components/ParkPage/GeneralInfo/GeneralInfo'
+import HeroImage from '../../components/ParkPage/HeroImage/HeroImage'
 // import CollectionButton from '../../components/CollectionButton/CollectionButton'
 
 export default function Park({
@@ -209,7 +210,7 @@ export default function Park({
     return 'loading...'
   }
 
-  const {url, altText, caption, credit} = images[0]
+  // const {url, altText, caption, credit} = images[0]
 
   return (
     <>
@@ -237,21 +238,8 @@ export default function Park({
           {name}
         </h1>
 
-        {/* Image */}
-        <figure className="block">
-          <Image
-            src={url}
-            alt={altText}
-            height={450}
-            width={1080}
-            layout="responsive"
-            className="object-cover rounded-md"
-          />
-          <figcaption className="mt-3 text-sm italic text-center">
-            <span>{caption}</span>
-            <span className="italic"> {credit}</span>
-          </figcaption>
-        </figure>
+        {/* Hero Image */}
+        <HeroImage image={images[0]} />
 
         <hr className="my-12 border-gray-400" />
 

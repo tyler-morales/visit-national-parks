@@ -2,10 +2,8 @@ import Image from 'next/image'
 
 export default function Images({images, title}) {
   return (
-    <>
-      <h2 className="mt-24 text-3xl font-bold text-green-800 mb-7">
-        More Images
-      </h2>
+    <section>
+      <h2 className="mt-24 text-3xl font-bold text-green-800 mb-7">{title}</h2>
       <section className="gap-10 columns-1 sm:columns-2 md:columns-3">
         {images.map((img, index) => {
           return (
@@ -27,6 +25,6 @@ export default function Images({images, title}) {
           )
         })}
       </section>
-    </>
+    </section>
   )
 }

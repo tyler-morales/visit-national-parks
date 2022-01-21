@@ -4,12 +4,13 @@ const tabStyles = {
   active:
     'bg-orange-400 text-white focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none',
   inActive:
-    'text-orange-800 hover:shadow-md hover:shadow-orange-200 hover:border-2 hover:border-orange-700 hover:text-orange-800',
+    'text-orange-800 hover:border-2 hover:border-orange-700 hover:text-orange-800',
 }
 
 export default function Fees({entranceFees, entrancePasses, title}) {
   const [tab, setTab] = useState('fees')
 
+  console.log(entranceFees.length)
   function Fees() {
     return (
       <ul>
@@ -18,7 +19,9 @@ export default function Fees({entranceFees, entrancePasses, title}) {
             <span className="font-bold">{fee.title}: &nbsp;</span>
             <span className="font-bold">{fee.cost}</span>
             <p className="mt-2">{fee.description}</p>
-            <hr className="my-4 border-gray-400" />
+            {entranceFees?.length > 1 && (
+              <hr className="my-4 border-gray-400" />
+            )}
           </li>
         ))}
       </ul>
@@ -33,7 +36,9 @@ export default function Fees({entranceFees, entrancePasses, title}) {
             <span className="font-bold">{pass.title}: &nbsp;</span>
             <span className="font-bold">{pass.cost}</span>
             <p className="mt-2">{pass.description}</p>
-            <hr className="my-4 border-gray-400" />
+            {entrancePasses?.length > 1 && (
+              <hr className="my-4 border-gray-400" />
+            )}
           </li>
         ))}
       </ul>
@@ -41,7 +46,7 @@ export default function Fees({entranceFees, entrancePasses, title}) {
   }
 
   return (
-    <section className="col-span-2">
+    <section className="md:col-span-3">
       <div className="flex flex-col w-full gap-4 md:items-center md:flex-row">
         <h2 className="text-3xl font-bold text-green-800">{title}</h2>
         {/* Buttons */}
@@ -57,7 +62,7 @@ export default function Fees({entranceFees, entrancePasses, title}) {
             <button
               onClick={() => setTab('passes')}
               className={`transition-all text-base px-4 py-1 font-bold rounded-lg border-transparent border-2 ${
-                tab == 'bookmark' ? tabStyles.active : tabStyles.inActive
+                tab == 'passes' ? tabStyles.active : tabStyles.inActive
               }`}>
               Passes
             </button>

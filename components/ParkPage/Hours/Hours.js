@@ -24,7 +24,7 @@ export default function Hours({operatingHours, title}) {
         <h2 className="text-3xl font-bold text-green-800">{title}</h2>
         <div onClick={toggleText}>
           <button
-            className="flex items-center cursor-pointer"
+            className="relative flex items-center w-full cursor-pointer"
             aria-label="Open hours description">
             {descriptionBox ? (
               <AiOutlineCloseCircle size="1.5em" />

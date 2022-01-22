@@ -4,11 +4,6 @@ import MapGL, {Marker, Popup} from 'react-map-gl'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import {IoMdMap} from 'react-icons/io'
 
-// mapboxgl.accessToken =
-//   'pk.eyJ1IjoidHlsZXItbW9yYWxlcyIsImEiOiJja3lvcmVxZTkwMHN0MnVzMmtpdzcxZXVxIn0.X7-oB5R1wF2YFD294ThFaQ'
-const MAPBOX_TOKEN =
-  'pk.eyJ1IjoidHlsZXItbW9yYWxlcyIsImEiOiJja3lvcmVxZTkwMHN0MnVzMmtpdzcxZXVxIn0.X7-oB5R1wF2YFD294ThFaQ'
-
 export default function MapBox({coordinates, fullName, parkCode: code, title}) {
   const {latitude, longitude} = coordinates
 
@@ -30,7 +25,7 @@ export default function MapBox({coordinates, fullName, parkCode: code, title}) {
         height="450px"
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={setViewport}
-        mapboxApiAccessToken={MAPBOX_TOKEN}
+        mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_KEY}
         className="border-2 border-green-800 rounded-lg">
         <Marker
           latitude={+latitude}
@@ -66,7 +61,7 @@ export default function MapBox({coordinates, fullName, parkCode: code, title}) {
                 </a>
                 <a
                   target="_blank"
-                  href={`https://www.nps.gov/${code}/planyourvisit/driving.htm`}>
+                  href={`https://www.nps.gov/${code}/planyourvisit/directions.htm`}>
                   <div className="flex items-center justify-center w-full gap-2 py-2 text-center text-blue-700 underline cursor-pointer font-display">
                     <span>NPS Link</span>
                   </div>

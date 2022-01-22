@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function ThingsToDo({thingsToDo, title}) {
   function Activity() {
-    const close = (index) => {
+    const close = (id) => {
       for (let i = 0; i < thingsToDo.length; i++) {
         const detail = document.getElementsByTagName('details')
 
@@ -11,7 +11,8 @@ export default function ThingsToDo({thingsToDo, title}) {
           detail[i].open = true
         } else if (detail[i].open === 'false') {
           detail[i].open = false
-        } else if (i !== index) {
+          // Close current open details if clicked again
+        } else if (thingsToDo[i].id !== id) {
           detail[i].open = false
         }
       }
@@ -19,10 +20,10 @@ export default function ThingsToDo({thingsToDo, title}) {
 
     return (
       <ul className="grid grid-cols-3 gap-10">
-        {thingsToDo?.map((thing, index) => (
+        {thingsToDo?.map((thing) => (
           <details
-            key={index}
-            onClick={() => close(index)}
+            key={thing.id}
+            onClick={() => close(thing.id)}
             className="w-full shadow-md h-max rounded-xl">
             <summary className="list-none cursor-pointer">
               <figure className="relative block">

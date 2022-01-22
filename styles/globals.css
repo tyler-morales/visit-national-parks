@@ -74,7 +74,10 @@ h6 {
     /* @apply bg-green-500; */
   }
 }
-
+.mapboxgl-popup-close-button {
+  padding: 0 10px;
+  font-size: 20px;
+}
 /* @layer components {
   .pass {
     position: relative;

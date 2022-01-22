@@ -9,6 +9,7 @@ import HeroImage from '../../components/ParkPage/HeroImage/HeroImage'
 import CollectionButton from '../../components/ParkPage/CollectionButton/CollectionButton'
 import Hours from '../../components/ParkPage/Hours/Hours'
 import Fees from '../../components/ParkPage/Fees/Fees'
+import MapBox from '../../components/ParkPage/Map/MapBox'
 
 export default function Park({
   name,
@@ -22,6 +23,8 @@ export default function Park({
   operatingHours,
   entranceFees,
   entrancePasses,
+  latitude,
+  longitude,
   thingsToDo,
 }) {
   const router = useRouter()
@@ -87,6 +90,14 @@ export default function Park({
           />
         </div>
 
+        {/* Map */}
+        <MapBox
+          coordinates={{latitude, longitude}}
+          fullName={fullName}
+          parkCode={parkCode}
+          title="Map"
+        />
+
         {/* Images */}
         <Images images={images} title="More Images" />
       </Layout>
@@ -136,6 +147,8 @@ export async function getStaticProps({params}) {
     operatingHours,
     entranceFees,
     entrancePasses,
+    latitude,
+    longitude,
   } = park
 
   // Call API Data for /THINGS-TO-DO
@@ -170,6 +183,8 @@ export async function getStaticProps({params}) {
       operatingHours,
       entranceFees,
       entrancePasses,
+      latitude,
+      longitude,
       thingsToDo,
     },
     revalidate: 60,

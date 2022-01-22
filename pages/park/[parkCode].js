@@ -10,6 +10,7 @@ import CollectionButton from '../../components/ParkPage/CollectionButton/Collect
 import Hours from '../../components/ParkPage/Hours/Hours'
 import Fees from '../../components/ParkPage/Fees/Fees'
 import MapBox from '../../components/ParkPage/Map/MapBox'
+import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
 
 export default function Park({
   name,
@@ -97,6 +98,9 @@ export default function Park({
           parkCode={parkCode}
           title="Map"
         />
+
+        {/* Things To Do */}
+        <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
 
         {/* Images */}
         <Images images={images} title="More Images" />

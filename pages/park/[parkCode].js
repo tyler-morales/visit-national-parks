@@ -100,7 +100,9 @@ export default function Park({
         />
 
         {/* Things To Do */}
-        <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
+        {thingsToDo.length != 0 && (
+          <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
+        )}
 
         {/* Images */}
         <Images images={images} title="More Images" />

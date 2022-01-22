@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react'
 import Image from 'next/image'
+import {MdPets, MdOutlineAccessTimeFilled} from 'react-icons/md'
+import {BsFillPeopleFill, BsLink45Deg} from 'react-icons/bs'
 
 export default function ThingsToDo({thingsToDo, title}) {
   function Activity() {
@@ -49,15 +51,51 @@ export default function ThingsToDo({thingsToDo, title}) {
                 Description
               </h3>
               <p className=" font-display">{thing?.shortDescription}</p>
+              <a
+                target="_blank"
+                href={thing?.url}
+                className="text-blue-500 underline font-display">
+                <div className="flex items-center gap-1">
+                  <BsLink45Deg />
+                  <span>More info</span>
+                </div>
+              </a>
 
+              {/* Fees */}
               {thing?.doFeesApply == 'true' && (
                 <>
                   <h3 className="mt-4 mb-2 font-sans text-xs tracking-widest uppercase text-slate-400">
                     Fees
                   </h3>
-                  <p className=" font-display">{thing?.feeDescription}</p>
+                  <p className=" font-display">
+                    {thing?.feeDescription.replace(/<[^>]+>/g, '')}
+                  </p>
                 </>
               )}
+              {/* Tags */}
+              <div class="flex flex-wrap w-ful mt-4 gap-2">
+                {/* Pets allowed */}
+                {thing?.arePetsPermitted == 'true' && (
+                  <span className="flex items-center gap-2 px-2 py-1 text-sm text-white bg-blue-500 rounded-md">
+                    <MdPets />
+                    <span>Pet Friendly</span>
+                  </span>
+                )}
+                {/* Ages */}
+                {thing?.age != '' && (
+                  <span className="flex items-center gap-2 px-2 py-1 text-sm text-white bg-orange-400 rounded-md">
+                    <BsFillPeopleFill />
+                    <span>Ages:{thing?.age}</span>
+                  </span>
+                )}
+                {/* Duration */}
+                {thing?.duration != '' && (
+                  <span className="flex items-center gap-2 px-2 py-1 text-sm text-white bg-green-600 rounded-md">
+                    <MdOutlineAccessTimeFilled />
+                    <span>Time:{thing?.duration}</span>
+                  </span>
+                )}
+              </div>
             </div>
           </details>
         ))}

@@ -37,7 +37,7 @@ export default function ThingsToDo({thingsToDo, title}) {
                   layout="responsive"
                   className="object-cover rounded-xl"
                 />
-                <h3 className="absolute bottom-0 w-full h-auto pt-4 pb-2 pl-2 text-xl font-bold text-white rounded-b-xl bg-gradient-to-t from-black">
+                <h3 className="absolute bottom-0 w-full h-auto px-2 pt-4 pb-2 text-xl font-bold text-white rounded-b-xl bg-gradient-to-t from-black">
                   {thing.title}
                 </h3>
 

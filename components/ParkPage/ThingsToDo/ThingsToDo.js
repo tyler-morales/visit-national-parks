@@ -4,7 +4,11 @@ import {MdPets, MdOutlineAccessTimeFilled} from 'react-icons/md'
 import {BsFillPeopleFill, BsLink45Deg} from 'react-icons/bs'
 
 export default function ThingsToDo({thingsToDo, title}) {
+  const [category, setCategory] = useState(thingsToDo)
+  const allThingsToDo = thingsToDo
+
   function Activity() {
+    // Auto close <details> tag when a new one is opened
     const close = (id) => {
       for (let i = 0; i < thingsToDo.length; i++) {
         const detail = document.getElementsByTagName('details')
@@ -22,7 +26,7 @@ export default function ThingsToDo({thingsToDo, title}) {
 
     return (
       <ul className="grid grid-cols-3 gap-10">
-        {thingsToDo?.map((thing) => (
+        {category?.map((thing) => (
           <details
             key={thing.id}
             onClick={() => close(thing.id)}
@@ -73,7 +77,7 @@ export default function ThingsToDo({thingsToDo, title}) {
                 </>
               )}
               {/* Tags */}
-              <div class="flex flex-wrap w-ful mt-4 gap-2">
+              <div className="flex flex-wrap gap-2 mt-4 w-ful">
                 {/* Pets allowed */}
                 {thing?.arePetsPermitted == 'true' && (
                   <span className="flex items-center gap-2 px-2 py-1 text-sm text-white bg-blue-500 rounded-md">
@@ -103,9 +107,55 @@ export default function ThingsToDo({thingsToDo, title}) {
     )
   }
 
+  function Filters() {
+    const allActivities = thingsToDo.map((thing) => thing?.activities[0].name)
+    const uniqueActivities = new Set(allActivities)
+
+    const changeCategory = (e, name) => {
+      e.preventDefault()
+
+      // reset things to do to ALL things to do
+      if (name == 'all') {
+        setCategory(allThingsToDo)
+      } else {
+        // filter for the category of things to do
+        setCategory(
+          thingsToDo.filter((item) => item?.activities[0].name == name)
+        )
+      }
+    }
+
+    return (
+      <ul className="flex flex-wrap gap-4 mb-8">
+        <button
+          className="px-4 py-2 text-white bg-green-700 rounded-md"
+          name="all"
+          onClick={(e) => changeCategory(e, 'all')}>
+          All
+        </button>
+        {[...uniqueActivities].map((name) => (
+          <button
+            key={name.id}
+            className="px-4 py-2 text-white bg-green-700 rounded-md"
+            name={name}
+            onClick={(e) => changeCategory(e, name)}>
+            {name}
+          </button>
+        ))}
+      </ul>
+    )
+  }
+
   return (
     <section className="mt-24">
-      <h2 className="mb-10 text-3xl font-bold text-green-800">{title}</h2>
+      <h2 className="mb-6 text-3xl font-bold text-green-800">{title}</h2>
+      {/* Filter by category */}
+      <div>
+        <h3 className="mb-4 font-sans text-xs tracking-widest uppercase text-slate-400">
+          Category
+        </h3>
+        <Filters />
+      </div>
       <Activity />
     </section>
   )

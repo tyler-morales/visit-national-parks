@@ -10,6 +10,7 @@ import CollectionButton from '../../components/ParkPage/CollectionButton/Collect
 import Hours from '../../components/ParkPage/Hours/Hours'
 import Fees from '../../components/ParkPage/Fees/Fees'
 import MapBox from '../../components/ParkPage/Map/MapBox'
+import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
 
 export default function Park({
   name,
@@ -28,6 +29,18 @@ export default function Park({
   thingsToDo,
 }) {
   const router = useRouter()
+
+  const thingCoordinates = thingsToDo?.map((thing) => {
+    return {
+      id: thing.id,
+      name: thing.title,
+      url: thing.url,
+      latitude: thing.latitude,
+      longitude: thing.longitude,
+    }
+  })
+
+  // console.log(thingCoordinates)
 
   if (router.isFallback) {
     return 'loading...'
@@ -55,7 +68,7 @@ export default function Park({
 
         {/* Title */}
         <span className="block mb-2 text-center">{designation}</span>
-        <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
+        <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
           {name}
         </h1>
 
@@ -97,6 +110,11 @@ export default function Park({
           parkCode={parkCode}
           title="Map"
         />
+
+        {/* Things To Do */}
+        {thingsToDo.length != 0 && (
+          <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
+        )}
 
         {/* Images */}
         <Images images={images} title="More Images" />

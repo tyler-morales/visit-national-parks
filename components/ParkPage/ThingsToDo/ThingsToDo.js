@@ -7,7 +7,10 @@ export default function ThingsToDo({thingsToDo, title}) {
   const [category, setCategory] = useState(thingsToDo.slice(0, 6))
   const [viewedAll, setViewedAll] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
+  
   const allThingsToDo = thingsToDo
+
+  console.log(length);
 
   function Activity() {
     // Auto close <details> tag when a new one is opened
@@ -121,12 +124,10 @@ export default function ThingsToDo({thingsToDo, title}) {
       // reset things to do to ALL things to do
       if (name == 'all') {
       setActiveTab('all')
-
-        setCategory(allThingsToDo)
+      setCategory(allThingsToDo)
       } else {
         // filter for the category of things to do
-      setActiveTab(name)
-
+        setActiveTab(name)
         setCategory(
           thingsToDo.filter((item) => item?.activities[0].name == name)
         )
@@ -169,6 +170,8 @@ export default function ThingsToDo({thingsToDo, title}) {
         </h3>
         <Filters />
       </div>
+      <span className='block mb-4 font-sans text-xs tracking-widest uppercase text-slate-700'>{category.length} Results</span>
+      
       <Activity />
       {!viewedAll && (
         <div className="w-full mt-8 text-center">

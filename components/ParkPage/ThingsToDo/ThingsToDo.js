@@ -28,7 +28,7 @@ export default function ThingsToDo({thingsToDo, title}) {
     }
 
     return (
-      <ul className="grid grid-cols-3 gap-10">
+      <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3">
         {category?.map((thing) => (
           <details
             key={thing.id}

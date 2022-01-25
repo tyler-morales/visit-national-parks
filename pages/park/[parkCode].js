@@ -30,6 +30,18 @@ export default function Park({
 }) {
   const router = useRouter()
 
+  const thingCoordinates = thingsToDo?.map((thing) => {
+    return {
+      id: thing.id,
+      name: thing.title,
+      url: thing.url,
+      latitude: thing.latitude,
+      longitude: thing.longitude,
+    }
+  })
+
+  // console.log(thingCoordinates)
+
   if (router.isFallback) {
     return 'loading...'
   }

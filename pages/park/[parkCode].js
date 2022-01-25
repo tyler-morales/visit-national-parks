@@ -68,7 +68,7 @@ export default function Park({
 
         {/* Title */}
         <span className="block mb-2 text-center">{designation}</span>
-        <h1 className="mb-5 font-bold text-center text-green-800 text-7xl">
+        <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
           {name}
         </h1>
 

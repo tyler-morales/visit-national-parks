@@ -10,8 +10,6 @@ export default function ThingsToDo({thingsToDo, title}) {
   
   const allThingsToDo = thingsToDo
 
-  console.log(length);
-
   function Activity() {
     // Auto close <details> tag when a new one is opened
     const close = (id) => {
@@ -170,7 +168,7 @@ export default function ThingsToDo({thingsToDo, title}) {
         </h3>
         <Filters />
       </div>
-      <span className='block mb-4 font-sans text-xs tracking-widest uppercase text-slate-700'>{category.length} Results</span>
+      <span className='block mb-4 font-sans text-xs tracking-widest uppercase text-slate-700'>{category?.length} Results</span>
       
       <Activity />
       {!viewedAll && (

@@ -14,13 +14,13 @@ export default function ThingsToDo({thingsToDo, title}) {
       for (let i = 0; i < thingsToDo.length; i++) {
         const detail = document.getElementsByTagName('details')
 
-        if (detail[i].open === 'true') {
-          detail[i].open = true
-        } else if (detail[i].open === 'false') {
-          detail[i].open = false
+        if (detail[i]?.open === 'true') {
+          detail[i]?.open = true
+        } else if (detail[i]?.open === 'false') {
+          detail[i]?.open = false
           // Close current open details if clicked again
         } else if (thingsToDo[i].id !== id) {
-          detail[i].open = false
+          detail[i]?.open = false
         }
       }
     }

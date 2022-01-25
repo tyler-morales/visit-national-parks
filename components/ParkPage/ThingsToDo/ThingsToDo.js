@@ -4,7 +4,8 @@ import {MdPets, MdOutlineAccessTimeFilled} from 'react-icons/md'
 import {BsFillPeopleFill, BsLink45Deg} from 'react-icons/bs'
 
 export default function ThingsToDo({thingsToDo, title}) {
-  const [category, setCategory] = useState(thingsToDo)
+  const [category, setCategory] = useState(thingsToDo.slice(0, 6))
+  const [viewedAll, setViewedAll] = useState(false)
   const allThingsToDo = thingsToDo
 
   function Activity() {
@@ -113,6 +114,7 @@ export default function ThingsToDo({thingsToDo, title}) {
 
     const changeCategory = (e, name) => {
       e.preventDefault()
+      setViewedAll(true)
 
       // reset things to do to ALL things to do
       if (name == 'all') {
@@ -133,9 +135,9 @@ export default function ThingsToDo({thingsToDo, title}) {
           onClick={(e) => changeCategory(e, 'all')}>
           All
         </button>
-        {[...uniqueActivities].map((name) => (
+        {[...uniqueActivities].map((name, index) => (
           <button
-            key={name.id}
+            key={index}
             className="px-4 py-2 text-white bg-green-700 rounded-md"
             name={name}
             onClick={(e) => changeCategory(e, name)}>
@@ -144,6 +146,11 @@ export default function ThingsToDo({thingsToDo, title}) {
         ))}
       </ul>
     )
+  }
+
+  const viewAll = () => {
+    setCategory(allThingsToDo)
+    setViewedAll(true)
   }
 
   return (
@@ -157,6 +164,15 @@ export default function ThingsToDo({thingsToDo, title}) {
         <Filters />
       </div>
       <Activity />
+      {!viewedAll && (
+        <div className="w-full mt-8 text-center">
+          <button
+            onClick={viewAll}
+            className="px-4 py-2 text-white bg-green-700 rounded-md">
+            View all
+          </button>
+        </div>
+      )}
     </section>
   )
 }

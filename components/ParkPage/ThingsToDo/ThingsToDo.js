@@ -6,6 +6,7 @@ import {BsFillPeopleFill, BsLink45Deg} from 'react-icons/bs'
 export default function ThingsToDo({thingsToDo, title}) {
   const [category, setCategory] = useState(thingsToDo.slice(0, 6))
   const [viewedAll, setViewedAll] = useState(false)
+  const [activeTab, setActiveTab] = useState('all')
   const allThingsToDo = thingsToDo
 
   function Activity() {
@@ -115,12 +116,17 @@ export default function ThingsToDo({thingsToDo, title}) {
     const changeCategory = (e, name) => {
       e.preventDefault()
       setViewedAll(true)
+      
 
       // reset things to do to ALL things to do
       if (name == 'all') {
+      setActiveTab('all')
+
         setCategory(allThingsToDo)
       } else {
         // filter for the category of things to do
+      setActiveTab(name)
+
         setCategory(
           thingsToDo.filter((item) => item?.activities[0].name == name)
         )
@@ -129,8 +135,8 @@ export default function ThingsToDo({thingsToDo, title}) {
 
     return (
       <ul className="flex flex-wrap gap-4 mb-8">
-        <button
-          className="px-4 py-2 text-white bg-green-700 rounded-md"
+        <button 
+          className={`px-4 py-2 text-white bg-green-700 rounded-md ${activeTab !== 'all' &&'opacity-60'}`}
           name="all"
           onClick={(e) => changeCategory(e, 'all')}>
           All
@@ -138,7 +144,7 @@ export default function ThingsToDo({thingsToDo, title}) {
         {[...uniqueActivities].map((name, index) => (
           <button
             key={index}
-            className="px-4 py-2 text-white bg-green-700 rounded-md"
+            className={`px-4 py-2 text-white bg-green-700 rounded-md ${activeTab !== name &&'opacity-60'}`}
             name={name}
             onClick={(e) => changeCategory(e, name)}>
             {name}

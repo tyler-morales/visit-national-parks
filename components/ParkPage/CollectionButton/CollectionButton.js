@@ -128,55 +128,54 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   }
   // When the user clicks on the button, update the state in the UI and database
   const handleDBQuery = async (clickType) => {
-    try {
-      // Make user log in if they are not already
-      if (user) {
-        setBookmarked(false)
-      } else {
-        alert('Please sign in or create an account')
-      }
+    // Make user log in if they are not already
+    if (user) {
+      setBookmarked(false)
+      try {
+        const switchCollection = async (clickType) => {
+          console.log(clickType)
+          let newInput
+          if (clickType == 'bookmark') {
+            setVisited(false)
+            setBookmarked(true)
+            newInput = {id, bookmarked: true}
+          }
+          if (clickType == 'unbookmark') {
+            setBookmarked(false)
+            newInput = {id, bookmarked: false}
+          }
+          if (clickType == 'unvisit') {
+            setVisited(false)
+            setBookmarked(false)
+            newInput = {id, visited: false, bookmarked: false}
+          }
 
-      const switchCollection = async (clickType) => {
-        console.log(clickType)
-        let newInput
-        if (clickType == 'bookmark') {
-          setVisited(false)
-          setBookmarked(true)
-          newInput = {id, bookmarked: true}
+          await API.graphql({
+            query: updateSite,
+            variables: {input: newInput},
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+
+          console.log(`${name} ${clickType}`)
         }
-        if (clickType == 'unbookmark') {
-          setBookmarked(false)
-          newInput = {id, bookmarked: false}
+
+        // BOOKMARK SITE
+        if (!bookmarked) {
+          switchCollection(clickType)
         }
-        if (clickType == 'unvisit') {
-          setVisited(false)
-          setBookmarked(false)
-          newInput = {id, visited: false, bookmarked: false}
+        // REMOVE BOOKMARK SITE
+        if (bookmarked) {
+          switchCollection(clickType)
         }
-
-        await API.graphql({
-          query: updateSite,
-          variables: {input: newInput},
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-
-        console.log(`${name} ${clickType}`)
+        // REMOVE VISIT
+        if (visited) {
+          switchCollection(clickType)
+        }
+      } catch (err) {
+        console.error('errored out', err)
       }
-
-      // BOOKMARK SITE
-      if (!bookmarked) {
-        switchCollection(clickType)
-      }
-      // REMOVE BOOKMARK SITE
-      if (bookmarked) {
-        switchCollection(clickType)
-      }
-      // REMOVE VISIT
-      if (visited) {
-        switchCollection(clickType)
-      }
-    } catch (err) {
-      console.error('errored out', err)
+    } else {
+      alert('Please sign in or create an account')
     }
   }
 

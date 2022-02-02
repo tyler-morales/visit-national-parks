@@ -21,7 +21,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
 
-      <main className="grid grid-cols-4 gap-20 mt-20 font-display">
+      <div className="grid grid-cols-1 gap-20 mt-20 md:grid-cols-4 font-display">
         <UserInfo
           username={username}
           email={email}
@@ -29,7 +29,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
           bio={bio}
           visitedSites={visitedSites.length}
         />
-        <section className="w-full col-span-3">
+        <section className="w-full md:col-span-3">
           <div className="flex gap-8">
             <button
               onClick={() => setTab('visited')}
@@ -53,7 +53,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
             tab={tab}
           />
         </section>
-      </main>
+      </div>
     </Layout>
   )
 }

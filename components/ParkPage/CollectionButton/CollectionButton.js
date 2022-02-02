@@ -89,7 +89,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
   const openDropdown = () => {
-    console.log('dropdown clicked')
     if (!user) alert('Please sign in or create an account')
 
     if (user) {

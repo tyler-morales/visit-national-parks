@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
     "auth": {
-        "visitnationalparks36a13952": {
+        "visitnationalparksb4538aa5": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "HostedUIDomain": "string",
@@ -10,12 +10,6 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string"
-        }
-    },
-    "api": {
-        "visitnationalparks": {
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
         }
     }
 }

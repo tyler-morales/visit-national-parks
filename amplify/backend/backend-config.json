@@ -1,6 +1,6 @@
 {
   "auth": {
-    "visitnationalparks36a13952": {
+    "visitnationalparksb4538aa5": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -9,9 +9,7 @@
         "socialProviders": [
           "GOOGLE"
         ],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "signupAttributes": [
           "EMAIL"
         ],
@@ -26,32 +24,6 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
-    }
-  },
-  "api": {
-    "visitnationalparks": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "apiKeyExpirationDate": "2023-01-17T03:32:56.090Z",
-              "description": "visit national parks api-key"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authvisitnationalparks36a13952"
-              }
-            }
-          ]
-        }
       }
     }
   }

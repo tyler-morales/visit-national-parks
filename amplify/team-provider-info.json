@@ -10,6 +10,11 @@
       "StackName": "amplify-visitnationalparks-dev-115906",
       "StackId": "arn:aws:cloudformation:us-east-2:391385230535:stack/amplify-visitnationalparks-dev-115906/d2332f70-8451-11ec-80c8-0a6e99b71efc",
       "AmplifyAppId": "d39cqr3ga5brto"
+    },
+    "categories": {
+      "auth": {
+        "visitnationalparksce40a4c8": {}
+      }
     }
   }
 }

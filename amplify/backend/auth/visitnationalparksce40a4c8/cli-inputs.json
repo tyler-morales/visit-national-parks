@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "visitnationalparks36a13952_identitypool_36a13952",
+    "identityPoolName": "visitnationalparksce40a4c8_identitypool_ce40a4c8",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "visitn36a13952",
-    "userPoolName": "visitnationalparks36a13952_userpool_36a13952",
+    "resourceNameTruncated": "visitnce40a4c8",
+    "userPoolName": "visitnationalparksce40a4c8_userpool_ce40a4c8",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,17 +31,18 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "visitn36a13952_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "visitnce40a4c8_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "36a13952",
-    "resourceName": "visitnationalparks36a13952",
+    "sharedId": "ce40a4c8",
+    "resourceName": "visitnationalparksce40a4c8",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
     ],
-    "hostedUIDomainName": "visitnationalparks36a13952-36a13952",
+    "triggers": {},
+    "hostedUIDomainName": "visitnationalparksce40a4c8-ce40a4c8",
     "authProvidersUserPool": [
       "Google"
     ],

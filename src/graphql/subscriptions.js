@@ -2,54 +2,51 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateSite = /* GraphQL */ `
-  subscription OnCreateSite {
-    onCreateSite {
+  subscription OnCreateSite($owner: String) {
+    onCreateSite(owner: $owner) {
       id
       code
       owner
-      visited
-      bookmarked
       name
       img
+      visited
+      bookmarked
       rating
       avgRating
-      dateVisited
       createdAt
       updatedAt
     }
   }
 `;
 export const onUpdateSite = /* GraphQL */ `
-  subscription OnUpdateSite {
-    onUpdateSite {
+  subscription OnUpdateSite($owner: String) {
+    onUpdateSite(owner: $owner) {
       id
       code
       owner
-      visited
-      bookmarked
       name
       img
+      visited
+      bookmarked
       rating
       avgRating
-      dateVisited
       createdAt
       updatedAt
     }
   }
 `;
 export const onDeleteSite = /* GraphQL */ `
-  subscription OnDeleteSite {
-    onDeleteSite {
+  subscription OnDeleteSite($owner: String) {
+    onDeleteSite(owner: $owner) {
       id
       code
       owner
-      visited
-      bookmarked
       name
       img
+      visited
+      bookmarked
       rating
       avgRating
-      dateVisited
       createdAt
       updatedAt
     }

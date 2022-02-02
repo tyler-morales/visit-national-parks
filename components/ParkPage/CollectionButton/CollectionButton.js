@@ -89,7 +89,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
   const openDropdown = () => {
-    console.log('dropdown clicked')
     if (!user) alert('Please sign in or create an account')
 
     if (user) {
@@ -128,55 +127,54 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   }
   // When the user clicks on the button, update the state in the UI and database
   const handleDBQuery = async (clickType) => {
-    try {
-      // Make user log in if they are not already
-      if (user) {
-        setBookmarked(false)
-      } else {
-        alert('Please sign in or create an account')
-      }
+    // Make user log in if they are not already
+    if (user) {
+      setBookmarked(false)
+      try {
+        const switchCollection = async (clickType) => {
+          console.log(clickType)
+          let newInput
+          if (clickType == 'bookmark') {
+            setVisited(false)
+            setBookmarked(true)
+            newInput = {id, bookmarked: true}
+          }
+          if (clickType == 'unbookmark') {
+            setBookmarked(false)
+            newInput = {id, bookmarked: false}
+          }
+          if (clickType == 'unvisit') {
+            setVisited(false)
+            setBookmarked(false)
+            newInput = {id, visited: false, bookmarked: false}
+          }
 
-      const switchCollection = async (clickType) => {
-        console.log(clickType)
-        let newInput
-        if (clickType == 'bookmark') {
-          setVisited(false)
-          setBookmarked(true)
-          newInput = {id, bookmarked: true}
+          await API.graphql({
+            query: updateSite,
+            variables: {input: newInput},
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+
+          console.log(`${name} ${clickType}`)
         }
-        if (clickType == 'unbookmark') {
-          setBookmarked(false)
-          newInput = {id, bookmarked: false}
+
+        // BOOKMARK SITE
+        if (!bookmarked) {
+          switchCollection(clickType)
         }
-        if (clickType == 'unvisit') {
-          setVisited(false)
-          setBookmarked(false)
-          newInput = {id, visited: false, bookmarked: false}
+        // REMOVE BOOKMARK SITE
+        if (bookmarked) {
+          switchCollection(clickType)
         }
-
-        await API.graphql({
-          query: updateSite,
-          variables: {input: newInput},
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-
-        console.log(`${name} ${clickType}`)
+        // REMOVE VISIT
+        if (visited) {
+          switchCollection(clickType)
+        }
+      } catch (err) {
+        console.error('errored out', err)
       }
-
-      // BOOKMARK SITE
-      if (!bookmarked) {
-        switchCollection(clickType)
-      }
-      // REMOVE BOOKMARK SITE
-      if (bookmarked) {
-        switchCollection(clickType)
-      }
-      // REMOVE VISIT
-      if (visited) {
-        switchCollection(clickType)
-      }
-    } catch (err) {
-      console.error('errored out', err)
+    } else {
+      alert('Please sign in or create an account')
     }
   }
 
@@ -185,7 +183,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       <button
         aria-label={type}
         onClick={() => handleDBQuery(clickType)}
-        className="relative flex items-center gap-3 text-white bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+        className="relative flex items-center gap-3 text-white transition-all bg-blue-600 rounded-l-md hover:bg-blue-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
         <span className="flex items-center gap-3 px-4">
           {icon}
           <span>{label}</span>
@@ -220,7 +218,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
           <button
             aria-label="Visited"
             onClick={() => handleDBQuery('unvisit')}
-            className="flex items-center gap-3 px-4 py-2 pr-6 text-white bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
+            className="flex items-center gap-3 px-4 py-2 pr-6 text-white transition-all bg-green-600 rounded-md hover:bg-green-700 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
             <BsCheckLg />
             <span>Visited</span>
           </button>
@@ -231,7 +229,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
           <button
             aria-label="Dropdown arrow"
             onClick={openDropdown}
-            className={`px-4 py-3 pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
+            className={`px-4 py-3 transition-all pl-4 text-white rounded-r-md focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none ${
               visited
                 ? 'bg-green-600 hover:bg-green-700'
                 : 'bg-blue-600 hover:bg-blue-700'
@@ -247,9 +245,9 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
         onClick={toggleVisitedQuery}
         className={`shadow-lg absolute items-center w-full gap-3 mt-2 text-black rounded-md hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none`}>
         <span
-          className={`flex items-center gap-3 px-4 ${
+          className={`flex transition-all items-center gap-3 px-4 ${
             toggleDropdown
-              ? 'flex bg-white border-2 border-blue-600 rounded-md hover:bg-green-600 hover:border-green-800 hover:text-white'
+              ? 'flex bg-blue-600 rounded-md hover:bg-green-600 hover:border-green-800 text-white'
               : 'hidden'
           }`}>
           <BsCheckLg />

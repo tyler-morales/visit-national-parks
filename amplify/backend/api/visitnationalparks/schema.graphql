@@ -1,20 +1,11 @@
-type Site
-  @model
-  @auth(
-    rules: [
-      {allow: owner}
-      {allow: public, operations: [create, read, update, delete]}
-      {allow: private, operations: [create, read, update, delete]}
-    ]
-  ) {
+type Site @model @auth(rules: [{allow: owner}]) {
   id: ID!
   code: String!
   owner: String!
+  name: String!
+  img: String!
   visited: Boolean
   bookmarked: Boolean
-  name: String
-  img: String
   rating: String
   avgRating: String
-  dateVisited: String
 }

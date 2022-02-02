@@ -1,6 +1,6 @@
 {
   "auth": {
-    "visitnationalparks36a13952": {
+    "visitnationalparksce40a4c8": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -36,21 +36,12 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 365,
-              "apiKeyExpirationDate": "2023-01-17T03:32:56.090Z",
-              "description": "visit national parks api-key"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authvisitnationalparksce40a4c8"
             }
           },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authvisitnationalparks36a13952"
-              }
-            }
-          ]
+          "additionalAuthenticationProviders": []
         }
       }
     }

@@ -78,7 +78,7 @@ const StepOne = (props) => {
   }
 
   const handleSubmit = async ({username, password}) => {
-    console.log('First step')
+    console.log('First step', username)
     setSigningIn(true)
     try {
       await Auth.signUp({username, password})

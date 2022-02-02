@@ -4,9 +4,8 @@
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authvisitnationalparks36a13952",
+      "authvisitnationalparksce40a4c8",
       "Outputs.UserPoolId"
     ]
-  },
-  "AuthModeLastUpdated": "2022-01-17T03:33:00.538Z"
+  }
 }

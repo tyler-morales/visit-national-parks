@@ -7,13 +7,12 @@ export const getSite = /* GraphQL */ `
       id
       code
       owner
-      visited
-      bookmarked
       name
       img
+      visited
+      bookmarked
       rating
       avgRating
-      dateVisited
       createdAt
       updatedAt
     }
@@ -30,13 +29,12 @@ export const listSites = /* GraphQL */ `
         id
         code
         owner
-        visited
-        bookmarked
         name
         img
+        visited
+        bookmarked
         rating
         avgRating
-        dateVisited
         createdAt
         updatedAt
       }

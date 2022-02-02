@@ -71,7 +71,7 @@ function Login() {
                   type="text"
                   name="email"
                   placeholder="theodore_roosevelt@gmail.com"
-                  dataId="email"
+                  dataid="email"
                   data-cy="email"
                 />
                 {serverError && (
@@ -103,7 +103,7 @@ function Login() {
                     name="password"
                     id="password"
                     placeholder="iluvnature123"
-                    dataId="password"
+                    dataid="password"
                     data-cy="password"
                   />
                   {isPasswordVisible ? (
@@ -133,7 +133,7 @@ function Login() {
               <Button
                 title="Sign in"
                 type="submit"
-                dataId="submit-login"
+                dataid="submit-login"
                 state={signingIn}
               />
             </Form>

@@ -4,8 +4,8 @@ import {Auth} from 'aws-amplify'
 
 export default function UserInfo({username, email, name, bio, visitedSites}) {
   const [editingUser, setEditingUser] = useState(false)
-  const [inputName, setInputName] = useState(name)
-  const [inputBio, setInputBio] = useState(bio)
+  const [inputName, setInputName] = useState(name || '')
+  const [inputBio, setInputBio] = useState(bio || '')
 
   const updateUserInfo = async () => {
     setEditingUser(false)

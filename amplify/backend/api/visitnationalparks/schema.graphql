@@ -1,0 +1,11 @@
+type Site @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  code: String!
+  owner: String!
+  name: String!
+  img: String!
+  visited: Boolean
+  bookmarked: Boolean
+  rating: String
+  avgRating: String
+}

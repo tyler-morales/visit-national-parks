@@ -7,7 +7,18 @@ const Modal = ({handleClose, site, editRating}) => {
 
   const changeRating = (stars) => {
     setRating(stars)
-    editRating(site, stars)
+  }
+
+  const saveData = () => {
+    const oldRating = +site?.rating
+    // Only update database if the rating has changed from their previous rating
+    if (oldRating == +rating) {
+    } else {
+      editRating(site, rating)
+    }
+
+    // Close modal after save
+    handleClose()
   }
 
   return (
@@ -59,7 +70,9 @@ const Modal = ({handleClose, site, editRating}) => {
               className="px-4 py-2 w-[150px] m-auto text-lg text-white bg-red-400 rounded-lg">
               Cancel
             </button>
-            <button className="px-4 py-2 w-[150px] m-auto text-lg bg-green-400 rounded-lg">
+            <button
+              onClick={saveData}
+              className="px-4 py-2 w-[150px] m-auto text-lg bg-green-400 rounded-lg">
               Save
             </button>
           </div>

@@ -36,6 +36,11 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
     }
   }
   const [date, setDate] = useState(loadedDates || defaultDates)
+  const [visited, setVisited] = useState(site?.visited)
+
+  const createDateSelects = () => {
+    setVisited(true)
+  }
 
   const changeRating = (stars) => {
     setRating(stars)
@@ -167,54 +172,61 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
 
           {/* Dates Visited */}
           <div>
-            <button className="px-4 py-2 m-auto text-lg bg-orange-200 rounded-lg">
-              Add Visit Date
-            </button>
-            <div className="max-w-screen-sm mt-4">
-              {/* Year */}
-              <select
-                onChange={(e) => changeYear(e)}
-                className="px-4 py-2 font-sans bg-white w-[100px] rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="Year">
-                <option value={date.year} className="px-4 py-2 rounded-md">
-                  {date.year}
-                </option>
-                <CreateYearOptions />
-              </select>
-
-              {/* Month */}
-              <select
-                onChange={(e) => changeMonth(e)}
-                className="py-2 px-4 font-sans bg-white w-[130px] x-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="Month"
-                style={{
-                  borderLeft: '4px solid  #FFEDD5',
-                  borderRight: '4px solid  #FFEDD5',
-                }}>
-                <option value={date.month} className="px-4 py-2 rounded-md">
-                  {date.month}
-                </option>
-                <CreateMonthOptions />
-              </select>
-
-              {/* Day */}
-              <select
-                onChange={(e) => changeDay(e)}
-                className="px-4 py-2 font-sans bg-white w-[100px] rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="Day">
-                <option value={date.day} className="px-4 py-2 rounded-md">
-                  {date.day}
-                </option>
-                <CreateDayOptions />
-              </select>
-
-              {/* Set Visited date to current date */}
+            {!visited && (
               <button
-                onClick={setCurrentDate}
-                className="px-4 py-2 ml-4 bg-orange-200 rounded-md">
-                Set to Today
+                onClick={createDateSelects}
+                className="px-4 py-2 m-auto text-lg bg-orange-200 rounded-lg">
+                Add Visit Date
               </button>
-            </div>
+            )}
+
+            {visited && (
+              <div className="max-w-screen-sm mt-4">
+                {/* Year */}
+                <select
+                  onChange={(e) => changeYear(e)}
+                  className="px-4 py-2 font-sans bg-white w-[100px] rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  name="Year">
+                  <option value={date.year} className="px-4 py-2 rounded-md">
+                    {date.year}
+                  </option>
+                  <CreateYearOptions />
+                </select>
+
+                {/* Month */}
+                <select
+                  onChange={(e) => changeMonth(e)}
+                  className="py-2 px-4 font-sans bg-white w-[130px] x-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  name="Month"
+                  style={{
+                    borderLeft: '4px solid  #FFEDD5',
+                    borderRight: '4px solid  #FFEDD5',
+                  }}>
+                  <option value={date.month} className="px-4 py-2 rounded-md">
+                    {date.month}
+                  </option>
+                  <CreateMonthOptions />
+                </select>
+
+                {/* Day */}
+                <select
+                  onChange={(e) => changeDay(e)}
+                  className="px-4 py-2 font-sans bg-white w-[100px] rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  name="Day">
+                  <option value={date.day} className="px-4 py-2 rounded-md">
+                    {date.day}
+                  </option>
+                  <CreateDayOptions />
+                </select>
+
+                {/* Set Visited date to current date */}
+                <button
+                  onClick={setCurrentDate}
+                  className="px-4 py-2 ml-4 bg-orange-200 rounded-md">
+                  Set to Today
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

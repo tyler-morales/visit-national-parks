@@ -107,6 +107,8 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
         variables: {
           input: {
             id: site?.id,
+            visited: true,
+            bookmarked: false,
             dateVisited: `${date.year} ${date.month} ${date.day}`,
             owner: site?.username,
           },

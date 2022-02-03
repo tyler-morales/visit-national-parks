@@ -2,9 +2,29 @@ import {useState} from 'react'
 import StarRating from '../StarRating/StarRating'
 import Backdrop from './Backdrop'
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
 const Modal = ({handleClose, site, editRating, editReview}) => {
   const [rating, setRating] = useState(site?.rating)
   const [review, setReview] = useState(site?.review)
+  const [date, setDate] = useState({
+    year: '--Year--',
+    month: '--Month--',
+    day: '--Day--',
+  })
 
   const changeRating = (stars) => {
     setRating(stars)
@@ -12,6 +32,61 @@ const Modal = ({handleClose, site, editRating, editReview}) => {
 
   const updateReview = (e) => {
     setReview(e.target.value)
+  }
+
+  const changeYear = (e) => {
+    setDate({year: e.target.value})
+  }
+  const changeMonth = (e) => {
+    setDate({month: e.target.value})
+  }
+  const changeDay = (e) => {
+    setDate({day: e.target.value})
+  }
+
+  function CreateYearOptions() {
+    const currentYear = new Date().getFullYear()
+    let years = []
+    for (let i = 1900; i <= currentYear; i++) {
+      years.push(i)
+    }
+
+    years = years.reverse()
+
+    return years.map((year) => (
+      <option className="px-4 py-2 rounded-md" value={year} key={year}>
+        {year}
+      </option>
+    ))
+  }
+
+  function CreateMonthOptions() {
+    return months.map((item) => (
+      <option className="px-4 py-2" value={item} key={item}>
+        {item}
+      </option>
+    ))
+  }
+
+  function CreateDayOptions() {
+    let days = []
+    for (let i = 1; i <= 31; i++) {
+      days.push(i)
+    }
+
+    return days.map((day) => (
+      <option className="px-4 py-2 rounded-md" value={day} key={day}>
+        {day}
+      </option>
+    ))
+  }
+
+  const setCurrentDate = () => {
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    const currentDay = new Date().getDate()
+
+    setDate({year: currentYear, month: months[currentMonth], day: currentDay})
   }
 
   const saveData = () => {
@@ -75,22 +150,66 @@ const Modal = ({handleClose, site, editRating, editReview}) => {
             <button className="px-4 py-2 m-auto text-lg bg-orange-200 rounded-lg">
               Add Visit Date
             </button>
-            <div>{/* Dates visited */}</div>
-          </div>
+            <div className="max-w-screen-sm mt-4">
+              {/* Year */}
+              <select
+                onChange={(e) => changeYear(e)}
+                className="px-4 py-2 font-sans bg-white w-[100px] rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="Year">
+                <option value={date.year} className="px-4 py-2 rounded-md">
+                  {date.year}
+                </option>
+                <CreateYearOptions />
+              </select>
 
-          {/* Confirmation button */}
-          <div className="flex max-w-[200px] gap-4  mt-8">
-            <button
-              onClick={handleClose}
-              className="px-4 py-2 w-[150px] m-auto text-lg text-white bg-red-400 rounded-lg">
-              Cancel
-            </button>
-            <button
-              onClick={saveData}
-              className="px-4 py-2 w-[150px] m-auto text-lg bg-green-400 rounded-lg">
-              Save
-            </button>
+              {/* Month */}
+              <select
+                onChange={(e) => changeMonth(e)}
+                className="py-2 px-4 font-sans bg-white w-[130px] x-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="Month"
+                style={{
+                  borderLeft: '4px solid  #FFEDD5',
+                  borderRight: '4px solid  #FFEDD5',
+                }}>
+                <option value={date.month} className="px-4 py-2 rounded-md">
+                  {date.month}
+                </option>
+                <CreateMonthOptions />
+              </select>
+
+              {/* Day */}
+              <select
+                onChange={(e) => changeDay(e)}
+                className="px-4 py-2 font-sans bg-white w-[100px] rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="Day">
+                <option value={date.day} className="px-4 py-2 rounded-md">
+                  {date.day}
+                </option>
+                <CreateDayOptions />
+              </select>
+
+              {/* Set Visited date to current date */}
+              <button
+                onClick={setCurrentDate}
+                className="px-4 py-2 ml-4 bg-orange-200 rounded-md">
+                Set to Today
+              </button>
+            </div>
           </div>
+        </div>
+
+        {/* Confirmation button */}
+        <div className="flex max-w-[200px] gap-4  mt-8">
+          <button
+            onClick={handleClose}
+            className="px-4 py-2 w-[150px] m-auto text-lg text-white bg-red-400 rounded-lg">
+            Cancel
+          </button>
+          <button
+            onClick={saveData}
+            className="px-4 py-2 w-[150px] m-auto text-lg bg-green-400 rounded-lg">
+            Save
+          </button>
         </div>
       </div>
     </Backdrop>

@@ -157,7 +157,9 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
         </td>
         {tab == 'visited' && (
           <td data-th="visited" className="text-left">
-            <span className="text-lg text-green-800">6/2017</span>
+            <span className="text-lg text-green-800">
+              {site.dateVisited || 'n/a'}
+            </span>
           </td>
         )}
 

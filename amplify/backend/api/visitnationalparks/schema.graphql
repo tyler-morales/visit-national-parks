@@ -7,5 +7,6 @@ type Site @model @auth(rules: [{allow: owner}]) {
   visited: Boolean
   bookmarked: Boolean
   rating: String
+  review: String
   avgRating: String
 }

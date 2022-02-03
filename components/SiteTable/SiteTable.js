@@ -82,6 +82,25 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     }
   }
 
+  const editReview = async (site, review) => {
+    try {
+      // Edit site review to database
+      await API.graphql({
+        query: updateSite,
+        variables: {
+          input: {
+            id: site?.id,
+            review,
+            owner: site?.username,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const TableItems = ({site, num}) => {
     return (
       <tr className="w-full">
@@ -220,7 +239,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
           handleClose={close}
           site={modalSite}
           editRating={editRating}
-          // onChangeText={onChangeText}
+          editReview={editReview}
         />
       )}
       <SitesTable

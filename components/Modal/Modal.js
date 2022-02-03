@@ -2,19 +2,30 @@ import {useState} from 'react'
 import StarRating from '../StarRating/StarRating'
 import Backdrop from './Backdrop'
 
-const Modal = ({handleClose, site, editRating}) => {
+const Modal = ({handleClose, site, editRating, editReview}) => {
   const [rating, setRating] = useState(site?.rating)
+  const [review, setReview] = useState(site?.review)
 
   const changeRating = (stars) => {
     setRating(stars)
   }
 
+  const updateReview = (e) => {
+    setReview(e.target.value)
+  }
+
   const saveData = () => {
     const oldRating = +site?.rating
+    const oldReview = +site?.review
+
     // Only update database if the rating has changed from their previous rating
-    if (oldRating == +rating) {
-    } else {
+    if (oldRating !== +rating) {
       editRating(site, rating)
+    }
+
+    // Only update database if the review has changed from their previous review
+    if (oldReview !== +review) {
+      editReview(site, review)
     }
 
     // Close modal after save
@@ -52,7 +63,11 @@ const Modal = ({handleClose, site, editRating}) => {
           {/* Review */}
           <div className="flex flex-col gap-4">
             <label className="font-bold text-green-800 uppercase">Review</label>
-            <textarea className="p-4 rounded-md" rows="5"></textarea>
+            <textarea
+              defaultValue={site?.review == review ? site?.review : review}
+              onChange={(e) => updateReview(e)}
+              className="p-4 rounded-md"
+              rows="5"></textarea>
           </div>
 
           {/* Dates Visited */}

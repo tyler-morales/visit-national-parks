@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import Select from 'react-select'
 import StarRating from '../StarRating/StarRating'
 import Backdrop from './Backdrop'
 
@@ -15,6 +16,12 @@ const months = [
   'October',
   'November',
   'December',
+]
+
+const collections = [
+  {value: '1', label: 'Grand Canyon Trip'},
+  {value: '2', label: 'Wyoming Trip'},
+  {value: '3', label: 'East Coast Trip'},
 ]
 
 const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
@@ -37,6 +44,7 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
   }
   const [date, setDate] = useState(loadedDates || defaultDates)
   const [visited, setVisited] = useState(site?.visited)
+  const [selectedCollection, setSelectedCollection] = useState(null)
 
   const createDateSelects = () => {
     setVisited(true)
@@ -139,25 +147,36 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
         className="max-w-[700px] p-8 bg-orange-100 rounded-lg">
         <div className="grid gap-4">
           {/* Image and Name */}
-          <div className="flex items-end gap-8">
+          <div className="flex items-center gap-8">
             <img
               src={site.img}
               alt={site.name}
               className="w-[300px] h-[200px] object-cover rounded-md"
             />
-            <h2 className="text-4xl font-bold text-green-800 align-end">
-              {site.name}
-            </h2>
+            <h2 className="text-4xl font-bold text-green-800">{site.name}</h2>
           </div>
 
-          {/* Rating and Collection */}
           <div className="flex w-full gap-8">
+            {/* Rating */}
             <div className="flex items-center gap-2 font-bold text-green-800 uppercase">
               <span>
                 <StarRating rating={rating} changeRating={changeRating} />
               </span>
             </div>
-            <div className="font-bold text-green-800 uppercase">Collection</div>
+            {/* Collection */}
+            <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
+              <div className="font-bold text-green-800 uppercase">
+                Collection
+              </div>
+              <Select
+                options={collections}
+                value={selectedCollection}
+                onChange={setSelectedCollection}
+                id="collections"
+                className="min-w-[100px] cursor-pointer"
+                // styles={searchStyles}
+              />
+            </div>
           </div>
 
           {/* Review */}

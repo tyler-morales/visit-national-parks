@@ -61,9 +61,6 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
   }
 
   const editRating = async (site, rating) => {
-    console.log(rating)
-    console.log(site.id, site.rating, site.owner)
-
     try {
       // Edit site rating to database
       await API.graphql({
@@ -91,6 +88,26 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
           input: {
             id: site?.id,
             review,
+            owner: site?.username,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const editDate = async (site, date) => {
+    console.log(`${date.year} ${date.month} ${date.day}`)
+    try {
+      // Edit site review to database
+      await API.graphql({
+        query: updateSite,
+        variables: {
+          input: {
+            id: site?.id,
+            dateVisited: `${date.year} ${date.month} ${date.day}`,
             owner: site?.username,
           },
         },
@@ -240,6 +257,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
           site={modalSite}
           editRating={editRating}
           editReview={editReview}
+          editDate={editDate}
         />
       )}
       <SitesTable

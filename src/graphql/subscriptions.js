@@ -14,6 +14,7 @@ export const onCreateSite = /* GraphQL */ `
       rating
       review
       avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -32,6 +33,7 @@ export const onUpdateSite = /* GraphQL */ `
       rating
       review
       avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -50,6 +52,7 @@ export const onDeleteSite = /* GraphQL */ `
       rating
       review
       avgRating
+      dateVisited
       createdAt
       updatedAt
     }

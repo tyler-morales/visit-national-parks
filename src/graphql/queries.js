@@ -14,6 +14,7 @@ export const getSite = /* GraphQL */ `
       rating
       review
       avgRating
+      dateVisited
       createdAt
       updatedAt
     }
@@ -37,6 +38,7 @@ export const listSites = /* GraphQL */ `
         rating
         review
         avgRating
+        dateVisited
         createdAt
         updatedAt
       }

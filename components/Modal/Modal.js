@@ -17,14 +17,25 @@ const months = [
   'December',
 ]
 
-const Modal = ({handleClose, site, editRating, editReview}) => {
+const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
+  const {dateVisited} = site
+
   const [rating, setRating] = useState(site?.rating)
   const [review, setReview] = useState(site?.review)
-  const [date, setDate] = useState({
-    year: '--Year--',
-    month: '--Month--',
-    day: '--Day--',
-  })
+  if (dateVisited) {
+    const loadedDates = {
+      year: dateVisited.split(' ')[0],
+      month: dateVisited.split(' ')[1],
+      day: dateVisited.split(' ')[2],
+    }
+  } else {
+    const defaultDates = {
+      year: '--Year--',
+      month: '--Month--',
+      day: '--Day--',
+    }
+  }
+  const [date, setDate] = useState(loadedDates || defaultDates)
 
   const changeRating = (stars) => {
     setRating(stars)
@@ -35,13 +46,16 @@ const Modal = ({handleClose, site, editRating, editReview}) => {
   }
 
   const changeYear = (e) => {
-    setDate({year: e.target.value})
+    setDate({year: e.target.value, month: date.month, day: date.day})
+    console.log(date)
   }
   const changeMonth = (e) => {
-    setDate({month: e.target.value})
+    setDate({year: date.year, month: e.target.value, day: date.day})
+    console.log(date)
   }
   const changeDay = (e) => {
-    setDate({day: e.target.value})
+    setDate({year: date.year, month: date.month, day: e.target.value})
+    console.log(date)
   }
 
   function CreateYearOptions() {
@@ -92,6 +106,7 @@ const Modal = ({handleClose, site, editRating, editReview}) => {
   const saveData = () => {
     const oldRating = +site?.rating
     const oldReview = +site?.review
+    const oldDate = site?.dateVisited
 
     // Only update database if the rating has changed from their previous rating
     if (oldRating !== +rating) {
@@ -101,6 +116,11 @@ const Modal = ({handleClose, site, editRating, editReview}) => {
     // Only update database if the review has changed from their previous review
     if (oldReview !== +review) {
       editReview(site, review)
+    }
+
+    // Only update database if the review has changed from their previous review
+    if (oldDate !== date) {
+      editDate(site, date)
     }
 
     // Close modal after save

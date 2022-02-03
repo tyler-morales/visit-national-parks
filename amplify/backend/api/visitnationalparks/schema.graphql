@@ -9,4 +9,5 @@ type Site @model @auth(rules: [{allow: owner}]) {
   rating: String
   review: String
   avgRating: String
+  dateVisited: String
 }

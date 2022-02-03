@@ -15,6 +15,17 @@ export const onCreateSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -34,6 +45,17 @@ export const onUpdateSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -53,8 +75,55 @@ export const onDeleteSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateCollection = /* GraphQL */ `
+  subscription OnCreateCollection($owner: String) {
+    onCreateCollection(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
+    }
+  }
+`;
+export const onUpdateCollection = /* GraphQL */ `
+  subscription OnUpdateCollection($owner: String) {
+    onUpdateCollection(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
+    }
+  }
+`;
+export const onDeleteCollection = /* GraphQL */ `
+  subscription OnDeleteCollection($owner: String) {
+    onDeleteCollection(owner: $owner) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
     }
   }
 `;

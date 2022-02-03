@@ -18,6 +18,17 @@ export const createSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -40,6 +51,17 @@ export const updateSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -62,8 +84,64 @@ export const deleteSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createCollection = /* GraphQL */ `
+  mutation CreateCollection(
+    $input: CreateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    createCollection(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
+    }
+  }
+`;
+export const updateCollection = /* GraphQL */ `
+  mutation UpdateCollection(
+    $input: UpdateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    updateCollection(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
+    }
+  }
+`;
+export const deleteCollection = /* GraphQL */ `
+  mutation DeleteCollection(
+    $input: DeleteCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    deleteCollection(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
     }
   }
 `;

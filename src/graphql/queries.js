@@ -15,6 +15,17 @@ export const getSite = /* GraphQL */ `
       review
       avgRating
       dateVisited
+      collections {
+        items {
+          id
+          name
+          createdAt
+          updatedAt
+          siteCollectionsId
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -39,8 +50,42 @@ export const listSites = /* GraphQL */ `
         review
         avgRating
         dateVisited
+        collections {
+          nextToken
+        }
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getCollection = /* GraphQL */ `
+  query GetCollection($id: ID!) {
+    getCollection(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      siteCollectionsId
+      owner
+    }
+  }
+`;
+export const listCollections = /* GraphQL */ `
+  query ListCollections(
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        siteCollectionsId
+        owner
       }
       nextToken
     }

@@ -15,6 +15,7 @@ export const createSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
       createdAt
       updatedAt
@@ -35,6 +36,7 @@ export const updateSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
       createdAt
       updatedAt
@@ -55,6 +57,7 @@ export const deleteSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
       createdAt
       updatedAt

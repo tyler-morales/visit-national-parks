@@ -7,6 +7,7 @@ import {
   updateSite,
   createCollection,
   createSiteCollections,
+  updateSiteCollections,
 } from '../../src/graphql/mutations'
 import {API} from 'aws-amplify'
 import {ToastContainer, toast} from 'react-toastify'
@@ -22,6 +23,7 @@ export default function SiteTable({
   visitedSites,
   bookmarkedSites,
   collections,
+  allSiteCollections,
 }) {
   // Modal state
   const {modalOpen, close, open} = useModal()
@@ -132,45 +134,46 @@ export default function SiteTable({
   }
 
   const addNewCollection = async (site, collection) => {
-    console.log(collection)
+    // console.log(collection)
     // Add new collection
-    if (!collections.includes(collection)) {
-      // Edit site review to database
-      try {
-        await API.graphql({
-          query: createCollection,
-          variables: {
-            input: {
-              id: collection.id,
-              name: collection.label,
-              owner: site?.owner,
-            },
-          },
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        console.log('New collection added', collection)
-      } catch (err) {
-        console.error(err)
-      }
+    // if (!collections.includes(collection)) {
+    //   // Edit site review to database
+    //   try {
+    //     await API.graphql({
+    //       query: createCollection,
+    //       variables: {
+    //         input: {
+    //           id: collection.id,
+    //           name: collection.label,
+    //           owner: site?.owner,
+    //         },
+    //       },
+    //       authMode: 'AMAZON_COGNITO_USER_POOLS',
+    //     })
+    //     console.log('New collection added', collection)
+    //   } catch (err) {
+    //     console.error(err)
+    //   }
+    //   // Add collection to site
+  }
 
-      // Add collection to site
-      try {
-        await API.graphql({
-          query: createSiteCollections,
-          variables: {
-            input: {
-              collectionID: collection.Id,
-              siteID: site?.id,
-            },
+  const editCollection = async (site, collection, id) => {
+    // console.log({id, collectionID: collection.id, siteID: site.id, collection})
+    try {
+      await API.graphql({
+        query: updateSiteCollections,
+        variables: {
+          input: {
+            id,
+            collectionID: collection.id,
+            siteID: site.id,
           },
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-        console.log(collection.label + ' added ' + ' to ' + site.name)
-      } catch (err) {
-        console.error(err)
-      }
-    } else {
-      // Collection exists
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      console.log(`${site.name} changed its collection to ${collection.label}`)
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -181,7 +184,7 @@ export default function SiteTable({
       return collection.id == collectionId
     })
 
-    console.log(collectionName[0]?.label)
+    // console.log(collectionName[0]?.label)
 
     return (
       <tr className="w-full">
@@ -324,10 +327,12 @@ export default function SiteTable({
           handleClose={close}
           site={modalSite}
           allCollections={collections}
+          siteCollections={allSiteCollections}
           editRating={editRating}
           editReview={editReview}
           editDate={editDate}
           addNewCollection={addNewCollection}
+          editCollection={editCollection}
         />
       )}
       <SitesTable

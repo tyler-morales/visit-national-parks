@@ -23,10 +23,12 @@ const Modal = ({
   handleClose,
   site,
   allCollections,
+  siteCollections,
   editRating,
   editReview,
   editDate,
   addNewCollection,
+  editCollection,
 }) => {
   const {dateVisited} = site
 
@@ -57,9 +59,14 @@ const Modal = ({
 
   const [selectedCollection, setSelectedCollection] = useState(
     collectionName[0]?.label != undefined
-      ? {label: collectionName[0]?.label}
+      ? {label: collectionName[0]?.label, id: collectionName[0]?.id}
       : {label: 'Select...'}
   )
+
+  let siteCollectionId = siteCollections.filter(
+    (item) => item.siteID == site.id
+  )
+  console.log(siteCollectionId[0].id)
 
   const createDateSelects = () => {
     setVisited(true)
@@ -142,6 +149,7 @@ const Modal = ({
     const oldRating = +site?.rating
     const oldReview = +site?.review
     const oldDate = site?.dateVisited
+    const oldCollection = collectionName[0]?.label
 
     // Only update database if the rating has changed from their previous rating
     if (oldRating !== +rating) {
@@ -158,7 +166,21 @@ const Modal = ({
       editDate(site, date)
     }
 
-    addNewCollection(site, selectedCollection)
+    // ONLY create a new collection if it doesn't exist already
+    if (
+      !collections
+        .map((collection) => collection.label)
+        .includes(selectedCollection.label)
+    ) {
+      console.log('Adding new collection')
+      addNewCollection(site, selectedCollection)
+    }
+
+    // Only update collection if it is different than the previous collection
+    if (oldCollection !== selectedCollection.label) {
+      console.log(selectedCollection.label)
+      editCollection(site, selectedCollection, siteCollectionId[0].id)
+    }
 
     // Close modal after save
     handleClose()

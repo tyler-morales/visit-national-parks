@@ -1,7 +1,8 @@
 import {useState} from 'react'
-import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 import StarRating from '../StarRating/StarRating'
 import Backdrop from './Backdrop'
+import {v4 as uuidv4} from 'uuid'
 
 const months = [
   'January',
@@ -18,17 +19,17 @@ const months = [
   'December',
 ]
 
-const collections = [
-  {value: '1', label: 'Grand Canyon Trip'},
-  {value: '2', label: 'Wyoming Trip'},
-  {value: '3', label: 'East Coast Trip'},
-]
-
-const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
+const Modal = ({
+  handleClose,
+  site,
+  allCollections,
+  editRating,
+  editReview,
+  editDate,
+  addNewCollection,
+}) => {
   const {dateVisited} = site
 
-  const [rating, setRating] = useState(site?.rating)
-  const [review, setReview] = useState(site?.review)
   if (dateVisited) {
     const loadedDates = {
       year: dateVisited.split(' ')[0],
@@ -42,9 +43,23 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
       day: '--Day--',
     }
   }
+
+  const [collections, setCollections] = useState(allCollections)
+  const [rating, setRating] = useState(site?.rating)
+  const [review, setReview] = useState(site?.review)
   const [date, setDate] = useState(loadedDates || defaultDates)
   const [visited, setVisited] = useState(site?.visited)
-  const [selectedCollection, setSelectedCollection] = useState(null)
+
+  let collectionId = site?.collections.items[0]?.collectionID
+  let collectionName = collections.filter(
+    (collection) => collection.id == collectionId
+  )
+
+  const [selectedCollection, setSelectedCollection] = useState(
+    collectionName[0]?.label != undefined
+      ? {label: collectionName[0]?.label}
+      : {label: 'Select...'}
+  )
 
   const createDateSelects = () => {
     setVisited(true)
@@ -116,6 +131,13 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
     setDate({year: currentYear, month: months[currentMonth], day: currentDay})
   }
 
+  const handleCreateCollection = (val) => {
+    setCollections((collections) => {
+      return [...collections, {label: val}]
+    })
+    setSelectedCollection({id: uuidv4(), label: val})
+  }
+
   const saveData = () => {
     const oldRating = +site?.rating
     const oldReview = +site?.review
@@ -131,10 +153,12 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
       editReview(site, review)
     }
 
-    // Only update database if the review has changed from their previous review
+    // Only update database if the collection has changed from their previous collection
     if (oldDate !== date) {
       editDate(site, date)
     }
+
+    addNewCollection(site, selectedCollection)
 
     // Close modal after save
     handleClose()
@@ -168,12 +192,13 @@ const Modal = ({handleClose, site, editRating, editReview, editDate}) => {
               <div className="font-bold text-green-800 uppercase">
                 Collection
               </div>
-              <Select
+              <CreatableSelect
                 options={collections}
                 value={selectedCollection}
                 onChange={setSelectedCollection}
+                onCreateOption={(val) => handleCreateCollection(val)}
                 id="collections"
-                className="min-w-[100px] cursor-pointer"
+                className="min-w-[150px] cursor-pointer"
                 // styles={searchStyles}
               />
             </div>

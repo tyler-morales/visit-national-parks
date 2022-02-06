@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 
-import {listSites} from '../src/graphql/queries'
+import {listSites, listCollections} from '../src/graphql/queries'
 
 import UserInfo from '../components/UserInfo/UserInfo'
 import SiteTable from '../components/SiteTable/SiteTable'
@@ -14,7 +14,15 @@ const tabStyles = {
     'text-green-800 hover:shadow-md hover:shadow-green-200 hover:border-2 hover:border-green-700 hover:text-green-800',
 }
 
-function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
+function Profile({
+  username,
+  email,
+  name,
+  bio,
+  visitedSites,
+  bookmarkedSites,
+  collections,
+}) {
   const [tab, setTab] = useState('visited')
 
   return (
@@ -50,6 +58,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
           <SiteTable
             visitedSites={visitedSites}
             bookmarkedSites={bookmarkedSites}
+            collections={collections}
             tab={tab}
           />
         </section>
@@ -85,10 +94,21 @@ export async function getServerSideProps({req, res}) {
       },
     })
 
+    const collections = await SSR.API.graphql({
+      query: listCollections,
+      variables: {
+        filter: {
+          owner: {eq: user?.username},
+        },
+      },
+    })
+
     // console.log(data)
     // const {attributes} = user
     // console.log('********************************')
-    // console.log(attributes)
+    // console.log(
+    //   visited?.data?.listSites?.items[1]?.collections.items[0]?.collectionID
+    // )
 
     return {
       props: {
@@ -99,6 +119,9 @@ export async function getServerSideProps({req, res}) {
         bio: user.attributes['custom:bio'] || null,
         visitedSites: visited.data.listSites.items,
         bookmarkedSites: bookmarked.data.listSites.items,
+        collections: collections.data.listCollections.items.map((item) => {
+          return {id: item.id, label: item.name}
+        }),
       },
     }
   } catch (err) {

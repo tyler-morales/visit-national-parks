@@ -2,15 +2,27 @@ import {useState} from 'react'
 import Link from 'next/link'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {RiEdit2Line} from 'react-icons/ri'
-import {deleteSite, updateSite} from '../../src/graphql/mutations'
+import {
+  deleteSite,
+  updateSite,
+  createCollection,
+  createSiteCollections,
+} from '../../src/graphql/mutations'
 import {API} from 'aws-amplify'
 import {ToastContainer, toast} from 'react-toastify'
 import useModal from '../../hooks/useModal'
 import Modal from '../../components/Modal/Modal'
 
+import {v4 as uuidv4} from 'uuid'
+
 import 'react-toastify/dist/ReactToastify.css'
 
-export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
+export default function SiteTable({
+  tab,
+  visitedSites,
+  bookmarkedSites,
+  collections,
+}) {
   // Modal state
   const {modalOpen, close, open} = useModal()
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
@@ -99,7 +111,6 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
   }
 
   const editDate = async (site, date) => {
-    console.log(`${date.year} ${date.month} ${date.day}`)
     try {
       // Edit site review to database
       await API.graphql({
@@ -120,7 +131,58 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     }
   }
 
+  const addNewCollection = async (site, collection) => {
+    console.log(collection)
+    // Add new collection
+    if (!collections.includes(collection)) {
+      // Edit site review to database
+      try {
+        await API.graphql({
+          query: createCollection,
+          variables: {
+            input: {
+              id: collection.id,
+              name: collection.label,
+              owner: site?.owner,
+            },
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        console.log('New collection added', collection)
+      } catch (err) {
+        console.error(err)
+      }
+
+      // Add collection to site
+      try {
+        await API.graphql({
+          query: createSiteCollections,
+          variables: {
+            input: {
+              collectionID: collection.Id,
+              siteID: site?.id,
+            },
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS',
+        })
+        console.log(collection.label + ' added ' + ' to ' + site.name)
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      // Collection exists
+    }
+  }
+
   const TableItems = ({site, num}) => {
+    let collectionId = site?.collections.items[0]?.collectionID
+
+    let collectionName = collections.filter((collection) => {
+      return collection.id == collectionId
+    })
+
+    console.log(collectionName[0]?.label)
+
     return (
       <tr className="w-full">
         <td data-th="Image" className="text-left ">
@@ -143,9 +205,10 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
             </a>
           </Link>
         </td>
-        <td data-th="Average-rating" className="text-left ">
+        {/* TODO: WORK IN PROGRESS */}
+        {/* <td data-th="Average-rating" className="text-left ">
           <span className="text-lg font-bold text-green-800">3.8</span>
-        </td>
+        </td> */}
         {tab == 'visited' && (
           <td data-th="Your-rating" className="text-left ">
             <span className="text-lg font-bold text-green-800">
@@ -153,9 +216,10 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
             </span>
           </td>
         )}
-
-        <td data-th="list" className="text-left ">
-          <span className="text-green-800 text-md">2017 Grand Canyon Trip</span>
+        <td data-th="collection" className="text-left ">
+          <span className="text-green-800 text-md">
+            {collectionName[0]?.label || 'n/a'}
+          </span>
         </td>
         {tab == 'visited' && (
           <td data-th="visited" className="text-left">
@@ -189,7 +253,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     const visitedHeaders = [
       {name: 'Image', sortable: false},
       {name: 'Name', sortable: true},
-      {name: 'Avg. Rating', sortable: false},
+      // {name: 'Avg. Rating', sortable: false},
       {name: 'Your Rating', sortable: false},
       {name: 'Collection', sortable: false},
       {name: 'Visited', sortable: false},
@@ -198,7 +262,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     const bookmarkedHeaders = [
       {name: 'Image', sortable: false},
       {name: 'Name', sortable: true},
-      {name: 'Avg. Rating', sortable: false},
+      // {name: 'Avg. Rating', sortable: false},
       {name: 'Collection', sortable: false},
       {name: 'Settings', sortable: false},
     ]
@@ -259,9 +323,11 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
           modalOpen={modalOpen}
           handleClose={close}
           site={modalSite}
+          allCollections={collections}
           editRating={editRating}
           editReview={editReview}
           editDate={editDate}
+          addNewCollection={addNewCollection}
         />
       )}
       <SitesTable

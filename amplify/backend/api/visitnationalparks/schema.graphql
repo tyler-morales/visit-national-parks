@@ -10,10 +10,12 @@ type Site @model @auth(rules: [{allow: owner}]) {
   review: String
   avgRating: String
   dateVisited: String
-  collections: [Collection] @hasMany
+  collections: [Collection] @manyToMany(relationName: "SiteCollections")
 }
 
 type Collection @model @auth(rules: [{allow: owner}]) {
   id: ID!
   name: String!
+  owner: String!
+  sites: [Site] @manyToMany(relationName: "SiteCollections")
 }

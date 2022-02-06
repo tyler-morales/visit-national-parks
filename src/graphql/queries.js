@@ -18,10 +18,10 @@ export const getSite = /* GraphQL */ `
       collections {
         items {
           id
-          name
+          siteID
+          collectionID
           createdAt
           updatedAt
-          siteCollectionsId
           owner
         }
         nextToken
@@ -30,7 +30,7 @@ export const getSite = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listSites = /* GraphQL */ `
   query ListSites(
     $filter: ModelSiteFilterInput
@@ -51,6 +51,9 @@ export const listSites = /* GraphQL */ `
         avgRating
         dateVisited
         collections {
+          items {
+            collectionID
+          }
           nextToken
         }
         createdAt
@@ -59,19 +62,29 @@ export const listSites = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const getCollection = /* GraphQL */ `
   query GetCollection($id: ID!) {
     getCollection(id: $id) {
       id
       name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      siteCollectionsId
-      owner
     }
   }
-`;
+`
 export const listCollections = /* GraphQL */ `
   query ListCollections(
     $filter: ModelCollectionFilterInput
@@ -82,12 +95,95 @@ export const listCollections = /* GraphQL */ `
       items {
         id
         name
+        owner
+        sites {
+          nextToken
+        }
         createdAt
         updatedAt
-        siteCollectionsId
+      }
+      nextToken
+    }
+  }
+`
+export const getSiteCollections = /* GraphQL */ `
+  query GetSiteCollections($id: ID!) {
+    getSiteCollections(id: $id) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`
+export const listSiteCollections = /* GraphQL */ `
+  query ListSiteCollections(
+    $filter: ModelSiteCollectionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSiteCollections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        siteID
+        collectionID
+        site {
+          id
+          code
+          owner
+          name
+          img
+          visited
+          bookmarked
+          rating
+          review
+          avgRating
+          dateVisited
+          createdAt
+          updatedAt
+        }
+        collection {
+          id
+          name
+          owner
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
         owner
       }
       nextToken
     }
   }
-`;
+`

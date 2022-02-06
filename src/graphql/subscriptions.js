@@ -18,10 +18,10 @@ export const onCreateSite = /* GraphQL */ `
       collections {
         items {
           id
-          name
+          siteID
+          collectionID
           createdAt
           updatedAt
-          siteCollectionsId
           owner
         }
         nextToken
@@ -48,10 +48,10 @@ export const onUpdateSite = /* GraphQL */ `
       collections {
         items {
           id
-          name
+          siteID
+          collectionID
           createdAt
           updatedAt
-          siteCollectionsId
           owner
         }
         nextToken
@@ -78,10 +78,10 @@ export const onDeleteSite = /* GraphQL */ `
       collections {
         items {
           id
-          name
+          siteID
+          collectionID
           createdAt
           updatedAt
-          siteCollectionsId
           owner
         }
         nextToken
@@ -96,10 +96,20 @@ export const onCreateCollection = /* GraphQL */ `
     onCreateCollection(owner: $owner) {
       id
       name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      siteCollectionsId
-      owner
     }
   }
 `;
@@ -108,10 +118,20 @@ export const onUpdateCollection = /* GraphQL */ `
     onUpdateCollection(owner: $owner) {
       id
       name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      siteCollectionsId
-      owner
     }
   }
 `;
@@ -120,9 +140,139 @@ export const onDeleteCollection = /* GraphQL */ `
     onDeleteCollection(owner: $owner) {
       id
       name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
-      siteCollectionsId
+    }
+  }
+`;
+export const onCreateSiteCollections = /* GraphQL */ `
+  subscription OnCreateSiteCollections($owner: String) {
+    onCreateSiteCollections(owner: $owner) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateSiteCollections = /* GraphQL */ `
+  subscription OnUpdateSiteCollections($owner: String) {
+    onUpdateSiteCollections(owner: $owner) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteSiteCollections = /* GraphQL */ `
+  subscription OnDeleteSiteCollections($owner: String) {
+    onDeleteSiteCollections(owner: $owner) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
       owner
     }
   }

@@ -134,7 +134,6 @@ export default function SiteTable({
   }
 
   const addNewCollection = async (site, collection) => {
-    console.log(collection)
     // Add new collection
     try {
       await API.graphql({
@@ -155,7 +154,6 @@ export default function SiteTable({
   }
 
   const editCollection = async (site, collection, id) => {
-    // console.log({id, collectionID: collection.id, siteID: site.id})
     try {
       await API.graphql({
         query: updateSiteCollections,
@@ -177,8 +175,6 @@ export default function SiteTable({
   }
 
   const createSiteCollection = async (site, collection) => {
-    // console.log(site.id, collection.id)
-
     try {
       await API.graphql({
         query: createSiteCollections,
@@ -202,8 +198,6 @@ export default function SiteTable({
     let collectionName = collections.filter((collection) => {
       return collection.id == collectionId
     })
-
-    // console.log(collectionName[0]?.label)
 
     return (
       <tr className="w-full">

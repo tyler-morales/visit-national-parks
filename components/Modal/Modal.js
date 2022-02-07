@@ -68,8 +68,6 @@ const Modal = ({
     (item) => item.siteID == site.id
   )
 
-  console.log(siteCollectionId)
-
   const createDateSelects = () => {
     setVisited(true)
   }
@@ -84,15 +82,12 @@ const Modal = ({
 
   const changeYear = (e) => {
     setDate({year: e.target.value, month: date.month, day: date.day})
-    console.log(date)
   }
   const changeMonth = (e) => {
     setDate({year: date.year, month: e.target.value, day: date.day})
-    console.log(date)
   }
   const changeDay = (e) => {
     setDate({year: date.year, month: date.month, day: e.target.value})
-    console.log(date)
   }
 
   function CreateYearOptions() {
@@ -168,41 +163,27 @@ const Modal = ({
       editDate(site, date)
     }
 
-    // ✅  ONLY create a new collection if it doesn't exist already
+    // ADD NEW COLLECTION: ONLY create a new collection if it doesn't exist already
     if (
       !collections
         .map((collection) => collection.id)
         .includes(selectedCollection.id)
     ) {
       addNewCollection(site, selectedCollection)
-      console.log('Add new collection')
     }
 
-    // Only create a new siteCollection, if none exists
+    // CREATE A NEW SITE COLLECTION: Only create a new siteCollection, if none exists
     if (siteCollectionId[0]?.id == undefined) {
       createSiteCollection(site, selectedCollection)
-      console.log('Create new siteCollection')
     }
 
-    // ✅  Only update collection if it is different than the previous collection
+    // UPDATE THE SITE WITH A NEW COLLECTION: Only update collection if it is different than the previous collection
     if (
       oldCollection !== selectedCollection.label &&
       siteCollectionId[0]?.id != null
     ) {
       editCollection(site, selectedCollection, siteCollectionId[0]?.id)
-      console.log('Updating the collection')
     }
-
-    // if (
-    //   oldCollection !== selectedCollection.label &&
-    //   siteCollectionId[0]?.id != null
-    // ) {
-    // editCollection(site, selectedCollection, siteCollectionId[0]?.id)
-    // console.log('Updating the collection')
-    // } else {
-    //   createSiteCollection(site, selectedCollection)
-    //   console.log('create new siteCollection')
-    // }
 
     // Close modal after save
     handleClose()

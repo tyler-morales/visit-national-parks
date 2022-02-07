@@ -168,23 +168,23 @@ const Modal = ({
       editDate(site, date)
     }
 
-    // ONLY create a new collection if it doesn't exist already
+    // ✅  ONLY create a new collection if it doesn't exist already
     if (
       !collections
-        .map((collection) => collection.label)
-        .includes(selectedCollection.label)
+        .map((collection) => collection.id)
+        .includes(selectedCollection.id)
     ) {
-      console.log('Adding new collection')
       addNewCollection(site, selectedCollection)
+      console.log('Add new collection')
     }
 
     // Only create a new siteCollection, if none exists
     if (siteCollectionId[0]?.id == undefined) {
       createSiteCollection(site, selectedCollection)
-      console.log('create new siteCollection')
+      console.log('Create new siteCollection')
     }
 
-    // Only update collection if it is different than the previous collection
+    // ✅  Only update collection if it is different than the previous collection
     if (
       oldCollection !== selectedCollection.label &&
       siteCollectionId[0]?.id != null

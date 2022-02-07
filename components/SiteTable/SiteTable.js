@@ -134,27 +134,24 @@ export default function SiteTable({
   }
 
   const addNewCollection = async (site, collection) => {
-    // console.log(collection)
+    console.log(collection)
     // Add new collection
-    // if (!collections.includes(collection)) {
-    //   // Edit site review to database
-    //   try {
-    //     await API.graphql({
-    //       query: createCollection,
-    //       variables: {
-    //         input: {
-    //           id: collection.id,
-    //           name: collection.label,
-    //           owner: site?.owner,
-    //         },
-    //       },
-    //       authMode: 'AMAZON_COGNITO_USER_POOLS',
-    //     })
-    //     console.log('New collection added', collection)
-    //   } catch (err) {
-    //     console.error(err)
-    //   }
-    //   // Add collection to site
+    try {
+      await API.graphql({
+        query: createCollection,
+        variables: {
+          input: {
+            id: collection.id,
+            name: collection.label,
+            owner: site?.owner,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      console.log('New collection added', collection)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const editCollection = async (site, collection, id) => {
@@ -180,7 +177,7 @@ export default function SiteTable({
   }
 
   const createSiteCollection = async (site, collection) => {
-    // console.log(site.id, selectedCollection.id)
+    // console.log(site.id, collection.id)
 
     try {
       await API.graphql({

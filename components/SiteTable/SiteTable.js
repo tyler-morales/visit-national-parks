@@ -14,8 +14,6 @@ import {ToastContainer, toast} from 'react-toastify'
 import useModal from '../../hooks/useModal'
 import Modal from '../../components/Modal/Modal'
 
-import {v4 as uuidv4} from 'uuid'
-
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function SiteTable({
@@ -147,7 +145,7 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      console.log('New collection added', collection)
+      toast('New collection added', collection)
     } catch (err) {
       console.error(err)
     }
@@ -166,9 +164,7 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      console.log(
-        `${site.name} changed its collection to "${collection.label}"`
-      )
+      toast(`${site.name} changed its collection to "${collection.label}"`)
     } catch (err) {
       console.error(err)
     }
@@ -186,7 +182,7 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      console.log(`${site.name} added "${collection.label}" to its collection`)
+      toast(`${site.name} added "${collection.label}" to its collection`)
     } catch (err) {
       console.error(err)
     }

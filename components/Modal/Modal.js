@@ -83,9 +83,11 @@ const Modal = ({
   const changeYear = (e) => {
     setDate({year: e.target.value, month: date.month, day: date.day})
   }
+
   const changeMonth = (e) => {
     setDate({year: date.year, month: e.target.value, day: date.day})
   }
+
   const changeDay = (e) => {
     setDate({year: date.year, month: date.month, day: e.target.value})
   }
@@ -155,12 +157,12 @@ const Modal = ({
 
     // Only update database if the review has changed from their previous review
     if (oldReview !== +review) {
-      editReview(site, review)
+      editReview(site, review, rating)
     }
 
     // Only update database if the collection has changed from their previous collection
-    if (oldDate !== date) {
-      editDate(site, date)
+    if (oldDate !== `${date.year} ${date.month} ${date.day}`) {
+      editDate(site, date, +rating, review)
     }
 
     // ADD NEW COLLECTION: ONLY create a new collection if it doesn't exist already

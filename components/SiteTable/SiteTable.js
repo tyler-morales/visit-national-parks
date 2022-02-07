@@ -73,8 +73,16 @@ export default function SiteTable({
   }
 
   const editRating = async (site, rating) => {
+    console.log('edited rating')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id ? {...item, rating} : item
+      })
+    )
+
+    // UPDATE: database
     try {
-      // Edit site rating to database
       await API.graphql({
         query: updateSite,
         variables: {
@@ -91,7 +99,15 @@ export default function SiteTable({
     }
   }
 
-  const editReview = async (site, review) => {
+  const editReview = async (site, review, rating) => {
+    console.log('edited review')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id ? {...item, review, rating} : item
+      })
+    )
+    // UPDATE: database
     try {
       // Edit site review to database
       await API.graphql({
@@ -110,7 +126,23 @@ export default function SiteTable({
     }
   }
 
-  const editDate = async (site, date) => {
+  const editDate = async (site, date, rating, review) => {
+    console.log('edited date')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id
+          ? {
+              ...item,
+              dateVisited: `${date.year} ${date.month} ${date.day}`,
+              rating,
+              review,
+            }
+          : item
+      })
+    )
+
+    // UPDATE: database
     try {
       // Edit site review to database
       await API.graphql({

@@ -120,16 +120,16 @@ export async function getServerSideProps({req, res}) {
 
     // console.log(data)
     // const {attributes} = user
-    console.log('********************************')
-    console.log(
-      siteCollections.data.listSiteCollections.items.map((item) => {
-        return {
-          id: item.id,
-          siteID: item.siteID,
-          collectionID: item.collectionID,
-        }
-      })
-    )
+    // console.log('********************************')
+    // console.log(
+    //   siteCollections.data.listSiteCollections.items.map((item) => {
+    //     return {
+    //       id: item.id,
+    //       siteID: item.siteID,
+    //       collectionID: item.collectionID,
+    //     }
+    //   })
+    // )
 
     return {
       props: {

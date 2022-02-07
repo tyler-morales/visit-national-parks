@@ -29,6 +29,7 @@ const Modal = ({
   editDate,
   addNewCollection,
   editCollection,
+  createSiteCollection,
 }) => {
   const {dateVisited} = site
 
@@ -66,7 +67,8 @@ const Modal = ({
   let siteCollectionId = siteCollections.filter(
     (item) => item.siteID == site.id
   )
-  console.log(siteCollectionId[0].id)
+
+  console.log(siteCollectionId)
 
   const createDateSelects = () => {
     setVisited(true)
@@ -176,11 +178,31 @@ const Modal = ({
       addNewCollection(site, selectedCollection)
     }
 
-    // Only update collection if it is different than the previous collection
-    if (oldCollection !== selectedCollection.label) {
-      console.log(selectedCollection.label)
-      editCollection(site, selectedCollection, siteCollectionId[0].id)
+    // Only create a new siteCollection, if none exists
+    if (siteCollectionId[0]?.id == undefined) {
+      createSiteCollection(site, selectedCollection)
+      console.log('create new siteCollection')
     }
+
+    // Only update collection if it is different than the previous collection
+    if (
+      oldCollection !== selectedCollection.label &&
+      siteCollectionId[0]?.id != null
+    ) {
+      editCollection(site, selectedCollection, siteCollectionId[0]?.id)
+      console.log('Updating the collection')
+    }
+
+    // if (
+    //   oldCollection !== selectedCollection.label &&
+    //   siteCollectionId[0]?.id != null
+    // ) {
+    // editCollection(site, selectedCollection, siteCollectionId[0]?.id)
+    // console.log('Updating the collection')
+    // } else {
+    //   createSiteCollection(site, selectedCollection)
+    //   console.log('create new siteCollection')
+    // }
 
     // Close modal after save
     handleClose()

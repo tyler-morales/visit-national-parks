@@ -158,7 +158,7 @@ export default function SiteTable({
   }
 
   const editCollection = async (site, collection, id) => {
-    // console.log({id, collectionID: collection.id, siteID: site.id, collection})
+    // console.log({id, collectionID: collection.id, siteID: site.id})
     try {
       await API.graphql({
         query: updateSiteCollections,
@@ -171,7 +171,29 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      console.log(`${site.name} changed its collection to ${collection.label}`)
+      console.log(
+        `${site.name} changed its collection to "${collection.label}"`
+      )
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const createSiteCollection = async (site, collection) => {
+    // console.log(site.id, selectedCollection.id)
+
+    try {
+      await API.graphql({
+        query: createSiteCollections,
+        variables: {
+          input: {
+            collectionID: collection.id,
+            siteID: site.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      console.log(`${site.name} added "${collection.label}" to its collection`)
     } catch (err) {
       console.error(err)
     }
@@ -333,6 +355,7 @@ export default function SiteTable({
           editDate={editDate}
           addNewCollection={addNewCollection}
           editCollection={editCollection}
+          createSiteCollection={createSiteCollection}
         />
       )}
       <SitesTable

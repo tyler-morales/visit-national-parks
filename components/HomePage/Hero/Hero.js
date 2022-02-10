@@ -35,7 +35,7 @@ export default function Hero() {
 
       <div className="top-0 w-full h-full lg:pt-20 md:absolute lg:bg-gradient-to-b from-white rounded-3xl">
         <h1 className="mb-4 text-4xl font-bold text-center text-green-800 sm:text-7xl">
-          Explore American
+          Explore America
         </h1>
         <p className="mb-6 text-xl sm:text-2xl text-center text-green-800 sm:w-[30ch] m-auto leading-8 font-display">
           Uncover over 450 unique & inviting locations across the United Sates

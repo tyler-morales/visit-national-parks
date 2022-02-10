@@ -1,16 +1,25 @@
-import React from 'react'
+import {useState, useEffect} from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function OfficialParks({nationalParks}) {
-  //   console.log(nationalParks.map((park) => console.log(park.name)))
-  let limitedParks = nationalParks.slice(0, 9)
+import {FaRandom} from 'react-icons/fa'
 
-  const randomomParks = nationalParks
-    .map((value) => ({value, sort: Math.random()}))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({value}) => value)
-    .slice(0, 9)
+export default function OfficialParks({nationalParks}) {
+  const [randomParks, setRandomParks] = useState(nationalParks)
+
+  const randomizeParks = () => {
+    setRandomParks(
+      nationalParks
+        .map((value) => ({value, sort: Math.random()}))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({value}) => value)
+        .slice(0, 9)
+    )
+  }
+
+  useEffect(() => {
+    randomizeParks()
+  }, [])
 
   return (
     <section className="grid grid-cols-3 gap-10">
@@ -32,7 +41,7 @@ export default function OfficialParks({nationalParks}) {
       </div>
 
       <div className="grid grid-cols-3 col-span-2 gap-4 p-6 bg-[#fafafa] grid-cols rounded-xl">
-        {randomomParks.map((park) => {
+        {randomParks.map((park) => {
           return (
             <Link href={`/park/${park.parkCode}`} key={park.parkCode}>
               <a className="flex items-center gap-4 p-2 transition-all rounded-lg hover:bg-green-200">
@@ -40,7 +49,7 @@ export default function OfficialParks({nationalParks}) {
                   layout="fixed"
                   width={85}
                   height={85}
-                  className="object-cover w-full min-h-full rounded-xl min-w-[75px]"
+                  className="object-cover w-full min-h-full rounded-xl min-w-[75px] bg-gray-200"
                   src={park.images[0].url}
                   alt={park.images[0].altText}
                 />
@@ -49,6 +58,14 @@ export default function OfficialParks({nationalParks}) {
             </Link>
           )
         })}
+        <span className="col-span-3 m-auto cursor-pointer w-min">
+          <div
+            className="flex items-center gap-2 text-blue-600"
+            onClick={randomizeParks}>
+            <FaRandom />
+            <span className="text-sm">Randomize</span>
+          </div>
+        </span>
       </div>
     </section>
   )

@@ -5,7 +5,13 @@ import Image from 'next/image'
 export default function OfficialParks({nationalParks}) {
   //   console.log(nationalParks.map((park) => console.log(park.name)))
   let limitedParks = nationalParks.slice(0, 9)
-  console.log(limitedParks)
+
+  const randomomParks = nationalParks
+    .map((value) => ({value, sort: Math.random()}))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({value}) => value)
+    .slice(0, 9)
+
   return (
     <section className="grid grid-cols-3 gap-10">
       <div className="flex flex-col justify-center gap-6 p-6 bg-green-700 rounded-xl">
@@ -26,7 +32,7 @@ export default function OfficialParks({nationalParks}) {
       </div>
 
       <div className="grid grid-cols-3 col-span-2 gap-4 p-6 bg-[#fafafa] grid-cols rounded-xl">
-        {limitedParks.map((park) => {
+        {randomomParks.map((park) => {
           return (
             <Link href={`/park/${park.parkCode}`} key={park.parkCode}>
               <a className="flex items-center gap-4 p-2 transition-all rounded-lg hover:bg-green-200">

@@ -22,7 +22,7 @@ export default function OfficialParks({nationalParks}) {
   }, [])
 
   return (
-    <section className="grid grid-cols-3 gap-10">
+    <section className="grid grid-cols-1 gap-10 md:grid-cols-3">
       <div className="flex flex-col justify-center gap-6 p-6 bg-green-700 rounded-xl">
         <div>
           <h2 className="mb-4 text-3xl font-bold text-white">
@@ -40,32 +40,33 @@ export default function OfficialParks({nationalParks}) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-3 col-span-2 gap-4 p-6 bg-[#fafafa] grid-cols rounded-xl">
-        {randomParks.map((park) => {
-          return (
-            <Link href={`/park/${park.parkCode}`} key={park.parkCode}>
-              <a className="flex items-center gap-4 p-2 transition-all rounded-lg hover:bg-green-200">
-                <Image
-                  layout="fixed"
-                  width={85}
-                  height={85}
-                  className="object-cover w-full min-h-full rounded-xl min-w-[75px] bg-gray-200"
-                  src={park.images[0].url}
-                  alt={park.images[0].altText}
-                />
-                <h3 className="texdt-lg max-w-[13ch]">{park.name}</h3>
-              </a>
-            </Link>
-          )
-        })}
-        <span className="col-span-3 m-auto cursor-pointer w-min">
-          <div
-            className="flex items-center gap-2 text-blue-600"
-            onClick={randomizeParks}>
-            <FaRandom />
-            <span className="text-sm">Randomize</span>
-          </div>
-        </span>
+      <div className=" p-6 bg-[#fafafa] rounded-xl md:col-span-2">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 md:col-span-2">
+          {randomParks.map((park) => {
+            return (
+              <Link href={`/park/${park.parkCode}`} key={park.parkCode}>
+                <a className="flex flex-col items-center gap-4 p-2 text-center transition-all rounded-lg md:text-left md:flex-row hover:bg-green-200">
+                  <Image
+                    layout="fixed"
+                    width={85}
+                    height={85}
+                    className="object-cover w-full min-h-full rounded-xl min-w-[75px] bg-gray-200"
+                    src={park.images[0].url}
+                    alt={park.images[0].altText}
+                  />
+                  <h3 className="texdt-lg max-w-[13ch]">{park.name}</h3>
+                </a>
+              </Link>
+            )
+          })}
+        </div>
+
+        <button
+          className="flex items-center gap-2 m-auto mt-4 text-blue-600"
+          onClick={randomizeParks}>
+          <FaRandom />
+          <span className="text-sm">Randomize</span>
+        </button>
       </div>
     </section>
   )

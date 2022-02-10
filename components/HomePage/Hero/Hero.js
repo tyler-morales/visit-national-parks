@@ -20,7 +20,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative top-0">
+    <section className="relative">
       {screenWidth > 1024 && (
         <Image
           layout="responsive"
@@ -33,7 +33,7 @@ export default function Hero() {
         />
       )}
 
-      <div className="top-0 w-full h-full lg:pt-20 md:absolute lg:bg-gradient-to-b from-white rounded-3xl">
+      <div className="w-full h-full lg:top-0 lg:pt-20 lg:absolute lg:bg-gradient-to-b from-white rounded-3xl">
         <h1 className="mb-4 text-4xl font-bold text-center text-green-800 sm:text-7xl">
           Explore America
         </h1>

@@ -1,14 +1,16 @@
 import Hero from '../components/HomePage/Hero/Hero'
 import OfficialParks from '../components/HomePage/OfficialParks/OfficialParks'
+import Topcis from '../components/HomePage/Topics/Topcis'
 import Layout from '../components/Layout'
 import SearchBar from '../components/SearchBar/SearchBar'
 
 export default function Home({nationalParks}) {
   return (
     <Layout>
-      <div className="grid gap-20">
+      <div className="grid gap-32">
         <Hero />
         <OfficialParks nationalParks={nationalParks} />
+        <Topcis />
       </div>
     </Layout>
   )

@@ -8,7 +8,7 @@ export default function OfficialParks({nationalParks}) {
   console.log(limitedParks)
   return (
     <section className="grid grid-cols-3 gap-10">
-      <div className="flex flex-col p-6 bg-green-700 rounded-xl">
+      <div className="flex flex-col justify-center gap-6 p-6 bg-green-700 rounded-xl">
         <div>
           <h2 className="mb-4 text-3xl font-bold text-white">
             Official National Parks
@@ -17,8 +17,9 @@ export default function OfficialParks({nationalParks}) {
             Discover all 63 sanctioned National Parks
           </p>
         </div>
+
         <Link href="/official-national-parks">
-          <a className="w-full py-1 m-auto mt-4 text-lg text-center bg-orange-200 rounded-lg">
+          <a className="w-full py-1 mt-4 text-lg text-center bg-orange-200 rounded-lg">
             View all
           </a>
         </Link>
@@ -31,13 +32,13 @@ export default function OfficialParks({nationalParks}) {
               <a className="flex items-center gap-4 p-2 transition-all rounded-lg hover:bg-green-200">
                 <Image
                   layout="fixed"
-                  width={75}
-                  height={75}
+                  width={85}
+                  height={85}
                   className="object-cover w-full min-h-full rounded-xl min-w-[75px]"
                   src={park.images[0].url}
                   alt={park.images[0].altText}
                 />
-                <h3 className="texdt-lg">{park.name}</h3>
+                <h3 className="texdt-lg max-w-[13ch]">{park.name}</h3>
               </a>
             </Link>
           )

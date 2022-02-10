@@ -37,7 +37,7 @@ export const Nav = ({mockUser}) => {
   }, [])
 
   return (
-    <nav className="flex justify-between py-5 lg:w-10/12 m-auto items-center max-w-[1080px] px-5 lg:px-0 flex-col md:flex-row w-full bg-[#f5f5ee]">
+    <nav className="flex justify-between py-5 lg:w-10/12 m-auto items-center max-w-[1200px] px-5 lg:px-0 flex-col md:flex-row w-full bg-[#f5f5ee]">
       <div className="flex flex-col items-center w-full md:flex-row">
         <div className="flex items-center justify-between w-full md:w-max md:pr-8">
           <Link href="/">

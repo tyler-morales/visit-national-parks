@@ -93,7 +93,7 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   return (
     <div
       className={`w-full rounded-3xl ${
-        fullSearchBar ? ' pb-4 bg-white border-2 border-gray-200 p-6' : 'pb-6'
+        fullSearchBar ? ' pb-4 bg-white border-2 border-green-800 p-6 shadow-xl' : 'pb-6'
       }`}>
       {/* Nav Buttons */}
       {fullSearchBar && (

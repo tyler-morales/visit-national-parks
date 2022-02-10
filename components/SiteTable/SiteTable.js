@@ -2,7 +2,13 @@ import {useState} from 'react'
 import Link from 'next/link'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {RiEdit2Line} from 'react-icons/ri'
-import {deleteSite, updateSite} from '../../src/graphql/mutations'
+import {
+  deleteSite,
+  updateSite,
+  createCollection,
+  createSiteCollections,
+  updateSiteCollections,
+} from '../../src/graphql/mutations'
 import {API} from 'aws-amplify'
 import {ToastContainer, toast} from 'react-toastify'
 import useModal from '../../hooks/useModal'
@@ -10,7 +16,13 @@ import Modal from '../../components/Modal/Modal'
 
 import 'react-toastify/dist/ReactToastify.css'
 
-export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
+export default function SiteTable({
+  tab,
+  visitedSites,
+  bookmarkedSites,
+  collections,
+  allSiteCollections,
+}) {
   // Modal state
   const {modalOpen, close, open} = useModal()
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
@@ -61,11 +73,16 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
   }
 
   const editRating = async (site, rating) => {
-    console.log(rating)
-    console.log(site.id, site.rating, site.owner)
+    console.log('edited rating')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id ? {...item, rating} : item
+      })
+    )
 
+    // UPDATE: database
     try {
-      // Edit site rating to database
       await API.graphql({
         query: updateSite,
         variables: {
@@ -82,7 +99,134 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     }
   }
 
+  const editReview = async (site, review, rating) => {
+    console.log('edited review')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id ? {...item, review, rating} : item
+      })
+    )
+    // UPDATE: database
+    try {
+      // Edit site review to database
+      await API.graphql({
+        query: updateSite,
+        variables: {
+          input: {
+            id: site?.id,
+            review,
+            owner: site?.username,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const editDate = async (site, date, rating, review) => {
+    console.log('edited date')
+    // UPDATE: local state
+    setVisitedSites(
+      currentVisitedSites.map((item) => {
+        return item.id === site.id
+          ? {
+              ...item,
+              dateVisited: `${date.year} ${date.month} ${date.day}`,
+              rating,
+              review,
+            }
+          : item
+      })
+    )
+
+    // UPDATE: database
+    try {
+      // Edit site review to database
+      await API.graphql({
+        query: updateSite,
+        variables: {
+          input: {
+            id: site?.id,
+            visited: true,
+            bookmarked: false,
+            dateVisited: `${date.year} ${date.month} ${date.day}`,
+            owner: site?.username,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const addNewCollection = async (site, collection) => {
+    // Add new collection
+    try {
+      await API.graphql({
+        query: createCollection,
+        variables: {
+          input: {
+            id: collection.id,
+            name: collection.label,
+            owner: site?.owner,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      toast('New collection added', collection)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const editCollection = async (site, collection, id) => {
+    try {
+      await API.graphql({
+        query: updateSiteCollections,
+        variables: {
+          input: {
+            id,
+            collectionID: collection.id,
+            siteID: site.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      toast(`${site.name} changed its collection to "${collection.label}"`)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const createSiteCollection = async (site, collection) => {
+    try {
+      await API.graphql({
+        query: createSiteCollections,
+        variables: {
+          input: {
+            collectionID: collection.id,
+            siteID: site.id,
+          },
+        },
+        authMode: 'AMAZON_COGNITO_USER_POOLS',
+      })
+      toast(`${site.name} added "${collection.label}" to its collection`)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const TableItems = ({site, num}) => {
+    let collectionId = site?.collections.items[0]?.collectionID
+
+    let collectionName = collections.filter((collection) => {
+      return collection.id == collectionId
+    })
+
     return (
       <tr className="w-full">
         <td data-th="Image" className="text-left ">
@@ -105,9 +249,10 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
             </a>
           </Link>
         </td>
-        <td data-th="Average-rating" className="text-left ">
+        {/* TODO: WORK IN PROGRESS */}
+        {/* <td data-th="Average-rating" className="text-left ">
           <span className="text-lg font-bold text-green-800">3.8</span>
-        </td>
+        </td> */}
         {tab == 'visited' && (
           <td data-th="Your-rating" className="text-left ">
             <span className="text-lg font-bold text-green-800">
@@ -115,13 +260,16 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
             </span>
           </td>
         )}
-
-        <td data-th="list" className="text-left ">
-          <span className="text-green-800 text-md">2017 Grand Canyon Trip</span>
+        <td data-th="collection" className="text-left ">
+          <span className="text-green-800 text-md">
+            {collectionName[0]?.label || 'n/a'}
+          </span>
         </td>
         {tab == 'visited' && (
           <td data-th="visited" className="text-left">
-            <span className="text-lg text-green-800">6/2017</span>
+            <span className="text-lg text-green-800">
+              {site.dateVisited || 'n/a'}
+            </span>
           </td>
         )}
 
@@ -149,7 +297,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     const visitedHeaders = [
       {name: 'Image', sortable: false},
       {name: 'Name', sortable: true},
-      {name: 'Avg. Rating', sortable: false},
+      // {name: 'Avg. Rating', sortable: false},
       {name: 'Your Rating', sortable: false},
       {name: 'Collection', sortable: false},
       {name: 'Visited', sortable: false},
@@ -158,7 +306,7 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
     const bookmarkedHeaders = [
       {name: 'Image', sortable: false},
       {name: 'Name', sortable: true},
-      {name: 'Avg. Rating', sortable: false},
+      // {name: 'Avg. Rating', sortable: false},
       {name: 'Collection', sortable: false},
       {name: 'Settings', sortable: false},
     ]
@@ -219,8 +367,14 @@ export default function SiteTable({tab, visitedSites, bookmarkedSites}) {
           modalOpen={modalOpen}
           handleClose={close}
           site={modalSite}
+          allCollections={collections}
+          siteCollections={allSiteCollections}
           editRating={editRating}
-          // onChangeText={onChangeText}
+          editReview={editReview}
+          editDate={editDate}
+          addNewCollection={addNewCollection}
+          editCollection={editCollection}
+          createSiteCollection={createSiteCollection}
         />
       )}
       <SitesTable

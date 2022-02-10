@@ -12,12 +12,11 @@ export default function StarRating({rating, changeRating}) {
 
   const createStar = (rating) => {
     return (
-      <>
+      <div key={rating}>
         {stars >= rating ? (
           <span>
             {' '}
             <AiFillStar
-              key={rating}
               color="yellow"
               onClick={() => changeColor(rating)}
               size="1.25em"
@@ -27,7 +26,6 @@ export default function StarRating({rating, changeRating}) {
         ) : (
           <span>
             <AiFillStar
-              key={rating}
               color="#d9d9d9"
               onClick={() => changeColor(rating)}
               size="1.25em"
@@ -35,7 +33,7 @@ export default function StarRating({rating, changeRating}) {
             />
           </span>
         )}
-      </>
+      </div>
     )
   }
 

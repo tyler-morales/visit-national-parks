@@ -2,7 +2,11 @@ import {useState, useEffect} from 'react'
 import {API, withSSRContext} from 'aws-amplify'
 import Layout from '../components/Layout'
 
-import {listSites} from '../src/graphql/queries'
+import {
+  listSites,
+  listCollections,
+  listSiteCollections,
+} from '../src/graphql/queries'
 
 import UserInfo from '../components/UserInfo/UserInfo'
 import SiteTable from '../components/SiteTable/SiteTable'
@@ -14,14 +18,23 @@ const tabStyles = {
     'text-green-800 hover:shadow-md hover:shadow-green-200 hover:border-2 hover:border-green-700 hover:text-green-800',
 }
 
-function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
+function Profile({
+  username,
+  email,
+  name,
+  bio,
+  visitedSites,
+  bookmarkedSites,
+  collections,
+  allSiteCollections,
+}) {
   const [tab, setTab] = useState('visited')
 
   return (
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
 
-      <main className="grid grid-cols-4 gap-20 mt-20 font-display">
+      <div className="grid grid-cols-1 gap-20 mt-20 md:grid-cols-4 font-display">
         <UserInfo
           username={username}
           email={email}
@@ -29,7 +42,7 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
           bio={bio}
           visitedSites={visitedSites.length}
         />
-        <section className="w-full col-span-3">
+        <section className="w-full md:col-span-3">
           <div className="flex gap-8">
             <button
               onClick={() => setTab('visited')}
@@ -50,10 +63,12 @@ function Profile({username, email, name, bio, visitedSites, bookmarkedSites}) {
           <SiteTable
             visitedSites={visitedSites}
             bookmarkedSites={bookmarkedSites}
+            collections={collections}
+            allSiteCollections={allSiteCollections}
             tab={tab}
           />
         </section>
-      </main>
+      </div>
     </Layout>
   )
 }
@@ -85,10 +100,21 @@ export async function getServerSideProps({req, res}) {
       },
     })
 
-    // console.log(data)
+    const collections = await SSR.API.graphql({
+      query: listCollections,
+      variables: {
+        filter: {
+          owner: {eq: user?.username},
+        },
+      },
+    })
+
+    const siteCollections = await SSR.API.graphql({
+      query: listSiteCollections,
+    })
+
     // const {attributes} = user
     // console.log('********************************')
-    // console.log(attributes)
 
     return {
       props: {
@@ -99,6 +125,18 @@ export async function getServerSideProps({req, res}) {
         bio: user.attributes['custom:bio'] || null,
         visitedSites: visited.data.listSites.items,
         bookmarkedSites: bookmarked.data.listSites.items,
+        collections: collections.data.listCollections.items.map((item) => {
+          return {id: item.id, label: item.name}
+        }),
+        allSiteCollections: siteCollections.data.listSiteCollections.items.map(
+          (item) => {
+            return {
+              id: item.id,
+              siteID: item.siteID,
+              collectionID: item.collectionID,
+            }
+          }
+        ),
       },
     }
   } catch (err) {

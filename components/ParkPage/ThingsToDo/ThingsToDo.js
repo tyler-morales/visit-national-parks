@@ -35,7 +35,7 @@ export default function ThingsToDo({thingsToDo, title}) {
             onClick={() => close(thing.id)}
             className="w-full shadow-md h-max rounded-xl">
             <summary className="list-none cursor-pointer">
-              <figure className="relative block">
+              <figure className="relative block bg-gray-200">
                 <Image
                   src={thing?.images[0].url}
                   alt={thing?.images[0].altText}

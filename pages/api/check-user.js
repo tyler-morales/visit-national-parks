@@ -1,5 +1,5 @@
 import Amplify, {withSSRContext} from 'aws-amplify'
-import config from '../../aws-exports'
+import config from '../../src/aws-exports'
 
 // Amplify SSR configuration needs to be enabled within each API route
 Amplify.configure({...config, ssr: true})

@@ -15,7 +15,20 @@ export const createSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
+      dateVisited
+      collections {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -35,7 +48,20 @@ export const updateSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
+      dateVisited
+      collections {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -55,9 +81,226 @@ export const deleteSite = /* GraphQL */ `
       visited
       bookmarked
       rating
+      review
       avgRating
+      dateVisited
+      collections {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createCollection = /* GraphQL */ `
+  mutation CreateCollection(
+    $input: CreateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    createCollection(input: $input, condition: $condition) {
+      id
+      name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateCollection = /* GraphQL */ `
+  mutation UpdateCollection(
+    $input: UpdateCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    updateCollection(input: $input, condition: $condition) {
+      id
+      name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCollection = /* GraphQL */ `
+  mutation DeleteCollection(
+    $input: DeleteCollectionInput!
+    $condition: ModelCollectionConditionInput
+  ) {
+    deleteCollection(input: $input, condition: $condition) {
+      id
+      name
+      owner
+      sites {
+        items {
+          id
+          siteID
+          collectionID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createSiteCollections = /* GraphQL */ `
+  mutation CreateSiteCollections(
+    $input: CreateSiteCollectionsInput!
+    $condition: ModelSiteCollectionsConditionInput
+  ) {
+    createSiteCollections(input: $input, condition: $condition) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateSiteCollections = /* GraphQL */ `
+  mutation UpdateSiteCollections(
+    $input: UpdateSiteCollectionsInput!
+    $condition: ModelSiteCollectionsConditionInput
+  ) {
+    updateSiteCollections(input: $input, condition: $condition) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteSiteCollections = /* GraphQL */ `
+  mutation DeleteSiteCollections(
+    $input: DeleteSiteCollectionsInput!
+    $condition: ModelSiteCollectionsConditionInput
+  ) {
+    deleteSiteCollections(input: $input, condition: $condition) {
+      id
+      siteID
+      collectionID
+      site {
+        id
+        code
+        owner
+        name
+        img
+        visited
+        bookmarked
+        rating
+        review
+        avgRating
+        dateVisited
+        collections {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      collection {
+        id
+        name
+        owner
+        sites {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

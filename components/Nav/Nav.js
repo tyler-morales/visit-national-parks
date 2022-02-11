@@ -13,7 +13,7 @@ export const Nav = ({mockUser}) => {
   const [showNavOnClick, setShowNavOnClick] = useState(false)
   const [showNavOnScreenSize, setShowNavOnScreenSize] = useState(true)
   const [isOpen, setOpen] = useState(false)
-  const [searchInput, setSearchInput] = useState(null)
+  const [searchInput, setSearchInput] = useState('')
 
   const toggleMenu = () => {
     setShowNavOnClick(!showNavOnClick)

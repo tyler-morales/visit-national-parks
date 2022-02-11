@@ -36,8 +36,8 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-      <h4 className="mt-6 text-sm text-center text-green-900">
-        Designed & Developed by{' '}
+      <h4 className="mt-6 text-sm text-center text-gray-500">
+        Designed & Developed with ♡ by{' '}
         <a
           target="_blank"
           href="https://www.tylermorales.dev/"

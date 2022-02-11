@@ -6,6 +6,7 @@ import Head from 'next/head'
 // Configure Amplify
 import Amplify from 'aws-amplify'
 import awsconfig from '../src/aws-exports'
+import Footer from '../components/Footer/Footer'
 
 Amplify.configure({...awsconfig, ssr: true})
 
@@ -18,6 +19,7 @@ function MyApp({Component, pageProps}) {
       </Head>
       <Nav />
       <Component {...pageProps} />
+      <Footer />
     </>
   )
 }

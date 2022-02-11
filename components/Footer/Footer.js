@@ -2,10 +2,10 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="max-w-[1200px] m-auto pb-12 lg:mb-6  border-t pt-6 border-green-800">
-      <div className="flex items-center justify-between">
+    <footer className="max-w-[1200px] xl:m-auto pb-12 mx-6 lg:mb-6 border-t pt-6 border-green-800">
+      <div className="flex flex-col justify-between md:flex-row md:items-center">
         <Link href="/">
-          <a className="md:rounded-md ">
+          <a className="md:rounded-md">
             <img
               src="/images/logo.svg"
               alt="Parkway logo"
@@ -15,7 +15,7 @@ export default function Footer() {
             />
           </a>
         </Link>
-        <div className="flex items-center gap-6 text-green-800">
+        <div className="flex flex-col gap-6 mt-6 text-green-800 md:flex-row md:mt-0 md:items-center">
           <Link href="/about">
             <a>About</a>
           </Link>

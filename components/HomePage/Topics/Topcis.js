@@ -2,8 +2,10 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import img1 from '../../../public/images/events.png'
-import img2 from '../../../public/images/webcams.png'
+import img1 from '../../../public/images/webcams.svg'
+import img2 from '../../../public/images/events.svg'
+import img3 from '../../../public/images/news.svg'
+import img4 from '../../../public/images/alerts.svg'
 
 export default function Topcis() {
   return (
@@ -12,7 +14,7 @@ export default function Topcis() {
         Explore by topic
       </h2>
       <div className="grid grid-cols-2 gap-8 ">
-        <Link href={`/events`}>
+        <Link href={`/alerts`}>
           <a className="relative">
             <Image
               layout="responsive"
@@ -20,12 +22,23 @@ export default function Topcis() {
               height={400}
               className="object-cover w-full min-h-full rounded-xl"
               src={img1}
-              alt="events"
-              placeholder="blur"
+              alt="alerts"
+              // placeholder="blur"
             />
-            <h3 className="absolute text-5xl font-bold text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 card-center">
-              Events
-            </h3>
+          </a>
+        </Link>
+
+        <Link href={`/news`}>
+          <a className="relative">
+            <Image
+              layout="responsive"
+              width={400}
+              height={400}
+              className="object-cover w-full min-h-full rounded-xl"
+              src={img2}
+              alt="news"
+              // placeholder="blur"
+            />
           </a>
         </Link>
 
@@ -36,47 +49,24 @@ export default function Topcis() {
               width={400}
               height={400}
               className="object-cover w-full min-h-full rounded-xl"
-              src={img1}
+              src={img3}
               alt="events"
-              placeholder="blur"
+              // placeholder="blur"
             />
-            <h3 className="absolute text-5xl font-bold text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 card-center">
-              Events
-            </h3>
           </a>
         </Link>
 
-        <Link href={`/events`}>
+        <Link href={`/webcams`}>
           <a className="relative">
             <Image
               layout="responsive"
               width={400}
               height={400}
               className="object-cover w-full min-h-full rounded-xl"
-              src={img1}
-              alt="events"
-              placeholder="blur"
+              src={img4}
+              alt="webcams"
+              // placeholder="blur"
             />
-            <h3 className="absolute text-5xl font-bold text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 card-center">
-              Events
-            </h3>
-          </a>
-        </Link>
-
-        <Link href={`/events`}>
-          <a className="relative">
-            <Image
-              layout="responsive"
-              width={400}
-              height={400}
-              className="object-cover w-full min-h-full rounded-xl"
-              src={img1}
-              alt="events"
-              placeholder="blur"
-            />
-            <h3 className="absolute text-5xl font-bold text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 card-center">
-              Events
-            </h3>
           </a>
         </Link>
       </div>

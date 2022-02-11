@@ -1,22 +1,23 @@
+import AllParks from '../components/HomePage/AllParks/AllParks'
 import Hero from '../components/HomePage/Hero/Hero'
 import OfficialParks from '../components/HomePage/OfficialParks/OfficialParks'
 import Topcis from '../components/HomePage/Topics/Topcis'
 import Layout from '../components/Layout'
-import SearchBar from '../components/SearchBar/SearchBar'
 
-export default function Home({nationalParks}) {
+export default function Home({nationalParks, parkNames}) {
   return (
     <Layout>
       <div className="grid gap-32">
         <Hero />
         <OfficialParks nationalParks={nationalParks} />
         <Topcis />
+        <AllParks parkNames={parkNames} />
       </div>
     </Layout>
   )
 }
 
-export async function getStaticProps({params}) {
+export async function getStaticProps() {
   const URL = 'https://developer.nps.gov/api/v1/'
 
   // Call API Data for /PARK
@@ -47,12 +48,20 @@ export async function getStaticProps({params}) {
       park.designation == 'National and State Parks' ||
       park.name == 'National Park of American Samoa'
   )
+
+  const parkNames = parks.map((park) => {
+    return {
+      name: park.name,
+      code: park.parkCode,
+    }
+  })
   // console.log('********************************')
   // console.log(nationalParks.length)
 
   return {
     props: {
       nationalParks,
+      parkNames,
     },
   }
 }

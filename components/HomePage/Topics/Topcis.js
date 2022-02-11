@@ -23,7 +23,6 @@ export default function Topcis() {
               className="object-cover w-full min-h-full rounded-xl"
               src={img1}
               alt="alerts"
-              // placeholder="blur"
             />
           </a>
         </Link>
@@ -37,7 +36,6 @@ export default function Topcis() {
               className="object-cover w-full min-h-full rounded-xl"
               src={img2}
               alt="news"
-              // placeholder="blur"
             />
           </a>
         </Link>
@@ -51,7 +49,6 @@ export default function Topcis() {
               className="object-cover w-full min-h-full rounded-xl"
               src={img3}
               alt="events"
-              // placeholder="blur"
             />
           </a>
         </Link>
@@ -65,7 +62,6 @@ export default function Topcis() {
               className="object-cover w-full min-h-full rounded-xl"
               src={img4}
               alt="webcams"
-              // placeholder="blur"
             />
           </a>
         </Link>

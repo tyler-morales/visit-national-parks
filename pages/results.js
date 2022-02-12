@@ -8,6 +8,8 @@ import Layout from '../components/Layout'
 import {IoChevronBack, IoChevronForward} from 'react-icons/io5'
 import Image from 'next/image'
 
+import MapBox from '../components/Map/MapBox'
+
 let ids = [...activities, ...topics]
 
 const convertValueToLabel = (code, arr) => {
@@ -112,6 +114,16 @@ export default function results({parks, params}) {
             </div>
           )}
         </div>
+        {/* Map */}
+        <MapBox
+          coordinates={{
+            latitude: 41.83196298978118,
+            longitude: -87.86767037788135,
+          }}
+          fullName="Forest Road School"
+          parkCode="fres"
+          title="Map"
+        />
       </div>
     </Layout>
   )

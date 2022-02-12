@@ -11,6 +11,7 @@ import Hours from '../../components/ParkPage/Hours/Hours'
 import Fees from '../../components/ParkPage/Fees/Fees'
 import MapBox from '../../components/ParkPage/Map/MapBox'
 import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
+import Alert from '../../components/ParkPage/Alert/Alert'
 
 export default function Park({
   name,
@@ -27,6 +28,7 @@ export default function Park({
   latitude,
   longitude,
   thingsToDo,
+  alerts,
 }) {
   const router = useRouter()
 
@@ -46,6 +48,7 @@ export default function Park({
     return 'loading...'
   }
 
+
   return (
     <>
       <Head>
@@ -59,6 +62,7 @@ export default function Park({
       </Head>
 
       <Layout>
+        <Alert alerts={alerts} />
         <button
           onClick={() => router.back()}
           aria-label="Back to results"
@@ -188,6 +192,25 @@ export async function getStaticProps({params}) {
     return {notFound: true}
   }
 
+  // Call API Data for /ALERTS
+  const res3 = await fetch(
+    `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': '*',
+      },
+    }
+  )
+
+  const alertsData = await res3.json()
+  const alerts = alertsData?.data
+
+  if (!alerts) {
+    return {notFound: true}
+  }
+
   return {
     props: {
       name,
@@ -204,6 +227,7 @@ export async function getStaticProps({params}) {
       latitude,
       longitude,
       thingsToDo,
+      alerts,
     },
     revalidate: 60,
   }

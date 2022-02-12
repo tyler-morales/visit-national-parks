@@ -11,6 +11,7 @@ import Hours from '../../components/ParkPage/Hours/Hours'
 import Fees from '../../components/ParkPage/Fees/Fees'
 import MapBox from '../../components/ParkPage/Map/MapBox'
 import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
+import Alert from '../../components/ParkPage/Alert/Alert'
 
 export default function Park({
   name,
@@ -27,6 +28,7 @@ export default function Park({
   latitude,
   longitude,
   thingsToDo,
+  alerts,
 }) {
   const router = useRouter()
 
@@ -46,6 +48,7 @@ export default function Park({
     return 'loading...'
   }
 
+
   return (
     <>
       <Head>
@@ -59,6 +62,7 @@ export default function Park({
       </Head>
 
       <Layout>
+        <Alert alerts={alerts} />
         <button
           onClick={() => router.back()}
           aria-label="Back to results"
@@ -188,6 +192,25 @@ export async function getStaticProps({params}) {
     return {notFound: true}
   }
 
+  // Call API Data for /ALERTS
+  const res3 = await fetch(
+    `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': '*',
+      },
+    }
+  )
+
+  const alertsData = await res3.json()
+  const alerts = alertsData?.data
+
+  if (!alerts) {
+    return {notFound: true}
+  }
+
   return {
     props: {
       name,
@@ -204,103 +227,8 @@ export async function getStaticProps({params}) {
       latitude,
       longitude,
       thingsToDo,
+      alerts,
     },
     revalidate: 60,
   }
 }
-
-/*
-ACTIVITIES
-
-   const activities = thingsToDo
-     ?.map((thing) => thing?.activities?.map((activity) => activity.name))
-     .flat()
-
-   const countedActivities = activities?.reduce(function (acc, curr) {
-     return acc[curr] ? ++acc[curr] : (acc[curr] = 1), acc
-   }, {})
-   console.log(countedActivities)
-
-{
-  "Snowmobiling": 1,
-  "Hiking": 49,
-  "Front-Country Hiking": 4,
-  "Mountain Biking": 10,
-  "Self-Guided Tours - Walking": 2,
-  "Skiing": 20,
-  "Snowshoeing": 1
-}
-
-{
-  "Biking": 1,
-  "Rock Climbing": 1,
-  "Auto and ATV": 1,
-  "Museum Exhibits": 2,
-  "Junior Ranger Program": 1,
-  "Hiking": 2
-}
-
-{
-  "Cultural Demonstrations": 1,
-  "Guided Tours": 1,
-  "Museum Exhibits": 1,
-  "Hiking": 2,
-  "Scenic Driving": 1
-}
-
-{
-  "Astronomy": 2,
-  "Camping": 2,
-  "Wildlife Watching": 1,
-  "Hiking": 4,
-  "Scenic Driving": 5,
-  "Biking": 1,
-  "Guided Tours": 2,
-  "Junior Ranger Program": 4,
-  "Bookstore and Park Store": 1
-}
-
-{
-  "Stargazing": 5,
-  "Scenic Driving": 2,
-  "Picnicking": 1,
-  "Paddling": 4,
-  "Hiking": 38,
-  "Self-Guided Tours - Walking": 2,
-  "Birdwatching": 13,
-  "Swimming": 3,
-  "Biking": 1,
-  "Wildlife Watching": 5
-}
-
-{
-  "Backcountry Camping": 1,
-  "Snowshoeing": 3,
-  "Mountain Climbing": 1,
-  "Backcountry Hiking": 3,
-  "Biking": 1,
-  "Hiking": 7,
-  "Car or Front Country Camping": 1,
-  "Scenic Driving": 2,
-  "Self-Guided Tours - Walking": 1,
-  "Freshwater Fishing": 1,
-  "Cross-Country Skiing": 1
-}
-
-{
-  "Birdwatching": 3,
-  "Fishing": 1,
-  "Boat Tour": 2,
-  "Guided Tours": 1,
-  "Junior Ranger Program": 1,
-  "Biking": 1,
-  "Front-Country Hiking": 1
-}
-
-{
-  "Paddling": 2,
-  "Hiking": 5,
-  "Hands-On": 2,
-  "Junior Ranger Program": 1
-}
-*/

@@ -11,7 +11,7 @@ const Modal = ({handleClose, alerts}) => {
           Alerts
         </h2>
         <ul className="p-8">
-          {alerts.map((alert) => {
+          {alerts.slice(0, 4).map((alert) => {
             return (
               <li className="mb-4">
                 <span className="block mb-2 font-bold text-red-600">

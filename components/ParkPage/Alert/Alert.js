@@ -15,11 +15,12 @@ export default function Alert({alerts}) {
           <h2 className="flex items-between" onClick={() => open()}>
             <span className="flex items-center gap-2 font-bold cursor-pointer">
               <GoAlert /> Alert: {alerts[0]?.title}
-            </span>{' '}
-            –{' '}
-            <span className="whitespace-nowrap inline-block max-w-[85ch] overflow-hidden text-ellipsis">
-              {alerts[0]?.description}
             </span>
+            {alerts[0]?.title.length < 50 && (
+              <span className="hidden whitespace-nowrap lg:inline-block max-w-[55ch] xl:max-w-[75ch] overflow-hidden text-ellipsis">
+                :&nbsp;&nbsp; {alerts[0]?.description}
+              </span>
+            )}
           </h2>
           <button onClick={() => setAlertStatus(false)}>X</button>
         </div>

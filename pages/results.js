@@ -44,7 +44,7 @@ export default function results({parks, params}) {
   const {state, q, start} = params
 
   return (
-    <Layout>
+    <Layout fullWidth>
       <header className="flex flex-col w-full mb-8 ">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
         <SearchBar fullSearchBar={false} ref={childCompRef} />

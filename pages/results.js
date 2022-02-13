@@ -45,6 +45,13 @@ export default function results({parks, params}) {
   const {data, total} = parks
   const {state, q, start} = params
 
+  const coordinates = parks.data.map((park) => {
+    return {
+      lon: park.longitude,
+      lat: park.latitude,
+    }
+  })
+
   return (
     <Layout fullWidth>
       <header className="flex flex-col w-full mb-8 ">

@@ -19,7 +19,7 @@ export default function MapBox({coordinates}) {
       longitude: coordinates[0].longitude,
       zoom: 4,
     })
-  }, [viewport])
+  }, [])
 
   const pins = useMemo(
     () =>

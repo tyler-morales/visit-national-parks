@@ -19,7 +19,7 @@ export default function MapBox({coordinates}) {
       longitude: coordinates[0]?.longitude,
       zoom: 4,
     })
-  }, [])
+  }, [popupInfo])
 
   const pins = useMemo(
     () =>
@@ -59,7 +59,7 @@ export default function MapBox({coordinates}) {
             latitude={Number(popupInfo.latitude)}
             closeOnClick={false}
             onClose={() => setPopupInfo(null)}>
-            <div className="px-4">
+            <div className="max-w-full px-4">
               <h3 className="px-4 mb-2 text-lg">{popupInfo.fullName}</h3>
               <div className="flex flex-col gap-2">
                 <Link href={`/park/${popupInfo.code}`}>
@@ -68,6 +68,10 @@ export default function MapBox({coordinates}) {
                   </a>
                 </Link>
               </div>
+              <img
+                className="object-cover w-full h-[200px] mt-4"
+                src={popupInfo.image}
+              />
             </div>
           </Popup>
         )}

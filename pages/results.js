@@ -57,6 +57,7 @@ export default function results({parks, params}) {
       longitude: +park.longitude,
       code: park.parkCode,
       fullName: park.fullName,
+      image: park.images[0].url,
     }
   })
 

@@ -6,8 +6,8 @@ import {FaMapMarkerAlt} from 'react-icons/fa'
 
 export default function MapBox({coordinates}) {
   const [viewport, setViewport] = useState({
-    latitude: coordinates[0].latitude,
-    longitude: coordinates[0].longitude,
+    latitude: coordinates[0]?.latitude,
+    longitude: coordinates[0]?.longitude,
     zoom: 4,
   })
 
@@ -15,8 +15,8 @@ export default function MapBox({coordinates}) {
 
   useEffect(() => {
     setViewport({
-      latitude: coordinates[0].latitude,
-      longitude: coordinates[0].longitude,
+      latitude: coordinates[0]?.latitude,
+      longitude: coordinates[0]?.longitude,
       zoom: 4,
     })
   }, [])

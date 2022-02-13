@@ -1,36 +1,25 @@
-import {useState, useMemo} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import MapGL, {Marker, Popup} from 'react-map-gl'
 import Link from 'next/link'
 
 import {FaMapMarkerAlt} from 'react-icons/fa'
 
-export default function MapBox({}) {
-  // const {latitude, longitude} = coordinates
-
-  const coordinates = [
-    {
-      id: 1,
-      latitude: 41.83196298978118,
-      longitude: -87.86767037788135,
-      code: 'yose',
-      fullName: 'Forest Road School',
-    },
-    {
-      id: 2,
-      latitude: 41.80320975434031,
-      longitude: -87.88784058913929,
-      code: 'acad',
-      fullName: 'Lyons Tonwship highschool',
-    },
-  ]
-
+export default function MapBox({coordinates}) {
   const [viewport, setViewport] = useState({
     latitude: coordinates[0].latitude,
     longitude: coordinates[0].longitude,
-    zoom: 8,
+    zoom: 4,
   })
 
   const [popupInfo, setPopupInfo] = useState(null)
+
+  useEffect(() => {
+    setViewport({
+      latitude: coordinates[0].latitude,
+      longitude: coordinates[0].longitude,
+      zoom: 4,
+    })
+  }, [viewport])
 
   const pins = useMemo(
     () =>
@@ -47,7 +36,7 @@ export default function MapBox({}) {
           />
         </Marker>
       )),
-    []
+    [coordinates]
   )
 
   return (

@@ -47,8 +47,10 @@ export default function results({parks, params}) {
 
   const coordinates = parks.data.map((park) => {
     return {
-      lon: park.longitude,
-      lat: park.latitude,
+      latitude: +park.latitude,
+      longitude: +park.longitude,
+      code: park.parkCode,
+      fullName: park.fullName,
     }
   })
 
@@ -122,15 +124,7 @@ export default function results({parks, params}) {
           )}
         </div>
         {/* Map */}
-        <MapBox
-          coordinates={{
-            latitude: 41.83196298978118,
-            longitude: -87.86767037788135,
-          }}
-          fullName="Forest Road School"
-          parkCode="fres"
-          title="Map"
-        />
+        <MapBox coordinates={coordinates} />
       </div>
     </Layout>
   )

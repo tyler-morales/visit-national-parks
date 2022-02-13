@@ -27,23 +27,30 @@ export default function SiteTable({
   const {modalOpen, close, open} = useModal()
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
-  const [sortDir, setSortDir] = useState('ASC')
+  const [sortDir, setSortDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
 
   const sort = () => {
+    console.log(currentVisitedSites[0])
+
     if (sortDir == 'ASC') {
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
       setSortDir('DEC')
-      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name > b.name)
-      currentBookmarkedSites = currentBookmarkedSites.sort(
-        (a, b) => a.name > b.name
-      )
     } else {
-      setSortDir('ASC')
-      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name < b.name)
-      currentBookmarkedSites = currentBookmarkedSites.sort(
-        (a, b) => a.name < b.name
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
       )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
+      )
+      setSortDir('ASC')
     }
+    console.log(currentVisitedSites[0])
   }
 
   const removeSite = async ({id, name}) => {
@@ -331,7 +338,7 @@ export default function SiteTable({
               onClick={sort}
               className="text-sm font-thin text-left text-green-800 uppercase">
               <span className="cursor-pointer">
-                {name} {sortDir == 'ASC' ? '🔽' : '🔼'}
+                {name} {sortDir == 'ASC' ? '🔼 (Z-A)' : '🔽 (A-Z)'}
               </span>
             </th>
           )

@@ -27,22 +27,46 @@ export default function SiteTable({
   const {modalOpen, close, open} = useModal()
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
-  const [sortDir, setSortDir] = useState('ASC')
+  const [sortDir, setSortDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
 
   const sort = () => {
     if (sortDir == 'ASC') {
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
       setSortDir('DEC')
-      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name > b.name)
-      currentBookmarkedSites = currentBookmarkedSites.sort(
-        (a, b) => a.name > b.name
-      )
     } else {
-      setSortDir('ASC')
-      currentVisitedSites = currentVisitedSites.sort((a, b) => a.name < b.name)
-      currentBookmarkedSites = currentBookmarkedSites.sort(
-        (a, b) => a.name < b.name
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
       )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
+      )
+      setSortDir('ASC')
+    }
+  }
+
+  const sortRating = () => {
+    if (sortDir == 'ASC') {
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+      )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+      )
+      setSortDir('DEC')
+    } else {
+      setVisitedSites(
+        currentVisitedSites.sort((a, b) => (a.rating < b.rating ? 1 : -1))
+      )
+      setBookmarkedSites(
+        currentBookmarkedSites.sort((a, b) => (a.rating < b.rating ? 1 : -1))
+      )
+      setSortDir('ASC')
     }
   }
 
@@ -298,7 +322,7 @@ export default function SiteTable({
       {name: 'Image', sortable: false},
       {name: 'Name', sortable: true},
       // {name: 'Avg. Rating', sortable: false},
-      {name: 'Your Rating', sortable: false},
+      {name: 'Your Rating', sortable: true},
       {name: 'Collection', sortable: false},
       {name: 'Visited', sortable: false},
       {name: 'Settings', sortable: false},
@@ -324,15 +348,25 @@ export default function SiteTable({
       }
 
       return selectedHeaders.map(({name, sortable}, index) => {
+        let sortType
+        if (name == 'Name') sortType = sort
+        if (name == 'Your Rating') sortType = sortRating
+
         if (sortable) {
           return (
             <th
               key={index}
-              onClick={sort}
+              onClick={sortType}
               className="text-sm font-thin text-left text-green-800 uppercase">
-              <span className="cursor-pointer">
-                {name} {sortDir == 'ASC' ? '🔽' : '🔼'}
-              </span>
+              {name == 'Name' ? (
+                <span className="cursor-pointer">
+                  {name} {sortDir == 'ASC' ? '🔼 (Z-A)' : '🔽 (A-Z)'}
+                </span>
+              ) : (
+                <span className="cursor-pointer">
+                  {name} {sortDir == 'ASC' ? '🔼' : '🔽'}
+                </span>
+              )}
             </th>
           )
         } else {

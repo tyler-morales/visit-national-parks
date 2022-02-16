@@ -9,8 +9,12 @@ import states from '../../data/states.json'
 import activities from '../../data/activities.json'
 import topics from '../../data/topics.json'
 
+import useQuery from '../../hooks/useQuery'
+
 const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   const router = useRouter()
+  const {searchQuery, dispatch} = useQuery()
+  const query = useQuery()
 
   useImperativeHandle(ref, () => ({
     paginate(direction) {
@@ -46,10 +50,32 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
     e.preventDefault()
     setLoading(true)
     try {
-      if (selectedState) searchParams.append('stateCode', selectedState.value)
-      if (selectedActivity) searchParams.append('q', selectedActivity.value)
-      if (selectedTopic) searchParams.append('q', selectedTopic.value)
+      if (selectedState) {
+        searchParams.append('stateCode', selectedState.value)
+        // Update query
+        dispatch({
+          type: 'SET_QUERY',
+          payload: selectedState.value,
+        })
+      }
+      if (selectedActivity) {
+        searchParams.append('q', selectedActivity.value)
+        // Update query
+        dispatch({
+          type: 'SET_QUERY',
+          payload: selectedActivity.value,
+        })
+      }
+      if (selectedTopic) {
+        searchParams.append('q', selectedTopic.value)
+        // Update query
+        dispatch({
+          type: 'SET_QUERY',
+          payload: selectedTopic.value,
+        })
+      }
       searchParams.append('start', 0)
+
       router.push(`/results/?${searchParams.toString()}`)
       setLoading(false)
     } catch (err) {
@@ -64,10 +90,13 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
       : setIncrementPage((incrementPage -= 20))
 
     try {
-      if (selectedState) searchParams.append('stateCode', selectedState.value)
-      if (selectedActivity) searchParams.append('q', selectedActivity.value)
-      if (selectedTopic) searchParams.append('q', selectedTopic.value)
+      // attatch the stateCode query parametar
+      if (searchQuery.length == 2) searchParams.append('stateCode', searchQuery)
+      // attatch the q (catch-all) query parametar
+      if (searchQuery.length > 2) searchParams.append('q', searchQuery)
+      // attatch the start query parametar to every query
       searchParams.append('start', incrementPage)
+
       router.push(`/results/?${searchParams.toString()}`)
     } catch (err) {
       console.error(err)
@@ -93,7 +122,9 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   return (
     <div
       className={`w-full rounded-3xl ${
-        fullSearchBar ? ' pb-4 bg-white border-2 border-green-800 p-6 shadow-xl' : 'pb-6'
+        fullSearchBar
+          ? ' pb-4 bg-white border-2 border-green-800 p-6 shadow-xl'
+          : 'pb-6'
       }`}>
       {/* Nav Buttons */}
       {fullSearchBar && (

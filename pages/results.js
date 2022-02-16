@@ -74,8 +74,6 @@ export default function results({parks, params}) {
     }
   }, [])
 
-  console.log(params)
-
   return (
     <Layout fullWidth>
       <header className="flex flex-col w-full mb-8 ">

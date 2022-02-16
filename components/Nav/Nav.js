@@ -5,11 +5,15 @@ import {Cross as Hamburger} from 'hamburger-react'
 import checkUser from '../../hooks/checkUser'
 import {useRouter} from 'next/router'
 
+import useQuery from '../../hooks/useQuery'
+
 import {FaSearch} from 'react-icons/fa'
 
 export const Nav = ({mockUser}) => {
   const router = useRouter()
   const user = checkUser()
+  const {searchQuery, dispatch} = useQuery()
+
   const [toggleMenu, setToggleMenu] = useState(false)
   const [screenWidth, setScreenWidth] = useState(0)
   const [isOpen, setOpen] = useState(false)
@@ -37,7 +41,12 @@ export const Nav = ({mockUser}) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setSearchInput(e.target.value)
-    console.log(searchInput)
+
+    dispatch({
+      type: 'SET_QUERY',
+      payload: searchInput,
+    })
+
     router.push(`/results/?q=${searchInput}&start=0`)
     setSearchInput('')
   }

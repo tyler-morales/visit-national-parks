@@ -8,7 +8,10 @@ import {
   createCollection,
   createSiteCollections,
   updateSiteCollections,
+  deleteSiteCollections,
 } from '../../src/graphql/mutations'
+
+import {listSiteCollections} from '../../src/graphql/queries'
 import {API} from 'aws-amplify'
 import {ToastContainer, toast} from 'react-toastify'
 import useModal from '../../hooks/useModal'
@@ -72,6 +75,24 @@ export default function SiteTable({
 
   const removeSite = async ({id, name}) => {
     try {
+      // Delete site collections from specfic site
+      // 1. query for the site collection specfic to the site
+      const {data} = await API.graphql({
+        query: listSiteCollections,
+        variables: {
+          filter: {
+            siteID: {eq: id},
+          },
+        },
+      })
+
+      const siteCollectionID = data?.listSiteCollections?.items[0]?.id
+      // 2. Delete ALL site collections for specfic site
+      API.graphql({
+        query: deleteSiteCollections,
+        variables: {input: {id: siteCollectionID}},
+      })
+
       // Delete site from database
       API.graphql({query: deleteSite, variables: {input: {id}}})
 

@@ -10,16 +10,24 @@ import Footer from '../components/Footer/Footer'
 
 Amplify.configure({...awsconfig, ssr: true})
 
+// Context
+import {QueryProvider} from '../contexts/QueryContext'
+
 function MyApp({Component, pageProps}) {
   return (
     <>
-      <Head>
-        <title>Parkway | Home</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Nav />
-      <Component {...pageProps} />
-      <Footer />
+      <QueryProvider>
+        <Head>
+          <title>Parkway | Home</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
+        <Nav />
+        <Component {...pageProps} />
+        <Footer />
+      </QueryProvider>
     </>
   )
 }

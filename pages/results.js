@@ -74,6 +74,8 @@ export default function results({parks, params}) {
     }
   }, [])
 
+  console.log(params)
+
   return (
     <Layout fullWidth>
       <header className="flex flex-col w-full mb-8 ">
@@ -86,6 +88,11 @@ export default function results({parks, params}) {
         <span className="font-bold">{convertValueToLabel(state, states)}</span>
         {state && q ? ' and ' : ''}
         <span className="font-bold">{convertValueToLabel(q, ids)}</span>
+        {!params?.q?.includes('-') && !params?.state && (
+          <span>
+            {params?.q?.charAt(0).toUpperCase() + params?.q?.slice(1)}
+          </span>
+        )}
       </span>
 
       {/* Buttons to change view */}

@@ -42,12 +42,9 @@ export default function Park({
     }
   })
 
-  // console.log(thingCoordinates)
-
   if (router.isFallback) {
     return 'loading...'
   }
-
 
   return (
     <>
@@ -62,7 +59,7 @@ export default function Park({
       </Head>
 
       <Layout>
-        <Alert alerts={alerts} />
+        {alerts.length > 0 && <Alert alerts={alerts} />}
         <button
           onClick={() => router.back()}
           aria-label="Back to results"

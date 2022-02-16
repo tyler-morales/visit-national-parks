@@ -273,22 +273,22 @@ export default function SiteTable({
     })
 
     return (
-      <tr className="w-full">
+      <tr className="flex flex-col w-full gap-2 mb-4 md:table-row md:mb-0">
         <td data-th="Image" className="text-left ">
           <Link href={`/park/${site.code}`}>
             <a>
               <img
                 src={site.img}
                 alt={site.fullName}
-                className="rounded-lg w-[150px] h-[100px] object-cover"
+                className="rounded-lg w-full md:w-[150px] h-[150px] md:h-[100px] object-cover"
               />
             </a>
           </Link>
         </td>
-        <td data-th="Name" className="group max-w-[150px] text-left">
+        <td data-th="Name" className="group md:max-w-[150px] text-left">
           <Link href={`/park/${site.code}`}>
             <a>
-              <span className="text-lg font-bold text-green-800 group-hover:underline group-hover:underline-offset-4 group-hover:decoration-wavy">
+              <span className="text-lg font-bold text-center text-green-800 md:text-left group-hover:underline group-hover:underline-offset-4 group-hover:decoration-wavy">
                 {site.name}
               </span>
             </a>
@@ -301,34 +301,37 @@ export default function SiteTable({
         {tab == 'visited' && (
           <td data-th="Your-rating" className="text-left ">
             <span className="text-lg font-bold text-green-800">
+              <span className="font-normal md:hidden">Your Rating: </span>&nbsp;
               {site.rating || 'n/a'}
             </span>
           </td>
         )}
         <td data-th="collection" className="text-left ">
           <span className="text-green-800 text-md">
+            <span className="text-lg md:hidden">Collection: </span>&nbsp;
             {collectionName[0]?.label || 'n/a'}
           </span>
         </td>
         {tab == 'visited' && (
           <td data-th="visited" className="text-left">
             <span className="text-lg text-green-800">
+              <span className="md:hidden">Date Visited: </span>&nbsp;
               {site.dateVisited || 'n/a'}
             </span>
           </td>
         )}
 
         <td data-th="Settings" className="text-left ">
-          <div className="flex flex-col gap-2 text-gray-700">
+          <div className="flex gap-2 text-gray-700 md:flex-col">
             <button
               onClick={() => editSite(site, num)}
-              className="flex items-center w-full gap-2 items-between text-small">
+              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-green-300 rounded-md md:rounded-none md:p-0 items-between text-small-3 md:bg-transparent md:justify-start">
               <RiEdit2Line size="1.25em" />
               <span>Edit</span>
             </button>
             <button
               onClick={() => removeSite(site, num)}
-              className="flex items-center w-full gap-2 items-between text-small">
+              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-red-300 rounded-md md:rounded-none md:p-0 items-between text-small md:bg-transparent md:justify-start">
               <RiDeleteBinLine size="1.25em" />
               <span>Delete</span>
             </button>
@@ -394,7 +397,7 @@ export default function SiteTable({
           return (
             <th
               key={index}
-              className="text-sm font-thin text-left text-green-800 uppercase">
+              className="hidden text-sm font-thin text-left text-green-800 uppercase md:table-cell">
               {name}
             </th>
           )
@@ -407,7 +410,12 @@ export default function SiteTable({
         className="w-full mt-12 border-separate"
         style={{borderSpacing: '15px'}}>
         <tbody>
-          <tr className="w-full">{createTableHead()}</tr>
+          <span className="text-xs tracking-widest uppercase md:hidden">
+            Sort
+          </span>
+          <tr className="flex w-full gap-2 pb-4 mb-4 border-b-2 border-green-300 md:table-row md:mb-0 md:border-0 md:pb-0">
+            {createTableHead()}
+          </tr>
           {data?.map((site, index) => (
             <TableItems key={index} site={site} num={index} />
           ))}

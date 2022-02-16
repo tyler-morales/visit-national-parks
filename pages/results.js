@@ -78,7 +78,7 @@ export default function results({parks, params}) {
     <Layout fullWidth>
       <header className="flex flex-col w-full mb-8 ">
         <h1 className="my-5 text-5xl font-bold text-green-800">Results</h1>
-        <SearchBar fullSearchBar={false} ref={childCompRef} />
+        <SearchBar fullSearchBar={false} ref={childCompRef} page={start} />
       </header>
 
       <span className="block mb-6 text-xs tracking-wider text-gray-500">

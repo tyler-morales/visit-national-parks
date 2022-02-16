@@ -11,9 +11,10 @@ import topics from '../../data/topics.json'
 
 import useQuery from '../../hooks/useQuery'
 
-const SearchBar = forwardRef(({fullSearchBar}, ref) => {
+const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
   const router = useRouter()
   const {searchQuery, dispatch} = useQuery()
+  console.log(page)
 
   useImperativeHandle(ref, () => ({
     paginate(direction) {
@@ -26,7 +27,7 @@ const SearchBar = forwardRef(({fullSearchBar}, ref) => {
   const [selectedState, setselectedState] = useState(null)
   const [selectedActivity, setselectedActivity] = useState(null)
   const [selectedTopic, setselectedTopic] = useState(null)
-  const [incrementPage, setIncrementPage] = useState(0)
+  const [incrementPage, setIncrementPage] = useState(+page)
   const [loading, setLoading] = useState(false)
 
   const paramsString = ''

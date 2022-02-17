@@ -33,28 +33,38 @@ export default function SiteTable({
   const [sortDir, setSortDir] = useState(null)
   const [sortRatingDir, setSortRatingDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
+  console.log(currentVisitedSites.map((site) => site.name))
 
   // Sort columns
   const sort = (type) => {
     const changeSort = (direction) => {
-      const change = direction == 'ASC' ? '>' : '<'
+      const change = direction == 'ASC' ? '<' : '>'
 
+      // Refactor: Can I somehow pass in a variable to change the sort direction?
       //  Sort sites and bookmarked sites dynamically
-      let updateVisitSites = currentVisitedSites.sort((a, b) =>
-        `a[type] ${change} b[type]` ? 1 : -1
-      )
-      let updateBookMarkSites = currentBookmarkedSites.sort((a, b) =>
-        `a[type] ${change} b[type]` ? 1 : -1
-      )
+      // let updateVisitSites = currentVisitedSites.sort((a, b) =>
+      //   `a[type] ${change} b[type]` ? 1 : -1
+      // )
+      // let updateBookMarkSites = currentBookmarkedSites.sort((a, b) =>
+      //   `a[type] ${change} b[type]` ? 1 : -1
+      // )
 
       if (direction == 'ASC') {
-        setVisitedSites(updateVisitSites)
-        setBookmarkedSites(updateBookMarkSites)
+        setVisitedSites(
+          currentVisitedSites.sort((a, b) => (a[type] < b[type] ? 1 : -1))
+        )
+        setBookmarkedSites(
+          currentBookmarkedSites.sort((a, b) => (a[type] < b[type] ? 1 : -1))
+        )
         if (type == 'name') setSortDir('DEC')
         if (type == 'rating') setSortRatingDir('DEC')
       } else {
-        setVisitedSites(updateVisitSites)
-        setBookmarkedSites(updateBookMarkSites)
+        setVisitedSites(
+          currentVisitedSites.sort((a, b) => (a[type] > b[type] ? 1 : -1))
+        )
+        setBookmarkedSites(
+          currentBookmarkedSites.sort((a, b) => (a[type] > b[type] ? 1 : -1))
+        )
         if (type == 'name') setSortDir('ASC')
         if (type == 'rating') setSortRatingDir('ASC')
       }

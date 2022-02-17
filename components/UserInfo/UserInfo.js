@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import Avatar from 'boring-avatars'
 import {Auth} from 'aws-amplify'
 
@@ -6,6 +6,20 @@ export default function UserInfo({username, email, name, bio, visitedSites}) {
   const [editingUser, setEditingUser] = useState(false)
   const [inputName, setInputName] = useState(name || '')
   const [inputBio, setInputBio] = useState(bio || '')
+  const [screenWidth, setScreenWidth] = useState(0)
+
+  useEffect(() => {
+    const changeWidth = () => {
+      setScreenWidth(window.innerWidth)
+    }
+    changeWidth()
+
+    window.addEventListener('resize', changeWidth)
+
+    return () => {
+      window.removeEventListener('resize', changeWidth)
+    }
+  }, [])
 
   const updateUserInfo = async () => {
     setEditingUser(false)
@@ -25,7 +39,7 @@ export default function UserInfo({username, email, name, bio, visitedSites}) {
     <section>
       <div className="relative flex items-center justify-center m-auto ">
         <Avatar
-          size="100%"
+          size={screenWidth < 640 || screenWidth > 1024 ? '100%' : '50%'}
           name={username}
           variant="marble"
           colors={['#85A29E', '#FFEBBF', '#F0D442', '#F59330', '#B22148']}

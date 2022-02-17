@@ -31,46 +31,40 @@ export default function SiteTable({
   const [currentVisitedSites, setVisitedSites] = useState(visitedSites)
   const [currentBookmarkedSites, setBookmarkedSites] = useState(bookmarkedSites)
   const [sortDir, setSortDir] = useState(null)
+  const [sortRatingDir, setSortRatingDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
 
-  const sort = () => {
-    if (sortDir == 'ASC') {
-      setVisitedSites(
-        currentVisitedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
-      )
-      setBookmarkedSites(
-        currentBookmarkedSites.sort((a, b) => (a.name > b.name ? 1 : -1))
-      )
-      setSortDir('DEC')
-    } else {
-      setVisitedSites(
-        currentVisitedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
-      )
-      setBookmarkedSites(
-        currentBookmarkedSites.sort((a, b) => (a.name < b.name ? 1 : -1))
-      )
-      setSortDir('ASC')
-    }
-  }
+  // Sort columns
+  const sort = (type) => {
+    const changeSort = (direction) => {
+      const change = direction == 'ASC' ? '>' : '<'
 
-  const sortRating = () => {
-    if (sortDir == 'ASC') {
-      setVisitedSites(
-        currentVisitedSites.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+      //  Sort sites and bookmarked sites dynamically
+      let updateVisitSites = currentVisitedSites.sort((a, b) =>
+        `a[type] ${change} b[type]` ? 1 : -1
       )
-      setBookmarkedSites(
-        currentBookmarkedSites.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+      let updateBookMarkSites = currentBookmarkedSites.sort((a, b) =>
+        `a[type] ${change} b[type]` ? 1 : -1
       )
-      setSortDir('DEC')
-    } else {
-      setVisitedSites(
-        currentVisitedSites.sort((a, b) => (a.rating < b.rating ? 1 : -1))
-      )
-      setBookmarkedSites(
-        currentBookmarkedSites.sort((a, b) => (a.rating < b.rating ? 1 : -1))
-      )
-      setSortDir('ASC')
+
+      if (direction == 'ASC') {
+        setVisitedSites(updateVisitSites)
+        setBookmarkedSites(updateBookMarkSites)
+        if (type == 'name') setSortDir('DEC')
+        if (type == 'rating') setSortRatingDir('DEC')
+      } else {
+        setVisitedSites(updateVisitSites)
+        setBookmarkedSites(updateBookMarkSites)
+        if (type == 'name') setSortDir('ASC')
+        if (type == 'rating') setSortRatingDir('ASC')
+      }
     }
+
+    // Sort columns by name
+    if (type == 'name') sortDir == 'ASC' ? changeSort('ASC') : changeSort('DEC')
+    // Sort columns by rating
+    if (type == 'rating')
+      sortRatingDir == 'ASC' ? changeSort('ASC') : changeSort('DEC')
   }
 
   const removeSite = async ({id, name}) => {
@@ -309,7 +303,9 @@ export default function SiteTable({
         <td data-th="collection" className="text-left ">
           <span className="text-green-800 text-md">
             <span className="text-lg md:hidden">Collection: </span>&nbsp;
-            {collectionName[0]?.label || 'n/a'}
+            <span className="text-lg md:text-base">
+              {collectionName[0]?.label || 'n/a'}
+            </span>
           </span>
         </td>
         {tab == 'visited' && (
@@ -322,18 +318,18 @@ export default function SiteTable({
         )}
 
         <td data-th="Settings" className="text-left ">
-          <div className="flex gap-2 text-gray-700 md:flex-col">
-            <button
-              onClick={() => editSite(site, num)}
-              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-green-300 rounded-md md:rounded-none md:p-0 items-between text-small-3 md:bg-transparent md:justify-start">
-              <RiEdit2Line size="1.25em" />
-              <span>Edit</span>
-            </button>
+          <div className="flex gap-2 text-gray-700 md:flex-col-reverse">
             <button
               onClick={() => removeSite(site, num)}
-              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-red-300 rounded-md md:rounded-none md:p-0 items-between text-small md:bg-transparent md:justify-start">
+              className="flex items-center justify-center w-full gap-2 px-4 py-2 text-white bg-red-400 rounded-md md:text-black md:rounded-none md:p-0 items-between text-small md:bg-transparent md:justify-start">
               <RiDeleteBinLine size="1.25em" />
               <span>Delete</span>
+            </button>
+            <button
+              onClick={() => editSite(site, num)}
+              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-green-400 rounded-md md:rounded-none md:p-0 items-between text-small-3 md:bg-transparent md:justify-start">
+              <RiEdit2Line size="1.25em" />
+              <span>Edit</span>
             </button>
           </div>
         </td>
@@ -373,22 +369,22 @@ export default function SiteTable({
 
       return selectedHeaders.map(({name, sortable}, index) => {
         let sortType
-        if (name == 'Name') sortType = sort
-        if (name == 'Your Rating') sortType = sortRating
+        if (name == 'Name') sortType = 'name'
+        if (name == 'Your Rating') sortType = 'rating'
 
         if (sortable) {
           return (
             <th
               key={index}
-              onClick={sortType}
+              onClick={() => sort(sortType)}
               className="text-sm font-thin text-left text-green-800 uppercase">
               {name == 'Name' ? (
-                <span className="cursor-pointer">
+                <span className="pr-2 border-r-2 border-green-600 cursor-pointer md:p-0 md:border-0">
                   {name} {sortDir == 'ASC' ? '🔼 (Z-A)' : '🔽 (A-Z)'}
                 </span>
               ) : (
                 <span className="cursor-pointer">
-                  {name} {sortDir == 'ASC' ? '🔼' : '🔽'}
+                  {name} {sortRatingDir == 'ASC' ? '🔼' : '🔽'}
                 </span>
               )}
             </th>
@@ -410,9 +406,11 @@ export default function SiteTable({
         className="w-full mt-12 border-separate"
         style={{borderSpacing: '15px'}}>
         <tbody>
-          <span className="text-xs tracking-widest uppercase md:hidden">
-            Sort
-          </span>
+          <tr>
+            <th className="text-xs tracking-widest text-left text-green-800 uppercase md:hidden">
+              Sort
+            </th>
+          </tr>
           <tr className="flex w-full gap-2 pb-4 mb-4 border-b-2 border-green-300 md:table-row md:mb-0 md:border-0 md:pb-0">
             {createTableHead()}
           </tr>

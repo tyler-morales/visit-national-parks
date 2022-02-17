@@ -34,7 +34,7 @@ function Profile({
     <Layout>
       <h1 className="my-5 text-3xl font-bold text-green-800">Profile</h1>
 
-      <div className="grid grid-cols-1 gap-20 mt-20 md:grid-cols-4 font-display">
+      <div className="grid grid-cols-1 gap-20 mt-20 lg:grid-cols-4 font-display">
         <UserInfo
           username={username}
           email={email}
@@ -42,7 +42,7 @@ function Profile({
           bio={bio}
           visitedSites={visitedSites.length}
         />
-        <section className="w-full md:col-span-3">
+        <section className="w-full lg:col-span-3">
           <div className="flex gap-8">
             <button
               onClick={() => setTab('visited')}

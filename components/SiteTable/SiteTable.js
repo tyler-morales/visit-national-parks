@@ -33,7 +33,6 @@ export default function SiteTable({
   const [sortDir, setSortDir] = useState(null)
   const [sortRatingDir, setSortRatingDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
-  console.log(currentVisitedSites.map((site) => site.name))
 
   // Sort columns
   const sort = (type) => {
@@ -213,6 +212,7 @@ export default function SiteTable({
   }
 
   const addNewCollection = async (site, collection) => {
+    console.log(collection)
     // Add new collection
     try {
       await API.graphql({

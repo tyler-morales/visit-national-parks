@@ -68,6 +68,8 @@ const Modal = ({
     (item) => item.siteID == site.id
   )
 
+  console.log(collections)
+
   const createDateSelects = () => {
     setVisited(true)
   }
@@ -169,7 +171,8 @@ const Modal = ({
     if (
       !collections
         .map((collection) => collection.id)
-        .includes(selectedCollection.id)
+        .includes(selectedCollection.id) &&
+      selectedCollection.label != 'Select...'
     ) {
       addNewCollection(site, selectedCollection)
     }

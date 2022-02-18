@@ -39,16 +39,27 @@ export async function getStaticProps() {
   }
 
   const parks = parksData?.data
-  const nationalParks = parks.filter(
-    (park) =>
-      park.designation == 'National Park' ||
-      park.designation == 'National Park & Preserve' ||
-      park.designation == 'National Parks' ||
-      park.designation == 'National Park and Preserve' ||
-      park.designation == 'National and State Parks' ||
-      park.name == 'National Park of American Samoa'
-  )
 
+  // Filter and map for Only the National Parks
+  const nationalParks = parks
+    .filter(
+      (park) =>
+        park.designation == 'National Park' ||
+        park.designation == 'National Park & Preserve' ||
+        park.designation == 'National Parks' ||
+        park.designation == 'National Park and Preserve' ||
+        park.designation == 'National and State Parks' ||
+        park.name == 'National Park of American Samoa'
+    )
+    .map((park) => {
+      return {
+        name: park.name,
+        parkCode: park.parkCode,
+        image: park.images[0],
+      }
+    })
+
+  // Map over each park and return the park name and park code
   const parkNames = parks.map((park) => {
     return {
       name: park.name,

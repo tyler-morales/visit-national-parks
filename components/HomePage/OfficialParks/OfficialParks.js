@@ -51,8 +51,8 @@ export default function OfficialParks({nationalParks}) {
                     width={85}
                     height={85}
                     className="object-cover w-full min-h-full rounded-xl min-w-[75px] bg-gray-200"
-                    src={park.images[0].url}
-                    alt={park.images[0].altText}
+                    src={park.image.url}
+                    alt={park.image.altText}
                   />
                   <h3 className="texdt-lg max-w-[13ch]">{park.name}</h3>
                 </a>

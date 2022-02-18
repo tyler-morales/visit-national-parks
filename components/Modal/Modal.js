@@ -198,7 +198,7 @@ const Modal = ({
     <Backdrop onClick={handleClose}>
       <div
         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
-        className="max-w-[700px] p-6 md:p-8 bg-orange-100 rounded-lg w-full px-4 overflow-scroll">
+        className="max-w-[700px] p-6 md:p-8 bg-orange-100 rounded-lg w-full px-4 overflow-scroll scrollbar">
         <div className="grid gap-4">
           {/* Image and Name */}
           <div className="flex flex-col items-center gap-2 md:gap-8 md:flex-row">

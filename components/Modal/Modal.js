@@ -195,19 +195,21 @@ const Modal = ({
     <Backdrop onClick={handleClose}>
       <div
         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
-        className="max-w-[700px] p-8 bg-orange-100 rounded-lg">
+        className="max-w-[700px] p-6 md:p-8 bg-orange-100 rounded-lg w-full px-4 overflow-scroll">
         <div className="grid gap-4">
           {/* Image and Name */}
-          <div className="flex items-center gap-8">
+          <div className="flex flex-col items-center gap-2 md:gap-8 md:flex-row">
             <img
               src={site.img}
               alt={site.name}
-              className="w-[300px] h-[200px] object-cover rounded-md"
+              className="w-full md:w-[300px] md:h-[200px] h-[100px] object-cover rounded-md"
             />
-            <h2 className="text-4xl font-bold text-green-800">{site.name}</h2>
+            <h2 className="text-2xl font-bold text-green-800 md:text-4xl">
+              {site.name}
+            </h2>
           </div>
 
-          <div className="flex w-full gap-8">
+          <div className="flex flex-col w-full gap-2 md:gap-8 md:flex-row">
             {/* Rating */}
             <div className="flex items-center gap-2 font-bold text-green-800 uppercase">
               <span>
@@ -215,7 +217,7 @@ const Modal = ({
               </span>
             </div>
             {/* Collection */}
-            <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
+            <div className="flex flex-col items-start justify-between gap-5 mditems-center md:items-center md:flex-row">
               <div className="font-bold text-green-800 uppercase">
                 Collection
               </div>
@@ -225,8 +227,7 @@ const Modal = ({
                 onChange={setSelectedCollection}
                 onCreateOption={(val) => handleCreateCollection(val)}
                 id="collections"
-                className="min-w-[150px] cursor-pointer"
-                // styles={searchStyles}
+                className="min-w-[150px] cursor-pointer w-full"
               />
             </div>
           </div>
@@ -252,11 +253,11 @@ const Modal = ({
             )}
 
             {visited && (
-              <div className="max-w-screen-sm mt-4">
+              <div className="flex flex-col max-w-screen-sm gap-2 mt-4 md:gap-4 md:flex-row">
                 {/* Year */}
                 <select
                   onChange={(e) => changeYear(e)}
-                  className="px-4 py-2 font-sans bg-white w-[100px] rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 font-sans bg-white w-full md:w-[100px] rounded-md md:rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   name="Year">
                   <option value={date.year} className="px-4 py-2 rounded-md">
                     {date.year}
@@ -267,12 +268,8 @@ const Modal = ({
                 {/* Month */}
                 <select
                   onChange={(e) => changeMonth(e)}
-                  className="py-2 px-4 font-sans bg-white w-[130px] x-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  name="Month"
-                  style={{
-                    borderLeft: '4px solid  #FFEDD5',
-                    borderRight: '4px solid  #FFEDD5',
-                  }}>
+                  className="py-2 px-4 font-sans bg-white w-full md:w-[130px] x-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  name="Month">
                   <option value={date.month} className="px-4 py-2 rounded-md">
                     {date.month}
                   </option>
@@ -282,7 +279,7 @@ const Modal = ({
                 {/* Day */}
                 <select
                   onChange={(e) => changeDay(e)}
-                  className="px-4 py-2 font-sans bg-white w-[100px] rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-4 py-2 font-sans bg-white w-full md:w-[100px] rounded-md md:rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   name="Day">
                   <option value={date.day} className="px-4 py-2 rounded-md">
                     {date.day}
@@ -293,7 +290,7 @@ const Modal = ({
                 {/* Set Visited date to current date */}
                 <button
                   onClick={setCurrentDate}
-                  className="px-4 py-2 ml-4 bg-orange-200 rounded-md">
+                  className="w-full px-4 py-2 bg-orange-200 rounded-md md:w-[150px]">
                   Set to Today
                 </button>
               </div>
@@ -302,15 +299,15 @@ const Modal = ({
         </div>
 
         {/* Confirmation button */}
-        <div className="flex max-w-[200px] gap-4  mt-8">
+        <div className="flex md:max-w-[200px] gap-4 mt-4 md:mt-8">
           <button
             onClick={handleClose}
-            className="px-4 py-2 w-[150px] m-auto text-lg text-white bg-red-400 rounded-lg">
+            className="px-4 py-2 w-full md:w-[150px] m-auto text-lg text-white bg-red-400 rounded-lg">
             Cancel
           </button>
           <button
             onClick={saveData}
-            className="px-4 py-2 w-[150px] m-auto text-lg bg-green-400 rounded-lg">
+            className="px-4 py-2 w-full md:w-[150px] m-auto text-lg bg-green-400 rounded-lg">
             Save
           </button>
         </div>

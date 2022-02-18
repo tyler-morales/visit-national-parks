@@ -6,7 +6,7 @@ const Modal = ({handleClose, alerts}) => {
     <Backdrop onClick={handleClose}>
       <div
         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
-        className="max-w-[700px]  bg-orange-100 rounded-lg">
+        className="max-w-[700px]  bg-orange-100 rounded-lg max-h-[700px] overflow-scroll">
         <h2 className="px-8 py-4 text-3xl font-bold text-white bg-red-600 rounded-t-md">
           Alerts
         </h2>

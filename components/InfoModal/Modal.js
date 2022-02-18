@@ -6,14 +6,14 @@ const Modal = ({handleClose, alerts}) => {
     <Backdrop onClick={handleClose}>
       <div
         onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
-        className="max-w-[700px]  bg-orange-100 rounded-lg max-h-[700px] overflow-scroll">
+        className="max-w-[700px]  bg-orange-100 rounded-lg max-h-[700px] overflow-scroll scrollbar">
         <h2 className="px-8 py-4 text-3xl font-bold text-white bg-red-600 rounded-t-md">
           Alerts
         </h2>
         <ul className="p-8">
-          {alerts.slice(0, 4).map((alert) => {
+          {alerts.slice(0, 4).map((alert, index) => {
             return (
-              <li className="mb-4">
+              <li className="mb-4" key={index}>
                 <span className="block mb-2 font-bold text-red-600">
                   {alert.title} | {alert.lastIndexedDate.slice(0, 10)}
                 </span>

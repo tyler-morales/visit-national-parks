@@ -212,7 +212,6 @@ export default function SiteTable({
   }
 
   const addNewCollection = async (site, collection) => {
-    console.log(collection)
     // Add new collection
     try {
       await API.graphql({
@@ -226,7 +225,7 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      toast('New collection added', collection)
+      toast(`New collection added ${collection}`)
     } catch (err) {
       console.error(err)
     }

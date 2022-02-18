@@ -14,7 +14,6 @@ import useQuery from '../../hooks/useQuery'
 const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
   const router = useRouter()
   const {searchQuery, dispatch} = useQuery()
-  console.log(page)
 
   useImperativeHandle(ref, () => ({
     paginate(direction) {

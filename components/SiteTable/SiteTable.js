@@ -33,7 +33,6 @@ export default function SiteTable({
   const [sortDir, setSortDir] = useState(null)
   const [sortRatingDir, setSortRatingDir] = useState(null)
   const [modalSite, setModalSite] = useState(null)
-  console.log(currentVisitedSites.map((site) => site.name))
 
   // Sort columns
   const sort = (type) => {
@@ -226,7 +225,7 @@ export default function SiteTable({
         },
         authMode: 'AMAZON_COGNITO_USER_POOLS',
       })
-      toast('New collection added', collection)
+      toast(`New collection added ${collection}`)
     } catch (err) {
       console.error(err)
     }

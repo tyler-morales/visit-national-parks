@@ -4,10 +4,6 @@ import {AiOutlineInfoCircle} from 'react-icons/ai'
 import {AiOutlineCloseCircle} from 'react-icons/ai'
 
 export default function Hours({operatingHours, title}) {
-  const {description, standardHours, name} = operatingHours[0]
-  const {sunday, monday, tuesday, wednesday, thursday, friday, saturday} =
-    standardHours
-
   const [descriptionBox, setDescriptionBox] = useState(false)
 
   const toggleText = () => {
@@ -34,9 +30,9 @@ export default function Hours({operatingHours, title}) {
           </button>
           {descriptionBox && (
             <div className="absolute left-0 z-10 p-4 bg-white border-4 border-green-700 rounded-md shadow-lg md:w-[500px]">
-              <h3 className="mb-4 text-2xl">{name}</h3>
+              <h3 className="mb-4 text-2xl">{operatingHours[0]?.name}</h3>
               <p className="text-base font-normal text-black font-display">
-                {description}
+                {operatingHours[0]?.description}
               </p>
             </div>
           )}
@@ -44,25 +40,32 @@ export default function Hours({operatingHours, title}) {
       </div>
       <ul className="mt-4 text-lg text-black font-display">
         <li>
-          <span className="font-bold">Sunday:</span>&nbsp;{sunday}
+          <span className="font-bold">Sunday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.sunday}
         </li>
         <li>
-          <span className="font-bold">Monday:</span>&nbsp;{monday}
+          <span className="font-bold">Monday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.monday}
         </li>
         <li>
-          <span className="font-bold">Tuesday:</span>&nbsp;{tuesday}
+          <span className="font-bold">Tuesday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.tuesday}
         </li>
         <li>
-          <span className="font-bold">Wednesday:</span>&nbsp;{wednesday}
+          <span className="font-bold">Wednesday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.wednesday}
         </li>
         <li>
-          <span className="font-bold">Thursday:</span>&nbsp;{thursday}
+          <span className="font-bold">Thursday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.thursday}
         </li>
         <li>
-          <span className="font-bold">Friday:</span>&nbsp;{friday}
+          <span className="font-bold">Friday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.friday}
         </li>
         <li>
-          <span className="font-bold">Saturday:</span>&nbsp;{saturday}
+          <span className="font-bold">Saturday:</span>&nbsp;
+          {operatingHours[0]?.standardHours?.saturday}
         </li>
       </ul>
     </section>

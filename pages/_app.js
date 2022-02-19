@@ -19,13 +19,24 @@ function MyApp({Component, pageProps}) {
       <Head>
         <title>Parway | Discover the Outdoors of America</title>
 
+        {/* Description */}
+        <meta
+          name="description"
+          content="Parkway is a web app designed to help you discover and save all 463 National Parks in America."
+        />
+
+        <meta
+          property="og:description"
+          content="Parkway is a web app designed to help you discover and save all 463 National Parks in America."
+        />
+
         {/* Misc */}
         <meta name="twitter:card" content="summary" />
         {/* <meta property="og:url" content="https://tylermorales.dev /" /> */}
-        {/* <meta
+        <meta
           property="og:image"
-          content="https://raw.githubusercontent.com/tyler-morales/portfolio-v5/main/public/images/og.png"
-        /> */}
+          content="https://raw.githubusercontent.com/tyler-morales/visit-national-parks/main/public/images/og.png"
+        />
         <meta property="og:type" content="website" />
         {/* Favicon */}
         <link

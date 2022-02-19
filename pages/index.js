@@ -3,6 +3,7 @@ import Hero from '../components/HomePage/Hero/Hero'
 import OfficialParks from '../components/HomePage/OfficialParks/OfficialParks'
 import Topcis from '../components/HomePage/Topics/Topcis'
 import Layout from '../components/Layout'
+import Head from 'next/head'
 
 export default function Home({nationalParks, parkNames}) {
   return (

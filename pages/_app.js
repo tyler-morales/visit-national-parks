@@ -16,14 +16,49 @@ import {QueryProvider} from '../contexts/QueryContext'
 function MyApp({Component, pageProps}) {
   return (
     <>
+      <Head>
+        <title>Parway | Discover the Outdoors of America</title>
+
+        {/* Description */}
+        <meta
+          name="description"
+          content="Parkway is a web app designed to help you discover and save all 463 National Parks in America."
+        />
+
+        <meta
+          property="og:description"
+          content="Parkway is a web app designed to help you discover and save all 463 National Parks in America."
+        />
+
+        {/* Misc */}
+        <meta name="twitter:card" content="summary" />
+        {/* <meta property="og:url" content="https://tylermorales.dev /" /> */}
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/tyler-morales/visit-national-parks/main/public/images/og.png"
+        />
+        <meta property="og:type" content="website" />
+        {/* Favicon */}
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+      </Head>
       <QueryProvider>
-        <Head>
-          <title>Parkway | Home</title>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-          />
-        </Head>
         <Nav />
         <Component {...pageProps} />
         <Footer />

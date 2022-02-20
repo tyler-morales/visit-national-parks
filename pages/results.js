@@ -43,23 +43,12 @@ const Giphy = () => {
   )
 }
 
-export default function results({parks, params}) {
+export default function results({parks, totalParks, params}) {
   const childCompRef = useRef(null)
-  const {data, total} = parks
   const {state, q, start} = params
   const [toggleView, setToggleView] = useState('MAP')
 
   const [screenWidth, setScreenWidth] = useState(0)
-
-  const coordinates = parks?.data?.map((park) => {
-    return {
-      latitude: +park.latitude,
-      longitude: +park.longitude,
-      code: park.parkCode,
-      fullName: park.fullName,
-      image: park.images[0].url,
-    }
-  })
 
   useEffect(() => {
     const changeWidth = () => {
@@ -83,7 +72,7 @@ export default function results({parks, params}) {
         </header>
 
         <span className="block mb-6 text-xs tracking-wider text-gray-500">
-          {total} results for{' '}
+          {totalParks} results for{' '}
           <span className="font-bold">
             {convertValueToLabel(state, states)}
           </span>
@@ -123,27 +112,29 @@ export default function results({parks, params}) {
           {(toggleView == 'LIST' || screenWidth > 768) && (
             <div>
               <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {total > 0 &&
-                  data?.map(({parkCode, fullName, images}) => (
-                    <Link href={`/park/${parkCode}`} key={parkCode}>
-                      <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
-                        <div className="relative h-64">
-                          <Image
-                            layout="fill"
-                            src={images[0].url}
-                            alt={images[0].altText}
-                            className="object-cover w-full rounded-md"
-                          />
-                        </div>
-                        <h3 className="mt-2 text-2xl font-bold text-green-800">
-                          {fullName}
-                        </h3>
-                      </a>
-                    </Link>
-                  ))}
+                {totalParks > 0 &&
+                  parks?.map(
+                    ({parkCode, fullName, imageUrl, imageAlt}, index) => (
+                      <Link href={`/park/${parkCode}`} key={index}>
+                        <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
+                          <div className="relative h-64">
+                            <Image
+                              layout="fill"
+                              src={imageUrl}
+                              alt={imageAlt}
+                              className="object-cover w-full rounded-md"
+                            />
+                          </div>
+                          <h3 className="mt-2 text-2xl font-bold text-green-800">
+                            {fullName}
+                          </h3>
+                        </a>
+                      </Link>
+                    )
+                  )}
               </section>
               {/* No Results found */}
-              {total == 0 && (
+              {totalParks == 0 && (
                 <section>
                   <h2 className="w-full mt-10 text-3xl font-bold text-center text-green-800">
                     No results, try a different search
@@ -153,7 +144,7 @@ export default function results({parks, params}) {
               )}
 
               {/* Pagination buttons */}
-              {total > 20 && (
+              {totalParks > 20 && (
                 <div className="flex justify-center gap-5 mt-12">
                   {start != 0 && (
                     <button
@@ -163,7 +154,7 @@ export default function results({parks, params}) {
                       Back
                     </button>
                   )}
-                  {total - start > start && (
+                  {totalParks - start > start && (
                     <button
                       onClick={() => childCompRef.current.paginate('increment')}
                       className="flex items-center justify-center gap-3 py-3 pl-3 text-lg text-center text-white transition-all bg-green-700 rounded-lg shadow-md w-28 hover:bg-green-600 hover:translate-x-1 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none">
@@ -178,7 +169,7 @@ export default function results({parks, params}) {
 
           {/* Map */}
           {(toggleView == 'MAP' || screenWidth > 768) && (
-            <MapBox coordinates={coordinates} />
+            <MapBox coordinates={parks} />
           )}
         </div>
       </Layout>
@@ -215,10 +206,22 @@ export async function getServerSideProps(context) {
   })
 
   const data = await res.json()
+  const totalParks = data.total
+  const parksData = data?.data?.map((park) => {
+    return {
+      latitude: +park.latitude,
+      longitude: +park.longitude,
+      code: park.parkCode,
+      fullName: park.fullName,
+      imageUrl: park.images[0].url,
+      imagealt: park.images[0].altText,
+    }
+  })
 
   return {
     props: {
-      parks: data,
+      parks: parksData,
+      totalParks,
       params: createParamsObj(stateCode, q, start),
     },
   }

@@ -51,7 +51,7 @@ export default function results({parks, params}) {
 
   const [screenWidth, setScreenWidth] = useState(0)
 
-  const coordinates = parks.data.map((park) => {
+  const coordinates = parks?.data?.map((park) => {
     return {
       latitude: +park.latitude,
       longitude: +park.longitude,
@@ -124,7 +124,7 @@ export default function results({parks, params}) {
             <div>
               <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {total > 0 &&
-                  data.map(({parkCode, fullName, images}) => (
+                  data?.map(({parkCode, fullName, images}) => (
                     <Link href={`/park/${parkCode}`} key={parkCode}>
                       <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
                         <div className="relative h-64">

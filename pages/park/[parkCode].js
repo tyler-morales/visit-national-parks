@@ -45,103 +45,86 @@ export default function Park({
   if (router.isFallback) {
     return 'loading...'
   }
+  return (
+    <>
+      <Head>
+        <title>{fullName}</title>
+        <meta property="og:title" content={fullName} key="title" />
+        <meta
+          name="description"
+          content={
+            'Explore ' + fullName + ' and discover the great American outdoors'
+          }></meta>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
 
-  if (
-    (name,
-    fullName,
-    description,
-    parkCode,
-    designation,
-    images,
-    states,
-    contacts,
-    operatingHours,
-    entranceFees,
-    entrancePasses,
-    latitude,
-    longitude,
-    thingsToDo,
-    alerts)
+      <Layout>
+        {alerts.length > 0 && <Alert alerts={alerts} />}
+        <button
+          onClick={() => router.back()}
+          aria-label="Back to results"
+          className="text-sm text-gray-600-700">
+          ↞Back to Results
+        </button>
+
+        {/* Title */}
+        <span className="block mb-2 text-center">{designation}</span>
+        <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
+          {name}
+        </h1>
+
+        {/* Hero Image */}
+        <HeroImage image={images[0]} />
+
+        <hr className="my-12 border-gray-400" />
+
+        {/* Collection */}
+        <CollectionButton
+          name={name}
+          parkCode={parkCode}
+          fullName={fullName}
+          url={images[0]?.url}
+        />
+
+        {/* General Info */}
+        <GeneralInfo
+          description={description}
+          states={states}
+          contacts={contacts}
+          title="Overview"
+        />
+
+        <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
+          {/* Hours */}
+          <Hours operatingHours={operatingHours} title="Hours" />
+          <Fees
+            title="Fees & Passes"
+            entranceFees={entranceFees}
+            entrancePasses={entrancePasses}
+          />
+        </div>
+
+        {/* Map */}
+        <MapBox
+          coordinates={{latitude, longitude}}
+          fullName={fullName}
+          parkCode={parkCode}
+          title="Map"
+        />
+
+        {/* Things To Do */}
+        {thingsToDo.length != 0 && (
+          <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
+        )}
+
+        {/* Images */}
+        <Images images={images} title="More Images" />
+      </Layout>
+    </>
   )
-    return (
-      <>
-        <Head>
-          <title>{fullName}</title>
-          <meta property="og:title" content={fullName} key="title" />
-          <meta
-            name="description"
-            content={
-              'Explore ' +
-              fullName +
-              ' and discover the great American outdoors'
-            }></meta>
-        </Head>
-
-        <Layout>
-          {alerts.length > 0 && <Alert alerts={alerts} />}
-          <button
-            onClick={() => router.back()}
-            aria-label="Back to results"
-            className="text-sm text-gray-600-700">
-            ↞Back to Results
-          </button>
-
-          {/* Title */}
-          <span className="block mb-2 text-center">{designation}</span>
-          <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
-            {name}
-          </h1>
-
-          {/* Hero Image */}
-          <HeroImage image={images[0]} />
-
-          <hr className="my-12 border-gray-400" />
-
-          {/* Collection */}
-          <CollectionButton
-            name={name}
-            parkCode={parkCode}
-            fullName={fullName}
-            url={images[0]?.url}
-          />
-
-          {/* General Info */}
-          <GeneralInfo
-            description={description}
-            states={states}
-            contacts={contacts}
-            title="Overview"
-          />
-
-          <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
-            {/* Hours */}
-            <Hours operatingHours={operatingHours} title="Hours" />
-            <Fees
-              title="Fees & Passes"
-              entranceFees={entranceFees}
-              entrancePasses={entrancePasses}
-            />
-          </div>
-
-          {/* Map */}
-          <MapBox
-            coordinates={{latitude, longitude}}
-            fullName={fullName}
-            parkCode={parkCode}
-            title="Map"
-          />
-
-          {/* Things To Do */}
-          {thingsToDo.length != 0 && (
-            <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
-          )}
-
-          {/* Images */}
-          <Images images={images} title="More Images" />
-        </Layout>
-      </>
-    )
-  else return <div>Loading...</div>
 }
 
 export async function getStaticPaths() {

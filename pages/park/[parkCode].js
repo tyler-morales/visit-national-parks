@@ -27,7 +27,21 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
   })
 
   if (parkInfo && thingsToDo && alerts) {
-    const {fullName, name, latitude, longitude} = parkInfo
+    const {
+      name,
+      description,
+      parkCode,
+      designation,
+      images,
+      fullName,
+      states,
+      contacts,
+      operatingHours,
+      entranceFees,
+      entrancePasses,
+      latitude,
+      longitude,
+    } = parkInfo
 
     return (
       <>
@@ -57,47 +71,47 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
           </button>
 
           {/* Title */}
-          <span className="block mb-2 text-center">{parkInfo.designation}</span>
+          <span className="block mb-2 text-center">{designation}</span>
           <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
             {name}
           </h1>
 
           {/* Hero Image */}
-          <HeroImage image={parkInfo.images[0]} />
+          <HeroImage image={images[0]} />
 
           <hr className="my-12 border-gray-400" />
 
           {/* Collection */}
           <CollectionButton
             name={name}
-            parkCode={parkInfo.parkCode}
-            fullName={parkInfo.fullName}
-            url={parkInfo.images[0]?.url}
+            parkCode={parkCode}
+            fullName={fullName}
+            url={images[0]?.url}
           />
 
           {/* General Info */}
           <GeneralInfo
-            description={parkInfo.description}
-            states={parkInfo.states}
-            contacts={parkInfo.contacts}
+            description={description}
+            states={states}
+            contacts={contacts}
             title="Overview"
           />
 
           <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
             {/* Hours */}
-            <Hours operatingHours={parkInfo.operatingHours} title="Hours" />
+            <Hours operatingHours={operatingHours} title="Hours" />
             <Fees
               title="Fees & Passes"
-              entranceFees={parkInfo.entranceFees}
-              entrancePasses={parkInfo.entrancePasses}
+              entranceFees={entranceFees}
+              entrancePasses={entrancePasses}
             />
           </div>
 
           {/* Map */}
           <MapBox
             coordinates={{latitude, longitude}}
-            fullName={parkInfo.fullName}
-            parkCode={parkInfo.parkCode}
+            fullName={fullName}
+            parkCode={parkCode}
             title="Map"
           />
 
@@ -107,7 +121,7 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
           )}
 
           {/* Images */}
-          <Images images={parkInfo.images} title="More Images" />
+          <Images images={images} title="More Images" />
         </Layout>
       </>
     )
@@ -152,7 +166,7 @@ export async function getStaticProps({params}) {
     )
 
     parkInfo = await parkData.json()
-    parkInfo = parkInfo.data[0]
+    parkInfo = parkInfo?.data[0]
     parkInfo = {
       name: parkInfo?.name,
       description: parkInfo?.description,

@@ -159,14 +159,14 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
                 Park Name
               </label>
               <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
-                {/* <Select
+                <Select
                   options={parks}
                   value={selectedPark}
                   onChange={setselectedPark}
-                  // id="parks"
+                  instanceId="parks"
                   className="w-full cursor-text"
                   styles={searchStyles}
-                /> */}
+                />
                 <button
                   type="submit"
                   className="self-end w-full py-3 font-bold text-white transition-all bg-green-700 border-2 border-transparent rounded-full md:px-12 md:w-auto h-min focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500 focus:transition-none hover:bg-green-600">

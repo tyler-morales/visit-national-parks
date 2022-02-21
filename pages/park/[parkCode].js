@@ -128,7 +128,7 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
   } else {
     return (
       <Layout>
-        <h2 className="text-center">Loading...</h2>
+        <h2 className="h-screen text-center">Loading...</h2>
       </Layout>
     )
   }
@@ -216,6 +216,6 @@ export async function getStaticProps({params}) {
       thingsToDo,
       alerts,
     },
-    revalidate: 60,
+    revalidate: 86400,
   }
 }

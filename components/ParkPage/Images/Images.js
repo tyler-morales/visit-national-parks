@@ -14,7 +14,7 @@ export default function Images({images, title}) {
                 layout="responsive"
                 width="100%"
                 height="100%"
-                className="object-cover w-full rounded-xl"
+                className="object-cover w-full bg-gray-200 rounded-xl"
                 src={img.url}
                 alt={img.altText}
               />

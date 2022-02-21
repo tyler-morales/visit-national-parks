@@ -43,7 +43,7 @@ export default function Park({
   })
 
   if (router.isFallback) {
-    return 'loading...'
+    return <Layout>loading...</Layout>
   }
   return (
     <>

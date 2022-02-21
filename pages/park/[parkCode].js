@@ -13,23 +13,7 @@ import MapBox from '../../components/ParkPage/Map/MapBox'
 import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
 import Alert from '../../components/ParkPage/Alert/Alert'
 
-export default function Park({
-  name,
-  fullName,
-  description,
-  parkCode,
-  designation,
-  images,
-  states,
-  contacts,
-  operatingHours,
-  entranceFees,
-  entrancePasses,
-  latitude,
-  longitude,
-  thingsToDo,
-  alerts,
-}) {
+export default function Park({parkInfo, thingsToDo, alerts}) {
   const router = useRouter()
 
   const thingCoordinates = thingsToDo?.map((thing) => {
@@ -42,89 +26,98 @@ export default function Park({
     }
   })
 
-  if (router.isFallback) {
-    return <Layout>loading...</Layout>
-  }
-  return (
-    <>
-      <Head>
-        <title>{fullName}</title>
-        <meta property="og:title" content={fullName} key="title" />
-        <meta
-          name="description"
-          content={
-            'Explore ' + fullName + ' and discover the great American outdoors'
-          }></meta>
-        <link
-          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
-          rel="stylesheet"
-        />
-      </Head>
+  if (parkInfo) {
+    const {fullName, name, latitude, longitude} = parkInfo
 
-      <Layout>
-        {alerts.length > 0 && <Alert alerts={alerts} />}
-        <button
-          onClick={() => router.back()}
-          aria-label="Back to results"
-          className="text-sm text-gray-600-700">
-          ↞Back to Results
-        </button>
-
-        {/* Title */}
-        <span className="block mb-2 text-center">{designation}</span>
-        <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
-          {name}
-        </h1>
-
-        {/* Hero Image */}
-        <HeroImage image={images[0]} />
-
-        <hr className="my-12 border-gray-400" />
-
-        {/* Collection */}
-        <CollectionButton
-          name={name}
-          parkCode={parkCode}
-          fullName={fullName}
-          url={images[0]?.url}
-        />
-
-        {/* General Info */}
-        <GeneralInfo
-          description={description}
-          states={states}
-          contacts={contacts}
-          title="Overview"
-        />
-
-        <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
-          {/* Hours */}
-          <Hours operatingHours={operatingHours} title="Hours" />
-          <Fees
-            title="Fees & Passes"
-            entranceFees={entranceFees}
-            entrancePasses={entrancePasses}
+    return (
+      <>
+        <Head>
+          <title>{fullName}</title>
+          <meta property="og:title" content={fullName} key="title" />
+          <meta
+            name="description"
+            content={
+              'Explore ' +
+              fullName +
+              ' and discover the great American outdoors'
+            }></meta>
+          <link
+            href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+            rel="stylesheet"
           />
-        </div>
+        </Head>
 
-        {/* Map */}
-        <MapBox
-          coordinates={{latitude, longitude}}
-          fullName={fullName}
-          parkCode={parkCode}
-          title="Map"
-        />
+        <Layout>
+          {alerts.length > 0 && <Alert alerts={alerts} />}
+          <button
+            onClick={() => router.back()}
+            aria-label="Back to results"
+            className="text-sm text-gray-600-700">
+            ↞Back to Results
+          </button>
 
-        {/* Things To Do */}
-        {thingsToDo.length != 0 && (
-          <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
-        )}
+          {/* Title */}
+          <span className="block mb-2 text-center">{parkInfo.designation}</span>
+          <h1 className="mb-5 text-5xl font-bold text-center text-green-800 md:text-7xl">
+            {name}
+          </h1>
 
-        {/* Images */}
-        <Images images={images} title="More Images" />
+          {/* Hero Image */}
+          <HeroImage image={parkInfo.images[0]} />
+
+          <hr className="my-12 border-gray-400" />
+
+          {/* Collection */}
+          <CollectionButton
+            name={name}
+            parkCode={parkInfo.parkCode}
+            fullName={parkInfo.fullName}
+            url={parkInfo.images[0]?.url}
+          />
+
+          {/* General Info */}
+          <GeneralInfo
+            description={parkInfo.description}
+            states={parkInfo.states}
+            contacts={parkInfo.contacts}
+            title="Overview"
+          />
+
+          <div className="grid gap-10 p-8 mt-10 border-2 border-green-700 rounded-lg bg-orange-50 col-1 md:grid-cols-4">
+            {/* Hours */}
+            <Hours operatingHours={parkInfo.operatingHours} title="Hours" />
+            <Fees
+              title="Fees & Passes"
+              entranceFees={parkInfo.entranceFees}
+              entrancePasses={parkInfo.entrancePasses}
+            />
+          </div>
+
+          {/* Map */}
+          <MapBox
+            coordinates={{latitude, longitude}}
+            fullName={parkInfo.fullName}
+            parkCode={parkInfo.parkCode}
+            title="Map"
+          />
+
+          {/* Things To Do */}
+          {thingsToDo.length != 0 && (
+            <ThingsToDo thingsToDo={thingsToDo} title="Things To Do" />
+          )}
+
+          {/* Images */}
+          <Images images={parkInfo.images} title="More Images" />
+        </Layout>
+      </>
+    )
+  } else {
+    return (
+      <Layout>
+        <h2 className="text-center">Loading...</h2>
       </Layout>
-    </>
-  )
+    )
+  }
 }
 
 export async function getStaticPaths() {
@@ -135,45 +128,45 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
-  try {
-  } catch (err) {}
+  //  Set the base URL for the API
   const URL = 'https://developer.nps.gov/api/v1/'
 
-  // Call API Data for /PARK
-  const res = await fetch(
-    `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
+  // Set data to null to handle errors
+  let parkInfo = null
+
+  try {
+    // Call API Data for /PARK
+    const parkData = await fetch(
+      `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'User-Agent': '*',
+        },
+      }
+    )
+
+    parkInfo = await parkData.json()
+    parkInfo = parkInfo.data[0]
+    parkInfo = {
+      name: parkInfo?.name,
+      description: parkInfo?.description,
+      parkCode: parkInfo?.parkCode,
+      designation: parkInfo?.designation,
+      images: parkInfo?.images,
+      fullName: parkInfo?.fullName,
+      states: parkInfo?.states,
+      contacts: parkInfo?.contacts,
+      operatingHours: parkInfo?.operatingHours,
+      entranceFees: parkInfo?.entranceFees,
+      entrancePasses: parkInfo?.entrancePasses,
+      latitude: parkInfo?.latitude,
+      longitude: parkInfo?.longitude,
     }
-  )
-
-  const parkData = await res.json()
-
-  if (!parkData) {
-    return {notFound: true}
+  } catch (err) {
+    console.error(err)
   }
-
-  const park = parkData?.data[0]
-
-  const {
-    name,
-    description,
-    parkCode,
-    designation,
-    images,
-    fullName,
-    states,
-    contacts,
-    operatingHours,
-    entranceFees,
-    entrancePasses,
-    latitude,
-    longitude,
-  } = park
 
   // Call API Data for /THINGS-TO-DO
   const res2 = await fetch(
@@ -215,19 +208,7 @@ export async function getStaticProps({params}) {
 
   return {
     props: {
-      name,
-      fullName,
-      description,
-      parkCode,
-      designation,
-      images,
-      states,
-      contacts,
-      operatingHours,
-      entranceFees,
-      entrancePasses,
-      latitude,
-      longitude,
+      parkInfo,
       thingsToDo,
       alerts,
     },

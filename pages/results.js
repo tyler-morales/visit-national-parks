@@ -188,9 +188,8 @@ export default function results({parks, totalParks, params}) {
         </Layout>
       </>
     )
-  } else return <div>Loading...</div>
+  } else return <Layout>Loading...</Layout>
 }
-// && coordinates.length > 0
 
 export async function getServerSideProps(context) {
   const URLWithParams = new URL('https://developer.nps.gov/api/v1/parks')

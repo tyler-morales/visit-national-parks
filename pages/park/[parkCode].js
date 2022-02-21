@@ -26,9 +26,8 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
     }
   })
 
-  if (parkInfo && thingsToDo) {
+  if (parkInfo && thingsToDo && alerts) {
     const {fullName, name, latitude, longitude} = parkInfo
-    console.log(thingsToDo)
 
     return (
       <>
@@ -135,18 +134,21 @@ export async function getStaticProps({params}) {
   // Set data to null to handle errors
   let parkInfo = null
   let thingsToDo = null
+  let alerts = null
+
+  const reqBody = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent': '*',
+    },
+  }
 
   // Call API Data for /PARK
   try {
     const parkData = await fetch(
       `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'User-Agent': '*',
-        },
-      }
+      reqBody
     )
 
     parkInfo = await parkData.json()
@@ -174,13 +176,7 @@ export async function getStaticProps({params}) {
   try {
     const thingsToDoData = await fetch(
       `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'User-Agent': '*',
-        },
-      }
+      reqBody
     )
 
     thingsToDo = await thingsToDoData.json()
@@ -190,23 +186,15 @@ export async function getStaticProps({params}) {
   }
 
   // Call API Data for /ALERTS
-  const res3 = await fetch(
-    `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  try {
+    const alertData = await fetch(
+      `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
+      reqBody
+    )
 
-  const alertsData = await res3.json()
-  const alerts = alertsData?.data
-
-  if (!alerts) {
-    return {notFound: true}
-  }
+    alerts = await alertData.json()
+    alerts = alerts?.data
+  } catch (err) {}
 
   return {
     props: {

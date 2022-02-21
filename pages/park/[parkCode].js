@@ -26,8 +26,9 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
     }
   })
 
-  if (parkInfo) {
+  if (parkInfo && thingsToDo) {
     const {fullName, name, latitude, longitude} = parkInfo
+    console.log(thingsToDo)
 
     return (
       <>
@@ -133,9 +134,10 @@ export async function getStaticProps({params}) {
 
   // Set data to null to handle errors
   let parkInfo = null
+  let thingsToDo = null
 
+  // Call API Data for /PARK
   try {
-    // Call API Data for /PARK
     const parkData = await fetch(
       `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
       {
@@ -169,22 +171,22 @@ export async function getStaticProps({params}) {
   }
 
   // Call API Data for /THINGS-TO-DO
-  const res2 = await fetch(
-    `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  try {
+    const thingsToDoData = await fetch(
+      `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'User-Agent': '*',
+        },
+      }
+    )
 
-  const thingsToDoData = await res2.json()
-  const thingsToDo = thingsToDoData?.data
-
-  if (!thingsToDo) {
-    return {notFound: true}
+    thingsToDo = await thingsToDoData.json()
+    thingsToDo = thingsToDo?.data
+  } catch (err) {
+    console.error(err)
   }
 
   // Call API Data for /ALERTS

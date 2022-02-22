@@ -123,8 +123,8 @@ export default function results({parks, totalParks, params}) {
                 <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                   {totalParks > 0 &&
                     parks?.map(
-                      ({parkCode, fullName, imageUrl, imageAlt}, index) => (
-                        <Link href={`/park/${parkCode}`} key={index}>
+                      ({code, fullName, imageUrl, imageAlt}, index) => (
+                        <Link href={`/park/${code}`} key={index}>
                           <a className="p-4 bg-[#fafafa] rounded-lg shadow-lg hover:-translate-y-2 transition-all hover:shadow-xl">
                             <div className="relative h-64">
                               <Image

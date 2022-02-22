@@ -163,7 +163,7 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
                   options={parks}
                   value={selectedPark}
                   onChange={setselectedPark}
-                  id="parks"
+                  instanceId="parks"
                   className="w-full cursor-text"
                   styles={searchStyles}
                 />
@@ -205,7 +205,7 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
                   value={selectedState}
                   onChange={setselectedState}
                   styles={dropdownStyles}
-                  id="states"
+                  instanceId="states"
                 />
               </div>
               <div
@@ -220,7 +220,7 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
                   value={selectedActivity}
                   onChange={setselectedActivity}
                   styles={dropdownStyles}
-                  id="activity"
+                  instanceId="activities"
                 />
               </div>
               <div
@@ -235,7 +235,7 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
                   value={selectedTopic}
                   onChange={setselectedTopic}
                   styles={dropdownStyles}
-                  id="topic"
+                  instanceId="topics"
                 />
               </div>
               <button

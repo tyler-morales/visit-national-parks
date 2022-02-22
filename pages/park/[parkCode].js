@@ -13,23 +13,7 @@ import MapBox from '../../components/ParkPage/Map/MapBox'
 import ThingsToDo from '../../components/ParkPage/ThingsToDo/ThingsToDo'
 import Alert from '../../components/ParkPage/Alert/Alert'
 
-export default function Park({
-  name,
-  fullName,
-  description,
-  parkCode,
-  designation,
-  images,
-  states,
-  contacts,
-  operatingHours,
-  entranceFees,
-  entrancePasses,
-  latitude,
-  longitude,
-  thingsToDo,
-  alerts,
-}) {
+export default function Park({parkInfo, thingsToDo, alerts}) {
   const router = useRouter()
 
   const thingCoordinates = thingsToDo?.map((thing) => {
@@ -42,27 +26,23 @@ export default function Park({
     }
   })
 
-  if (router.isFallback) {
-    return 'loading...'
-  }
+  if (parkInfo && thingsToDo && alerts) {
+    const {
+      name,
+      description,
+      parkCode,
+      designation,
+      images,
+      fullName,
+      states,
+      contacts,
+      operatingHours,
+      entranceFees,
+      entrancePasses,
+      latitude,
+      longitude,
+    } = parkInfo
 
-  if (
-    (name,
-    fullName,
-    description,
-    parkCode,
-    designation,
-    images,
-    states,
-    contacts,
-    operatingHours,
-    entranceFees,
-    entrancePasses,
-    latitude,
-    longitude,
-    thingsToDo,
-    alerts)
-  )
     return (
       <>
         <Head>
@@ -75,6 +55,10 @@ export default function Park({
               fullName +
               ' and discover the great American outdoors'
             }></meta>
+          <link
+            href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+            rel="stylesheet"
+          />
         </Head>
 
         <Layout>
@@ -141,7 +125,13 @@ export default function Park({
         </Layout>
       </>
     )
-  else return <div>Loading...</div>
+  } else {
+    return (
+      <Layout>
+        <h2 className="h-screen text-center">Loading...</h2>
+      </Layout>
+    )
+  }
 }
 
 export async function getStaticPaths() {
@@ -152,102 +142,80 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
-  try {
-  } catch (err) {}
+  //  Set the base URL for the API
   const URL = 'https://developer.nps.gov/api/v1/'
 
-  // Call API Data for /PARK
-  const res = await fetch(
-    `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  // Set data to null to handle errors
+  let parkInfo = null
+  let thingsToDo = null
+  let alerts = null
 
-  const parkData = await res.json()
-
-  if (!parkData) {
-    return {notFound: true}
+  const reqBody = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent': '*',
+    },
   }
 
-  const park = parkData?.data[0]
+  // Call API Data for /PARK
+  try {
+    const parkData = await fetch(
+      `${URL}parks?parkCode=${params?.parkCode}&limit=465&api_key=${process.env.API_KEY}`,
+      reqBody
+    )
 
-  const {
-    name,
-    description,
-    parkCode,
-    designation,
-    images,
-    fullName,
-    states,
-    contacts,
-    operatingHours,
-    entranceFees,
-    entrancePasses,
-    latitude,
-    longitude,
-  } = park
+    parkInfo = await parkData.json()
+    parkInfo = parkInfo?.data[0]
+    parkInfo = {
+      name: parkInfo?.name,
+      description: parkInfo?.description,
+      parkCode: parkInfo?.parkCode,
+      designation: parkInfo?.designation,
+      images: parkInfo?.images,
+      fullName: parkInfo?.fullName,
+      states: parkInfo?.states,
+      contacts: parkInfo?.contacts,
+      operatingHours: parkInfo?.operatingHours,
+      entranceFees: parkInfo?.entranceFees,
+      entrancePasses: parkInfo?.entrancePasses,
+      latitude: parkInfo?.latitude,
+      longitude: parkInfo?.longitude,
+    }
+  } catch (err) {
+    console.error(err)
+  }
 
   // Call API Data for /THINGS-TO-DO
-  const res2 = await fetch(
-    `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  try {
+    const thingsToDoData = await fetch(
+      `${URL}thingstodo?parkCode=${params?.parkCode}&limit=100&api_key=${process.env.API_KEY}`,
+      reqBody
+    )
 
-  const thingsToDoData = await res2.json()
-  const thingsToDo = thingsToDoData?.data
-
-  if (!thingsToDo) {
-    return {notFound: true}
+    thingsToDo = await thingsToDoData.json()
+    thingsToDo = thingsToDo?.data
+  } catch (err) {
+    console.error(err)
   }
 
   // Call API Data for /ALERTS
-  const res3 = await fetch(
-    `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
-    {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
-      },
-    }
-  )
+  try {
+    const alertData = await fetch(
+      `${URL}alerts?parkCode=${params?.parkCode}&limit=5&api_key=${process.env.API_KEY}`,
+      reqBody
+    )
 
-  const alertsData = await res3.json()
-  const alerts = alertsData?.data
-
-  if (!alerts) {
-    return {notFound: true}
-  }
+    alerts = await alertData.json()
+    alerts = alerts?.data
+  } catch (err) {}
 
   return {
     props: {
-      name,
-      fullName,
-      description,
-      parkCode,
-      designation,
-      images,
-      states,
-      contacts,
-      operatingHours,
-      entranceFees,
-      entrancePasses,
-      latitude,
-      longitude,
+      parkInfo,
       thingsToDo,
       alerts,
     },
-    revalidate: 60,
+    revalidate: 86400,
   }
 }

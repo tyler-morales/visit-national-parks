@@ -70,7 +70,7 @@ export default function MapBox({coordinates}) {
               </div>
               <img
                 className="object-cover w-full h-[200px] mt-4"
-                src={popupInfo.image}
+                src={popupInfo.imageUrl}
               />
             </div>
           </Popup>

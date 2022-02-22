@@ -16,15 +16,15 @@ import Alert from '../../components/ParkPage/Alert/Alert'
 export default function Park({parkInfo, thingsToDo, alerts}) {
   const router = useRouter()
 
-  const thingCoordinates = thingsToDo?.map((thing) => {
-    return {
-      id: thing.id,
-      name: thing.title,
-      url: thing.url,
-      latitude: thing.latitude,
-      longitude: thing.longitude,
-    }
-  })
+  // const thingCoordinates = thingsToDo?.map((thing) => {
+  //   return {
+  //     id: thing.id,
+  //     name: thing.title,
+  //     url: thing.url,
+  //     latitude: thing.latitude,
+  //     longitude: thing.longitude,
+  //   }
+  // })
 
   if (parkInfo && thingsToDo && alerts) {
     const {
@@ -150,6 +150,7 @@ export async function getStaticProps({params}) {
   let thingsToDo = null
   let alerts = null
 
+  // Extract method and header from fetch
   const reqBody = {
     method: 'GET',
     headers: {
@@ -208,7 +209,9 @@ export async function getStaticProps({params}) {
 
     alerts = await alertData.json()
     alerts = alerts?.data
-  } catch (err) {}
+  } catch (err) {
+    console.error(err)
+  }
 
   return {
     props: {
@@ -216,6 +219,6 @@ export async function getStaticProps({params}) {
       thingsToDo,
       alerts,
     },
-    revalidate: 86400,
+    revalidate: 1,
   }
 }

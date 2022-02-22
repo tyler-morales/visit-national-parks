@@ -77,7 +77,7 @@ export async function getStaticProps() {
     console.error(err)
   }
 
-  console.log('********************************')
+  // console.log('********************************')
   // console.log(nationalParks?.length, parkNames.length)
 
   return {

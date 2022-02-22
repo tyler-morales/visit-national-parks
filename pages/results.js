@@ -47,7 +47,6 @@ const Giphy = () => {
 
 export default function results({parks, totalParks, params}) {
   const childCompRef = useRef(null)
-  const {state, q, start} = params
   const [toggleView, setToggleView] = useState('MAP')
 
   const [screenWidth, setScreenWidth] = useState(0)
@@ -65,7 +64,9 @@ export default function results({parks, totalParks, params}) {
     }
   }, [])
 
-  if (parks && params && totalParks) {
+  if (parks && totalParks && params) {
+    const {state, q, start} = params
+
     return (
       <>
         <Head>
@@ -188,13 +189,22 @@ export default function results({parks, totalParks, params}) {
         </Layout>
       </>
     )
-  } else return <Layout>Loading...</Layout>
+  } else
+    return (
+      <Layout>
+        <h2 className="h-screen text-center">Loading...</h2>
+      </Layout>
+    )
 }
 
 export async function getServerSideProps(context) {
   const URLWithParams = new URL('https://developer.nps.gov/api/v1/parks')
   const {params, query} = context
   const {stateCode, q, start} = query
+
+  // Set data to null to handle errors
+  let parks = null
+  let totalParks = 0
 
   const createParamsObj = (state, q) => {
     let obj = {}
@@ -210,30 +220,34 @@ export async function getServerSideProps(context) {
   URLWithParams.searchParams.append('start', start)
   URLWithParams.searchParams.append('api_key', process.env.API_KEY)
 
-  const res = await fetch(URLWithParams.href, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      'User-Agent': '*',
-    },
-  })
+  try {
+    const parksData = await fetch(URLWithParams.href, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': '*',
+      },
+    })
 
-  const data = await res.json()
-  const totalParks = data.total
-  const parksData = data?.data?.map((park) => {
-    return {
-      latitude: +park.latitude,
-      longitude: +park.longitude,
-      code: park.parkCode,
-      fullName: park.fullName,
-      imageUrl: park.images[0].url,
-      imagealt: park.images[0].altText,
-    }
-  })
+    parks = await parksData.json()
+    totalParks = parks.total
+    parks = parks?.data?.map((park) => {
+      return {
+        latitude: +park.latitude,
+        longitude: +park.longitude,
+        code: park.parkCode,
+        fullName: park.fullName,
+        imageUrl: park.images[0].url,
+        imagealt: park.images[0].altText,
+      }
+    })
+  } catch (err) {
+    console.error(err)
+  }
 
   return {
     props: {
-      parks: parksData,
+      parks,
       totalParks,
       params: createParamsObj(stateCode, q, start),
     },

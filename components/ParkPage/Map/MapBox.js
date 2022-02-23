@@ -25,7 +25,7 @@ export default function MapBox({coordinates, fullName, parkCode: code, title}) {
         height="450px"
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={setViewport}
-        mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_KEY}
+        mapboxApiAccessToken={process.env.MAPBOX_API_KEY}
         className="border-2 border-green-800 rounded-lg">
         <Marker
           latitude={+latitude}

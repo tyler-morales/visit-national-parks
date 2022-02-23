@@ -48,7 +48,7 @@ export default function MapBox({coordinates}) {
         height="100%"
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={setViewport}
-        mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_KEY}
+        mapboxApiAccessToken={process.env.MAPBOX_API_KEY}
         className="rounded-md">
         {pins}
 

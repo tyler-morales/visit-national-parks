@@ -1,3 +1,4 @@
+import SearchBar from '../components/EventsPage/SearchBar/SearchBar'
 import InfiniteImages from '../components/InfiniteImages/InfiniteImages'
 import Layout from '../components/Layout'
 
@@ -12,6 +13,7 @@ export default function Events() {
           Discover 509 unique events
         </h1>
       </div>
+      <SearchBar />
       <InfiniteImages />
     </main>
   )

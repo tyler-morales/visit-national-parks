@@ -5,7 +5,6 @@ module.exports = {
     MAPBOX_API_KEY: process.env.MAPBOX_API_KEY,
   },
   images: {
-    domains: ['www.nps.gov'],
-    domains: ['images.unsplash.com'],
+    domains: ['www.nps.gov', 'images.unsplash.com'],
   },
 }

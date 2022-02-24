@@ -93,11 +93,11 @@ export const Nav = ({mockUser}) => {
             </Link>
 
             {/* About */}
-            <Link href="/about">
+            <Link href="/events">
               <a
-                data-cy="about-page"
+                data-cy="events-page"
                 className="w-full p-4 py-4 text-xl font-bold text-center text-green-800 transition-all duration-200 ease-in-out border-b border-green-800 cursor-pointer font-display border-b-green-800 md:border-0 md:hover:bg-transparent md:hover:text-green-800 hover:bg-green-800 hover:text-white lg:pass md:rounded-md md:py-2">
-                About
+                Events
               </a>
             </Link>
           </div>

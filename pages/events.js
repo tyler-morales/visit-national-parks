@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 
 export default function Events() {
   return (
-    <main>
+    <main className="mb-36">
       <div className="my-6">
         <span className="block mb-2 text-sm text-center text-green-800 uppercase md:mb-6">
           Events

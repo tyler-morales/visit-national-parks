@@ -29,7 +29,7 @@ export default function InfiniteImages() {
       <div
         key={index}
         // Offset every other column by 20px
-        className={`flex gap-6 md:flex-col ${image % 2 == 0 && 'mt-8'}`}>
+        className={`flex gap-6 md:flex-col ${image % 2 == 0 && 'md:mt-8'}`}>
         {createImage(image, direction, index, 0)}
         {createImage(image, direction, index, 1)}
       </div>

@@ -107,31 +107,44 @@ select {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
-/* @layer components {
-  .pass {
-    position: relative;
-    transition: width 0.6s;
+/* Infinite Scroll Marquee */
+.infinite-slider {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+}
 
-    &:before {
-      content: '';
-      width: 0;
-      height: 0.1em;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      @apply bg-green-700;
-      transition: all 0.3s;
-    }
-    &:hover {
-      &:before {
-        width: 100%;
-        left: 0;
-        @apply bg-green-500;
-      }
-    }
+.infinite-scroller {
+  /* animation: marquee 60s linear infinite; */
+}
+
+.infinite-slider:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(
+    to right,
+    white,
+    rgba(255, 255, 255, 0) 80px,
+    rgba(255, 255, 255, 0) calc(100% - 80px),
+    white
+  );
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
   }
-} */
+  100% {
+    transform: translateX(-100%);
+  }
+}

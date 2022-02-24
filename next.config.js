@@ -6,5 +6,6 @@ module.exports = {
   },
   images: {
     domains: ['www.nps.gov'],
+    domains: ['images.unsplash.com'],
   },
 }

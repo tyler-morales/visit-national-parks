@@ -97,20 +97,20 @@ export default function SearchBar() {
 
   return (
     <>
-      <div className="m-auto max-w-[1200px] my-10">
+      <div className="m-auto max-w-[1200px] my-10 px-4">
         <div className="flex justify-center gap-6">
           <button
             onClick={() => {
               setTab('STATE')
             }}
-            className={`px-8 py-2 text-green-800 uppercase rounded-md transition-all ${
+            className={`px-4 py-2 text-green-800 uppercase rounded-md transition-all ${
               tab == 'STATE' && 'bg-green-600 text-white'
             }`}>
             Search by State
           </button>
           <button
             onClick={() => setTab('PARK')}
-            className={`px-8 py-2 text-green-800 uppercase rounded-md transition-all ${
+            className={`px-4 py-2 text-green-800 uppercase rounded-md transition-all ${
               tab == 'PARK' && 'bg-green-600 text-white'
             }`}>
             Search by Park
@@ -122,8 +122,9 @@ export default function SearchBar() {
           <>
             <form
               onSubmit={(e) => handleSubmitByState(e)}
-              className="relative flex items-center justify-between gap-8 px-12 py-4 m-auto mt-6 bg-white border-2 border-green-900 rounded-full w-min">
-              <div className="w-[200px] cursor-text flex flex-col justify-between border-r-2 border-gray-200 pr-6">
+              className="relative flex flex-col items-center justify-between w-full gap-6 px-4 py-4 m-auto mt-6 bg-white border-2 border-green-900 rounded-md md:gap-8 md:flex-row md:px-12 md:w-min">
+              {/* Select State */}
+              <div className="w-full md:w-[200px] flex flex-col justify-between md:border-r-2 md:border-gray-200 pr-6">
                 <label className="mb-2 text-xs">State</label>
                 <Select
                   options={states}
@@ -133,8 +134,8 @@ export default function SearchBar() {
                 />
               </div>
 
-              {/* Date Picker */}
-              <div className="relative w-[180px] flex flex-col justify-between pr-6 border-r-2 border-gray-200">
+              {/* Selecet Date */}
+              <div className="w-full relative md:w-[180px] flex flex-col justify-between pr-6 md:border-r-2 md:border-gray-200">
                 <label className="block mb-2 text-xs">Date</label>
                 <button
                   type="button"
@@ -149,7 +150,7 @@ export default function SearchBar() {
               {/* Search */}
               <button
                 type="submit"
-                className="px-5 py-5 text-white bg-green-800 rounded-full">
+                className="flex justify-center w-full px-5 py-5 text-white bg-green-800 rounded-full md:w-min">
                 <FaSearch size="1.25em" />
               </button>
             </form>
@@ -196,22 +197,21 @@ export default function SearchBar() {
         {/* Search by PARK */}
         {tab == 'PARK' && (
           <>
-            <form
-              onSubmit={handleSubmitByPark}
-              className="flex items-center justify-between gap-8 px-12 py-4 m-auto mt-6 bg-white border-2 border-green-900 rounded-full w-min">
-              <div>
-                <label className="text-xs">Park</label>
+            <form className="relative flex flex-col items-center justify-between w-full gap-6 px-4 py-4 m-auto mt-6 bg-white border-2 border-green-900 rounded-md md:gap-8 md:flex-row md:px-12 md:w-min">
+              {/* Select Park */}
+              <div className="w-full md:w-[200px] flex flex-col justify-between md:border-r-2 md:border-gray-200 pr-6">
+                <label className="mb-2 text-xs">Park</label>
                 <Select
                   options={parks}
                   value={selectedPark}
                   onChange={setselectedPark}
                   instanceId="parks"
-                  className="w-[300px] cursor-text"
+                  className="cursor-text"
                 />
               </div>
 
-              {/* Date Picker */}
-              <div className="relative w-[180px] flex flex-col justify-between pr-6 border-r-2 border-gray-200">
+              {/* Selecet Date */}
+              <div className="w-full relative md:w-[180px] flex flex-col justify-between pr-6 md:border-r-2 md:border-gray-200">
                 <label className="block mb-2 text-xs">Date</label>
                 <button
                   type="button"
@@ -226,7 +226,7 @@ export default function SearchBar() {
               {/* Search */}
               <button
                 type="submit"
-                className="px-5 py-5 text-white bg-green-800 rounded-full">
+                className="flex justify-center w-full px-5 py-5 text-white bg-green-800 rounded-full md:w-min">
                 <FaSearch size="1.25em" />
               </button>
             </form>

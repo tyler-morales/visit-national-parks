@@ -7,8 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "cypress": "cypress open"
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@splitbee/web": "^0.3.0",

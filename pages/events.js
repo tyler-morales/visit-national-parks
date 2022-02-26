@@ -167,6 +167,7 @@ export async function getServerSideProps(context) {
   // Set data to null to handle errors
   let events = []
   let totalEvents = 0
+  // let date = 
 
   // const createParamsObj = (state, q) => {
   //   let obj = {}

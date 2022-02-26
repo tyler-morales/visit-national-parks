@@ -35,19 +35,30 @@ export default function SearchBar() {
     month: months[new Date().getMonth()],
     day: new Date().getDate(),
   })
-  // console.log(selectedState.value)
+
+  const convertDate = (date) => {
+    let monthNum = months.indexOf(date.month) + 1
+    monthNum = monthNum < 10 ? `0${monthNum}` : monthNum
+
+    return `${date.year}-${monthNum}-${date.day}`
+  }
+  console.log(convertDate(date))
 
   const handleSubmitByState = (e) => {
     e.preventDefault()
     setEditStartDate(false)
     // Load events based on state
-    router.push(`/events?state=${selectedState.value}`)
+    router.push(
+      `/events?state=${selectedState.value}&startDate=${convertDate(date)}`
+    )
   }
 
   const handleSubmitByPark = (e) => {
     e.preventDefault()
     setEditStartDate(false)
-    router.push(`/events?park=${selectedPark.value}`)
+    router.push(
+      `/events?park=${selectedPark.value}&startDate=${convertDate(date)}`
+    )
   }
 
   const changeYear = (e) => {

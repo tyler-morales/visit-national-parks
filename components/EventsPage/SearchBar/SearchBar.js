@@ -22,7 +22,7 @@ const months = [
   'December',
 ]
 
-export default function SearchBar() {
+const SearchBar = ({resultRef}) => {
   const router = useRouter()
 
   const [tab, setTab] = useState('STATE')
@@ -43,22 +43,36 @@ export default function SearchBar() {
     return `${date.year}-${monthNum}-${date.day}`
   }
 
-  const handleSubmitByState = (e) => {
+  const handleSubmitByState = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
-    // Load events based on state
-    router.push(
-      `/events?state=${selectedState.value}&startDate=${convertDate(date)}`
-    )
+
+    try {
+      // Load events based on state
+      await router.push(
+        `/events?state=${selectedState.value}&startDate=${convertDate(date)}`
+      )
+
+      // Scroll to results
+      resultRef.current.scrollIntoView({behavior: 'smooth'})
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  const handleSubmitByPark = (e) => {
+  const handleSubmitByPark = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
-    // Load events based on state
-    router.push(
-      `/events?park=${selectedPark.value}&startDate=${convertDate(date)}`
-    )
+    try {
+      // Load events based on state
+      await router.push(
+        `/events?park=${selectedPark.value}&startDate=${convertDate(date)}`
+      )
+      // Scroll to results
+      resultRef.current.scrollIntoView({behavior: 'smooth'})
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const changeYear = (e) => {
@@ -237,3 +251,5 @@ export default function SearchBar() {
     </>
   )
 }
+
+export default SearchBar

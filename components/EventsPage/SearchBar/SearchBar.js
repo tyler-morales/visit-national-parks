@@ -47,6 +47,10 @@ const SearchBar = ({resultRef}) => {
     e.preventDefault()
     setEditStartDate(false)
 
+    splitbee.track('Search Events', {
+      filter: 'State',
+    })
+
     try {
       // Load events based on state
       await router.push(
@@ -63,6 +67,11 @@ const SearchBar = ({resultRef}) => {
   const handleSubmitByPark = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
+
+    splitbee.track('Search Events', {
+      filter: 'Park',
+    })
+
     try {
       // Load events based on state
       await router.push(

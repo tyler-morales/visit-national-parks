@@ -3,6 +3,10 @@ import '../styles/globals.css'
 import {Nav} from '../components/Nav/Nav'
 import Head from 'next/head'
 
+// Add Split bee tracking
+import splitbee from '@splitbee/web'
+splitbee.init()
+
 // Configure Amplify
 import Amplify from 'aws-amplify'
 import awsconfig from '../src/aws-exports'

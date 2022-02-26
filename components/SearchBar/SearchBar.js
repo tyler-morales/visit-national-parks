@@ -34,6 +34,9 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
+    splitbee.track('Search Parks', {
+      type: 'Park',
+    })
     try {
       router.push(`/park/${selectedPark.value}`)
       // setLoading(false)
@@ -48,8 +51,12 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
 
     e.preventDefault()
     setLoading(true)
+
     try {
       if (selectedState) {
+        splitbee.track('Search Parks', {
+          type: 'State',
+        })
         searchParams.append('stateCode', selectedState.value)
         // Update query
         dispatch({
@@ -58,6 +65,9 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
         })
       }
       if (selectedActivity) {
+        splitbee.track('Search Parks', {
+          type: 'Activity',
+        })
         searchParams.append('q', selectedActivity.value)
         // Update query
         dispatch({
@@ -66,6 +76,9 @@ const SearchBar = forwardRef(({fullSearchBar, page}, ref) => {
         })
       }
       if (selectedTopic) {
+        splitbee.track('Search Parks', {
+          type: 'Topic',
+        })
         searchParams.append('q', selectedTopic.value)
         // Update query
         dispatch({

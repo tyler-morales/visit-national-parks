@@ -43,6 +43,10 @@ export default function Park({parkInfo, thingsToDo, alerts}) {
       longitude,
     } = parkInfo
 
+    splitbee.track('Track visited Parks', {
+      park: fullName,
+    })
+
     return (
       <>
         <Head>

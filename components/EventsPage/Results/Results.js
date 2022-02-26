@@ -41,7 +41,7 @@ const Results = forwardRef(({events}, ref) => {
         )
       }
       return (
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
           {events?.map((event, index) => {
             const year = event.date.split('-')[0]
             const month = event.date.split('-')[1]

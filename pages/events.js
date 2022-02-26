@@ -5,8 +5,6 @@ import InfiniteImages from '../components/InfiniteImages/InfiniteImages'
 
 import Results from '../components/EventsPage/Results/Results'
 
-
-
 export default function Events({events, totalEvents}) {
   const resultRef = useRef(null)
 
@@ -17,20 +15,13 @@ export default function Events({events, totalEvents}) {
           Events
         </span>
         <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
-          Discover 509 unique events
+          Discover over 500 unique events
         </h1>
       </div>
       <SearchBar resultRef={resultRef} />
       <InfiniteImages />
 
       <Results ref={resultRef} events={events} />
-
-      {/* <section
-        ref={resultRef}
-        className="m-auto px-5 xl:px-0 lg:mb-12 max-w-[1200px] mt-20">
-        <h2 className="my-5 text-5xl font-bold text-green-800">Results</h2>
-        <Cards />
-      </section> */}
     </main>
   )
 }
@@ -42,8 +33,7 @@ export async function getServerSideProps(context) {
 
   // Set data to null to handle errors
   let events = []
-  let totalEvents = 0
-  console.log(startDate)
+  // let totalEvents = 0
 
   // const createParamsObj = (state, q) => {
   //   let obj = {}
@@ -55,7 +45,7 @@ export async function getServerSideProps(context) {
 
   if (state) URLWithParams.searchParams.append('stateCode', state)
   if (park) URLWithParams.searchParams.append('parkCode', park)
-  // URLWithParams.searchParams.append('limit', 20)
+  URLWithParams.searchParams.append('pageSize', 20)
   URLWithParams.searchParams.append('dateStart', startDate)
   URLWithParams.searchParams.append('api_key', process.env.API_KEY)
 
@@ -77,7 +67,6 @@ export async function getServerSideProps(context) {
         parkName: event.parkfullname,
         location: event.location,
         date: event.date,
-        // categories: event.types,
       }
       if (event.types.length > 0) obj.categories = event.types
       if (event.images.length > 0) obj.image = event.images[0].url

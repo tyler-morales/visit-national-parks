@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import Select from 'react-select'
+import {useRouter} from 'next/router'
 
 import states from '../../../data/states.json'
 import parks from '../../../data/parks.json'
@@ -22,8 +23,10 @@ const months = [
 ]
 
 export default function SearchBar() {
+  const router = useRouter()
+
   const [tab, setTab] = useState('STATE')
-  const [selectedState, setselectedState] = useState(null)
+  const [selectedState, setSelectedState] = useState(null)
   const [selectedPark, setSelectedPark] = useState(null)
   const [editStartDate, setEditStartDate] = useState(false)
 
@@ -32,20 +35,19 @@ export default function SearchBar() {
     month: months[new Date().getMonth()],
     day: new Date().getDate(),
   })
-
-  console.log(date)
+  // console.log(selectedState.value)
 
   const handleSubmitByState = (e) => {
     e.preventDefault()
     setEditStartDate(false)
-    console.log('state')
-    //    Call NPS API???
+    // Load events based on state
+    router.push(`/events?state=${selectedState.value}`)
   }
 
   const handleSubmitByPark = (e) => {
     e.preventDefault()
     setEditStartDate(false)
-    console.log('park')
+    router.push(`/events?park=${selectedPark.value}`)
   }
 
   const changeYear = (e) => {
@@ -207,7 +209,7 @@ export default function SearchBar() {
             'State',
             states,
             selectedState,
-            setSelectedPark,
+            setSelectedState,
             handleSubmitByState
           )}
 

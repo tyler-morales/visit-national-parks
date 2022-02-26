@@ -120,7 +120,7 @@ export default function SearchBar() {
     return (
       <>
         <form
-          onSubmit={(e) => submitter(e)}
+          onSubmit={submitter}
           className="relative flex flex-col items-center justify-between w-full gap-6 px-4 py-4 m-auto mt-6 bg-white border-2 border-green-900 rounded-lg shadow-lg md:rounded-3xl md:gap-8 md:flex-row md:px-12 md:w-min">
           {/* Select State */}
           <div className="w-full md:w-[200px] flex flex-col justify-between md:border-r-2 md:border-gray-200 pr-6">

@@ -1,4 +1,6 @@
 import {useState, forwardRef, useImperativeHandle} from 'react'
+import splitbee from '@splitbee/web'
+
 import Select from 'react-select'
 import {searchStyles, dropdownStyles} from '../../styles/dropdown'
 import {useRouter} from 'next/router'

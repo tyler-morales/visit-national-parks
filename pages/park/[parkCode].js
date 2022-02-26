@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import splitbee from '@splitbee/web'
 
 import {useRouter} from 'next/router'
 

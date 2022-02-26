@@ -11,7 +11,7 @@ export default function Home({nationalParks, parkNames}) {
       <div className="grid gap-32">
         <Hero />
         <OfficialParks nationalParks={nationalParks} />
-        <Topcis />
+        {/* <Topcis /> */}
         <AllParks parkNames={parkNames} />
       </div>
     </Layout>

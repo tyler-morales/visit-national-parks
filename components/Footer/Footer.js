@@ -16,14 +16,14 @@ export default function Footer() {
           </a>
         </Link>
         <div className="flex flex-col gap-6 mt-6 text-green-800 md:flex-row md:mt-0 md:items-center">
-          <Link href="/about">
+          <Link href="/events">
+            <a>Events</a>
+          </Link>
+          {/* <Link href="/about">
             <a>About</a>
           </Link>
           <Link href="/parks">
             <a>Parks</a>
-          </Link>
-          <Link href="/events">
-            <a>Events</a>
           </Link>
           <Link href="/webcams">
             <a>Webcams</a>
@@ -33,7 +33,7 @@ export default function Footer() {
           </Link>
           <Link href="/alerts">
             <a>Alerts</a>
-          </Link>
+          </Link> */}
         </div>
       </div>
       <h4 className="mt-6 text-sm text-center text-gray-500">

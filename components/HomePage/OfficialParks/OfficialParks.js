@@ -33,11 +33,11 @@ export default function OfficialParks({nationalParks}) {
           </p>
         </div>
 
-        <Link href="/official-national-parks">
+        {/* <Link href="/official-national-parks">
           <a className="w-full py-1 mt-4 text-lg text-center bg-orange-200 rounded-lg">
             View all
           </a>
-        </Link>
+        </Link> */}
       </div>
 
       <div className=" p-6 bg-[#fafafa] rounded-xl md:col-span-2">

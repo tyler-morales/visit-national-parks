@@ -42,7 +42,6 @@ export default function SearchBar() {
 
     return `${date.year}-${monthNum}-${date.day}`
   }
-  console.log(convertDate(date))
 
   const handleSubmitByState = (e) => {
     e.preventDefault()
@@ -56,6 +55,7 @@ export default function SearchBar() {
   const handleSubmitByPark = (e) => {
     e.preventDefault()
     setEditStartDate(false)
+    // Load events based on state
     router.push(
       `/events?park=${selectedPark.value}&startDate=${convertDate(date)}`
     )

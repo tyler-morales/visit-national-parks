@@ -162,12 +162,12 @@ export default function Events({events, totalEvents}) {
 export async function getServerSideProps(context) {
   const URLWithParams = new URL('https://developer.nps.gov/api/v1/events')
   const {params, query} = context
-  const {state, park} = query
+  const {state, park, startDate} = query
 
   // Set data to null to handle errors
   let events = []
   let totalEvents = 0
-  // let date = 
+  console.log(startDate)
 
   // const createParamsObj = (state, q) => {
   //   let obj = {}
@@ -179,10 +179,8 @@ export async function getServerSideProps(context) {
 
   if (state) URLWithParams.searchParams.append('stateCode', state)
   if (park) URLWithParams.searchParams.append('parkCode', park)
-  // if (q) URLWithParams.searchParams.append('q', q)
   // URLWithParams.searchParams.append('limit', 20)
-  // URLWithParams.searchParams.append('start', start)
-  URLWithParams.searchParams.append('dateStart', '2022-03-22')
+  URLWithParams.searchParams.append('dateStart', startDate)
   URLWithParams.searchParams.append('api_key', process.env.API_KEY)
 
   try {

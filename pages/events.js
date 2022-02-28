@@ -15,13 +15,13 @@ export default function Events({events, totalEvents}) {
           Events
         </span>
         <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
-          Discover over 500 unique events
+          Discover {totalEvents} unique events
         </h1>
       </div>
       <SearchBar resultRef={resultRef} />
       <InfiniteImages />
 
-      <Results ref={resultRef} events={events} />
+      {events.length > 0 && <Results ref={resultRef} events={events} />}
     </main>
   )
 }
@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
 
   // Set data to null to handle errors
   let events = []
-  // let totalEvents = 0
+  let totalEvents = 0
 
   // const createParamsObj = (state, q) => {
   //   let obj = {}
@@ -59,7 +59,7 @@ export async function getServerSideProps(context) {
     })
 
     events = await eventsData.json()
-    // totalEvents = events.total
+    totalEvents = events.total
     events = events?.data?.map((event) => {
       let obj = {
         title: event.title,
@@ -80,6 +80,9 @@ export async function getServerSideProps(context) {
     console.error(err)
   }
 
+  // On page load, dont load any events`
+  if (!state && !park) events = []
+
   // console.log('**************************')
   // console.log(events)
   // console.log(totalEvents)
@@ -87,7 +90,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       events,
-      // totalEvents,
+      totalEvents,
       // params: createParamsObj(stateCode, q, start),
     },
   }

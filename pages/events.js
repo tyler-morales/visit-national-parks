@@ -62,6 +62,7 @@ export async function getServerSideProps(context) {
     totalEvents = events.total
     events = events?.data?.map((event) => {
       let obj = {
+        id: event.id,
         title: event.title,
         description: event.description,
         parkName: event.parkfullname,
@@ -71,6 +72,8 @@ export async function getServerSideProps(context) {
       if (event.types.length > 0) obj.categories = event.types
       if (event.images.length > 0) obj.image = event.images[0].url
       if (event.times.length > 0) obj.times = event.times[0]
+      if (event.regresurl.length > 0) obj.registerInfo = event.regresinfo
+      if (event.regresurl.length > 0) obj.regresurl = event.regresurl
       if (event.contactname.length > 0) obj.contactName = event.contactname
       if (event.contacttelephonenumber.length > 0)
         obj.phone = event.contacttelephonenumber

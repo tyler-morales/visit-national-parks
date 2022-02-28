@@ -1,10 +1,16 @@
-import {forwardRef} from 'react'
+import {useState, forwardRef} from 'react'
 
 import Image from 'next/image'
 
 import {IoLocationSharp, IoTimeSharp, IoPersonSharp} from 'react-icons/io5'
 import {AiFillPhone} from 'react-icons/ai'
 import {MdPark} from 'react-icons/md'
+
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2,
+} from 'react-html-parser'
 
 const months = [
   'Jan',
@@ -22,21 +28,31 @@ const months = [
 ]
 
 const Results = forwardRef(({events}, ref) => {
+  const [open, setOpen] = useState(null)
+
+  const openEvent = (id) => {
+    setOpen(id)
+  }
+  const closeEvent = (id) => {
+    if (open == id) setOpen(null)
+  }
+
   const Cards = () => {
     if (events) {
-      const createImage = (src) => {
-        let url = src
-          ? `https://www.nps.gov${src}`
+      const createImage = (event) => {
+        let url = event.hasOwnProperty('image')
+          ? `https://www.nps.gov${event.image}`
           : 'https://www.nps.gov/common/uploads/teachers/assets/images/nri/20150811/teachers/228A0A1B-AC76-A822-1969282F47E5FA13/228A0A1B-AC76-A822-1969282F47E5FA13.jpg'
         return (
           <Image
             width={300}
             height={200}
             layout="responsive"
-            className={`bg-gray-200 rounded-t-xl ${
-              src ? 'object-contain' : 'object-cover'
+            className={`bg-gray-200 rounded-t-xl ${!open && 'cursor-pointer'} ${
+              url ? 'object-contain' : 'object-cover'
             }`}
             src={url}
+            onClick={() => openEvent(event.id)}
           />
         )
       }
@@ -48,10 +64,14 @@ const Results = forwardRef(({events}, ref) => {
             const day = event.date.split('-')[2]
 
             return (
-              <div key={index}>
+              <div
+                key={index}
+                className={`grid grid-cols-1 ${
+                  open == event.id ? 'col-span-3 grid-cols-2 grid-rows-2' : ''
+                }`}>
                 {/* Display the event image or a default NPS image */}
-                {event.image ? createImage(event.image) : createImage()}
-                <div className="p-4 pt-4 bg-white border-t-2 border-green-800 shadow-lg rounded-b-xl">
+                {createImage(event)}
+                <div className="col-start-1 p-4 bg-white border-t-2 border-green-800 rounded-bl-lg shadow-lg">
                   {/* Park Name */}
                   <div className="flex gap-2 text-gray-500">
                     <MdPark size="1.25em" />
@@ -126,6 +146,32 @@ const Results = forwardRef(({events}, ref) => {
                     ))}
                   </ul>
                 </div>
+                {open == event.id && (
+                  <div className="p-4 bg-white border-t-2 border-green-800 shadow-lg rounded-br-xl">
+                    <button onClick={() => closeEvent(event.id)}>Close</button>
+                    <span className="block mb-4 text-sm text-gray-500 uppercase">
+                      Description
+                    </span>
+                    <p>{ReactHtmlParser(event.description)}</p>
+                    {event.registerInfo && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          Regristration Info
+                        </span>
+                        <p>{event.registerInfo}</p>
+                      </>
+                    )}
+
+                    {event.regresurl && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          Regristration Info
+                        </span>
+                        <p>{event.regresurl}</p>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             )
           })}

@@ -61,7 +61,7 @@ const Results = forwardRef(({events}, ref) => {
             const month = event.date.split('-')[1]
             const day = event.date.split('-')[2]
 
-            console.log(event.regresurl)
+            console.log(event.infourl)
 
             return (
               <div
@@ -170,6 +170,19 @@ const Results = forwardRef(({events}, ref) => {
                       Description
                     </span>
                     <p>{ReactHtmlParser(event.description)}</p>
+                    {event.infourl && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          More information
+                        </span>
+                        <a
+                          href={event.infourl}
+                          target="_blank"
+                          className="text-blue-600 hover:underline">
+                          {event.infourl}
+                        </a>
+                      </>
+                    )}
                     {event.regresinfo && (
                       <>
                         <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">

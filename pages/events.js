@@ -79,6 +79,7 @@ export async function getServerSideProps(context) {
       if (event.contactname.length > 0) obj.contactName = event.contactname
       if (event.latitude.length > 0) obj.latitude = event.latitude
       if (event.longitude.length > 0) obj.longitude = event.longitude
+      if (event.infourl.length > 0) obj.infourl = event.infourl
       return obj
     })
   } catch (err) {

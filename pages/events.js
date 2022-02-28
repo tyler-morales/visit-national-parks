@@ -69,14 +69,16 @@ export async function getServerSideProps(context) {
         location: event.location,
         date: event.date,
       }
+      if (event.contacttelephonenumber.length > 0)
+        obj.phone = event.contacttelephonenumber
       if (event.types.length > 0) obj.categories = event.types
       if (event.images.length > 0) obj.image = event.images[0].url
       if (event.times.length > 0) obj.times = event.times[0]
-      if (event.regresurl.length > 0) obj.registerInfo = event.regresinfo
+      if (event.regresinfo.length > 0) obj.regresinfo = event.regresinfo
       if (event.regresurl.length > 0) obj.regresurl = event.regresurl
       if (event.contactname.length > 0) obj.contactName = event.contactname
-      if (event.contacttelephonenumber.length > 0)
-        obj.phone = event.contacttelephonenumber
+      if (event.latitude.length > 0) obj.latitude = event.latitude
+      if (event.longitude.length > 0) obj.longitude = event.longitude
       return obj
     })
   } catch (err) {

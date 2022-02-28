@@ -6,11 +6,9 @@ import {IoLocationSharp, IoTimeSharp, IoPersonSharp} from 'react-icons/io5'
 import {AiFillPhone} from 'react-icons/ai'
 import {MdPark} from 'react-icons/md'
 
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2,
-} from 'react-html-parser'
+import ReactHtmlParser from 'react-html-parser'
+import Head from 'next/head'
+import MapBox from '../Map/Map'
 
 const months = [
   'Jan',
@@ -48,9 +46,9 @@ const Results = forwardRef(({events}, ref) => {
             width={300}
             height={200}
             layout="responsive"
-            className={`bg-gray-200 rounded-t-xl ${!open && 'cursor-pointer'} ${
-              url ? 'object-contain' : 'object-cover'
-            }`}
+            className={`bg-gray-200 rounded-t-xl ${
+              !open ? 'cursor-pointer ' : 'md:rounded-tl-xl'
+            } ${url ? 'object-contain' : 'object-cover'}`}
             src={url}
             onClick={() => openEvent(event.id)}
           />
@@ -63,15 +61,29 @@ const Results = forwardRef(({events}, ref) => {
             const month = event.date.split('-')[1]
             const day = event.date.split('-')[2]
 
+            console.log(event.regresurl)
+
             return (
               <div
                 key={index}
                 className={`grid grid-cols-1 ${
-                  open == event.id ? 'col-span-3 grid-cols-2 grid-rows-2' : ''
+                  open == event.id &&
+                  'md:col-span-3 grid-cols-1 md:grid-cols-2 grid-rows-2'
                 }`}>
                 {/* Display the event image or a default NPS image */}
                 {createImage(event)}
-                <div className="col-start-1 p-4 bg-white border-t-2 border-green-800 rounded-bl-lg shadow-lg">
+                {event.longitude && event.latitude && open == event.id && (
+                  <MapBox
+                    latitude={event.latitude != '' ? +event.latitude : 49.2827}
+                    longitude={
+                      event.longitude != '' ? +event.longitude : 130.895
+                    }
+                  />
+                )}
+                <div
+                  className={`col-start-1 p-4 bg-white border-t-2 border-green-800  shadow-lg ${
+                    open ? 'rounded-b-xl md:rounded-br-none' : ''
+                  }`}>
                   {/* Park Name */}
                   <div className="flex gap-2 text-gray-500">
                     <MdPark size="1.25em" />
@@ -97,7 +109,7 @@ const Results = forwardRef(({events}, ref) => {
                           <span className="w-[20px]">
                             <IoLocationSharp size="1.25em" />
                           </span>
-                          <span>{event.location.slice(0, 33)}...</span>
+                          <span>{event.location}</span>
                         </li>
                       )}
                       {/* Times */}
@@ -147,27 +159,37 @@ const Results = forwardRef(({events}, ref) => {
                   </ul>
                 </div>
                 {open == event.id && (
-                  <div className="p-4 bg-white border-t-2 border-green-800 shadow-lg rounded-br-xl">
+                  <div
+                    className={`p-4 border-t-2 border-green-800 shadow-lg bg-white ${
+                      open
+                        ? 'rounded-bl-xl md:rounded-bl-none rounded-br-xl'
+                        : 'rounded-br-xl'
+                    }`}>
                     <button onClick={() => closeEvent(event.id)}>Close</button>
                     <span className="block mb-4 text-sm text-gray-500 uppercase">
                       Description
                     </span>
                     <p>{ReactHtmlParser(event.description)}</p>
-                    {event.registerInfo && (
+                    {event.regresinfo && (
                       <>
                         <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
                           Regristration Info
                         </span>
-                        <p>{event.registerInfo}</p>
+                        <p>{event.regresinfo}</p>
                       </>
                     )}
 
                     {event.regresurl && (
                       <>
                         <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
-                          Regristration Info
+                          Regristration URL
                         </span>
-                        <p>{event.regresurl}</p>
+                        <a
+                          href={event.regresurl}
+                          target="_blank"
+                          className="text-blue-600 underline hover:underline-offset-2">
+                          {event.regresurl}
+                        </a>
                       </>
                     )}
                   </div>
@@ -182,12 +204,20 @@ const Results = forwardRef(({events}, ref) => {
     }
   }
   return (
-    <section
-      ref={ref}
-      className="m-auto px-5 xl:px-0 lg:mb-12 max-w-[1200px] mt-20">
-      <h2 className="my-5 text-5xl font-bold text-green-800">Results</h2>
-      <Cards />
-    </section>
+    <>
+      <Head>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <section
+        ref={ref}
+        className="m-auto px-5 xl:px-0 lg:mb-12 max-w-[1200px] mt-20">
+        <h2 className="my-5 text-5xl font-bold text-green-800">Results</h2>
+        <Cards />
+      </section>
+    </>
   )
 })
 

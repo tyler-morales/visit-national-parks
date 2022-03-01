@@ -42,16 +42,26 @@ const Results = forwardRef(({events}, ref) => {
           ? `https://www.nps.gov${event.image}`
           : 'https://www.nps.gov/common/uploads/teachers/assets/images/nri/20150811/teachers/228A0A1B-AC76-A822-1969282F47E5FA13/228A0A1B-AC76-A822-1969282F47E5FA13.jpg'
         return (
-          <Image
-            width={300}
-            height={200}
-            layout="responsive"
-            className={`bg-gray-200 rounded-t-xl ${
-              !open ? 'cursor-pointer ' : 'md:rounded-tl-xl'
-            } ${url ? 'object-contain' : 'object-cover'}`}
-            src={url}
-            onClick={() => openEvent(event.id)}
-          />
+          <figure className="relative">
+            {open && (
+              <button
+                onClick={() => closeEvent(event.id)}
+                className="absolute z-20 text-lg left-2 top-1">
+                x
+              </button>
+            )}
+
+            <Image
+              width={300}
+              height={200}
+              layout="responsive"
+              className={`bg-gray-200 rounded-t-xl h-min ${
+                !open ? 'cursor-pointer' : 'md:rounded-tl-xl'
+              } ${url ? 'object-contain' : 'object-cover'}`}
+              src={url}
+              onClick={() => openEvent(event.id)}
+            />
+          </figure>
         )
       }
       return (
@@ -61,12 +71,10 @@ const Results = forwardRef(({events}, ref) => {
             const month = event.date.split('-')[1]
             const day = event.date.split('-')[2]
 
-            console.log(event.infourl)
-
             return (
               <div
                 key={index}
-                className={`grid grid-cols-1 ${
+                className={`grid grid-cols-1 content-start bg-white shadow-lg rounded-t-xl rounded-b-xl ${
                   open == event.id &&
                   'md:col-span-3 grid-cols-1 md:grid-cols-2 grid-rows-2'
                 }`}>
@@ -81,7 +89,7 @@ const Results = forwardRef(({events}, ref) => {
                   />
                 )}
                 <div
-                  className={`col-start-1 p-4 bg-white border-t-2 border-green-800  shadow-lg ${
+                  className={`col-start-1 p-4 bg-white border-t-2 border-green-800 ${
                     open ? 'rounded-b-xl md:rounded-br-none' : ''
                   }`}>
                   {/* Park Name */}
@@ -165,7 +173,6 @@ const Results = forwardRef(({events}, ref) => {
                         ? 'rounded-bl-xl md:rounded-bl-none rounded-br-xl'
                         : 'rounded-br-xl'
                     }`}>
-                    <button onClick={() => closeEvent(event.id)}>Close</button>
                     <span className="block mb-4 text-sm text-gray-500 uppercase">
                       Description
                     </span>

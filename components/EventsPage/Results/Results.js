@@ -42,7 +42,7 @@ const Results = forwardRef(({events}, ref) => {
           ? `https://www.nps.gov${event.image}`
           : 'https://www.nps.gov/common/uploads/teachers/assets/images/nri/20150811/teachers/228A0A1B-AC76-A822-1969282F47E5FA13/228A0A1B-AC76-A822-1969282F47E5FA13.jpg'
         return (
-          <figure className="relative">
+          <a href={`#${event.id}`} className="relative">
             {open && (
               <button
                 onClick={() => closeEvent(event.id)}
@@ -61,7 +61,7 @@ const Results = forwardRef(({events}, ref) => {
               src={url}
               onClick={() => openEvent(event.id)}
             />
-          </figure>
+          </a>
         )
       }
       return (
@@ -73,6 +73,7 @@ const Results = forwardRef(({events}, ref) => {
 
             return (
               <div
+                id={event.id}
                 key={index}
                 className={`grid grid-cols-1 content-start bg-white shadow-lg rounded-t-xl rounded-b-xl ${
                   open == event.id &&

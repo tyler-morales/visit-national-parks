@@ -22,6 +22,11 @@ function MyApp({Component, pageProps}) {
     <>
       <Head>
         <title>Parway | Discover the Outdoors of America</title>
+        <meta
+          property="og:title"
+          content="Parway | Discover the Outdoors of America"
+          key="title"
+        />
 
         {/* Description */}
         <meta
@@ -36,7 +41,7 @@ function MyApp({Component, pageProps}) {
 
         {/* Misc */}
         <meta name="twitter:card" content="summary" />
-        {/* <meta property="og:url" content="https://tylermorales.dev /" /> */}
+        <meta property="og:url" content="https://visitnationalparks.us /" />
         <meta
           property="og:image"
           content="https://raw.githubusercontent.com/tyler-morales/visit-national-parks/main/public/images/og.png"

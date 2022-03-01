@@ -4,25 +4,31 @@ import SearchBar from '../components/EventsPage/SearchBar/SearchBar'
 import InfiniteImages from '../components/InfiniteImages/InfiniteImages'
 
 import Results from '../components/EventsPage/Results/Results'
-
+import Head from 'next/head'
 export default function Events({events, totalEvents}) {
   const resultRef = useRef(null)
 
   return (
-    <main className="mb-36">
-      <div className="my-6">
-        <span className="block mb-2 text-sm text-center text-green-800 uppercase md:mb-6">
-          Events
-        </span>
-        <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
-          Discover {totalEvents} unique events
-        </h1>
-      </div>
-      <SearchBar resultRef={resultRef} />
-      <InfiniteImages />
+    <>
+      <Head>
+        <title>Parway | Events</title>
+        <meta property="og:title" content="Parway | Events" key="title" />
+      </Head>
+      <main className="mb-36">
+        <div className="my-6">
+          <span className="block mb-2 text-sm text-center text-green-800 uppercase md:mb-6">
+            Events
+          </span>
+          <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
+            Discover {totalEvents} unique events
+          </h1>
+        </div>
+        <SearchBar resultRef={resultRef} />
+        <InfiniteImages />
 
-      {events.length > 0 && <Results ref={resultRef} events={events} />}
-    </main>
+        {events.length > 0 && <Results ref={resultRef} events={events} />}
+      </main>
+    </>
   )
 }
 

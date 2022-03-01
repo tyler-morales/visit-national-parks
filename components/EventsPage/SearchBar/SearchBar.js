@@ -7,6 +7,7 @@ import states from '../../../data/states.json'
 import parks from '../../../data/parks.json'
 
 import {FaSearch} from 'react-icons/fa'
+import {AiOutlineLoading3Quarters} from 'react-icons/ai'
 
 const months = [
   'January',
@@ -30,6 +31,7 @@ const SearchBar = ({resultRef}) => {
   const [selectedState, setSelectedState] = useState(null)
   const [selectedPark, setSelectedPark] = useState(null)
   const [editStartDate, setEditStartDate] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const [date, setDate] = useState({
     year: new Date().getFullYear(),
@@ -47,6 +49,7 @@ const SearchBar = ({resultRef}) => {
   const handleSubmitByState = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
+    setLoading(true)
 
     splitbee.track('Search Events', {
       filter: 'State',
@@ -60,7 +63,9 @@ const SearchBar = ({resultRef}) => {
 
       // Scroll to results
       resultRef.current.scrollIntoView({behavior: 'smooth'})
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
@@ -68,6 +73,7 @@ const SearchBar = ({resultRef}) => {
   const handleSubmitByPark = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
+    setLoading(true)
 
     splitbee.track('Search Events', {
       filter: 'Park',
@@ -80,7 +86,9 @@ const SearchBar = ({resultRef}) => {
       )
       // Scroll to results
       resultRef.current.scrollIntoView({behavior: 'smooth'})
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
@@ -172,7 +180,14 @@ const SearchBar = ({resultRef}) => {
           <button
             type="submit"
             className="flex justify-center w-full px-5 py-5 text-white bg-green-800 rounded-full md:w-min">
-            <FaSearch size="1.25em" />
+            {loading ? (
+              <AiOutlineLoading3Quarters
+                size="1.25em"
+                className="animate-spin"
+              />
+            ) : (
+              <FaSearch size="1.25em" />
+            )}
           </button>
         </form>
 

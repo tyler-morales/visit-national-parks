@@ -4,25 +4,31 @@ import SearchBar from '../components/EventsPage/SearchBar/SearchBar'
 import InfiniteImages from '../components/InfiniteImages/InfiniteImages'
 
 import Results from '../components/EventsPage/Results/Results'
-
+import Head from 'next/head'
 export default function Events({events, totalEvents}) {
   const resultRef = useRef(null)
 
   return (
-    <main className="mb-36">
-      <div className="my-6">
-        <span className="block mb-2 text-sm text-center text-green-800 uppercase md:mb-6">
-          Events
-        </span>
-        <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
-          Discover over 500 unique events
-        </h1>
-      </div>
-      <SearchBar resultRef={resultRef} />
-      <InfiniteImages />
+    <>
+      <Head>
+        <title>Parway | Events</title>
+        <meta property="og:title" content="Parway | Events" key="title" />
+      </Head>
+      <main className="mb-36">
+        <div className="my-6">
+          <span className="block mb-2 text-sm text-center text-green-800 uppercase md:mb-6">
+            Events
+          </span>
+          <h1 className="text-3xl font-bold text-center text-green-800 md:text-6xl">
+            Discover {totalEvents} unique events
+          </h1>
+        </div>
+        <SearchBar resultRef={resultRef} />
+        <InfiniteImages />
 
-      <Results ref={resultRef} events={events} />
-    </main>
+        {events.length > 0 && <Results ref={resultRef} events={events} />}
+      </main>
+    </>
   )
 }
 
@@ -33,7 +39,7 @@ export async function getServerSideProps(context) {
 
   // Set data to null to handle errors
   let events = []
-  // let totalEvents = 0
+  let totalEvents = 0
 
   // const createParamsObj = (state, q) => {
   //   let obj = {}
@@ -59,26 +65,35 @@ export async function getServerSideProps(context) {
     })
 
     events = await eventsData.json()
-    // totalEvents = events.total
+    totalEvents = events.total
     events = events?.data?.map((event) => {
       let obj = {
+        id: event.id,
         title: event.title,
         description: event.description,
         parkName: event.parkfullname,
         location: event.location,
         date: event.date,
       }
+      if (event.contacttelephonenumber.length > 0)
+        obj.phone = event.contacttelephonenumber
       if (event.types.length > 0) obj.categories = event.types
       if (event.images.length > 0) obj.image = event.images[0].url
       if (event.times.length > 0) obj.times = event.times[0]
+      if (event.regresinfo.length > 0) obj.regresinfo = event.regresinfo
+      if (event.regresurl.length > 0) obj.regresurl = event.regresurl
       if (event.contactname.length > 0) obj.contactName = event.contactname
-      if (event.contacttelephonenumber.length > 0)
-        obj.phone = event.contacttelephonenumber
+      if (event.latitude.length > 0) obj.latitude = event.latitude
+      if (event.longitude.length > 0) obj.longitude = event.longitude
+      if (event.infourl.length > 0) obj.infourl = event.infourl
       return obj
     })
   } catch (err) {
     console.error(err)
   }
+
+  // On page load, dont load any events`
+  if (!state && !park) events = []
 
   // console.log('**************************')
   // console.log(events)
@@ -87,7 +102,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       events,
-      // totalEvents,
+      totalEvents,
       // params: createParamsObj(stateCode, q, start),
     },
   }

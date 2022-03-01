@@ -1,10 +1,14 @@
-import {forwardRef} from 'react'
+import {useState, forwardRef} from 'react'
 
 import Image from 'next/image'
 
 import {IoLocationSharp, IoTimeSharp, IoPersonSharp} from 'react-icons/io5'
 import {AiFillPhone} from 'react-icons/ai'
 import {MdPark} from 'react-icons/md'
+
+import ReactHtmlParser from 'react-html-parser'
+import Head from 'next/head'
+import MapBox from '../Map/Map'
 
 const months = [
   'Jan',
@@ -22,22 +26,42 @@ const months = [
 ]
 
 const Results = forwardRef(({events}, ref) => {
+  const [open, setOpen] = useState(null)
+
+  const openEvent = (id) => {
+    setOpen(id)
+  }
+  const closeEvent = (id) => {
+    if (open == id) setOpen(null)
+  }
+
   const Cards = () => {
     if (events) {
-      const createImage = (src) => {
-        let url = src
-          ? `https://www.nps.gov${src}`
+      const createImage = (event) => {
+        let url = event.hasOwnProperty('image')
+          ? `https://www.nps.gov${event.image}`
           : 'https://www.nps.gov/common/uploads/teachers/assets/images/nri/20150811/teachers/228A0A1B-AC76-A822-1969282F47E5FA13/228A0A1B-AC76-A822-1969282F47E5FA13.jpg'
         return (
-          <Image
-            width={300}
-            height={200}
-            layout="responsive"
-            className={`bg-gray-200 rounded-t-xl ${
-              src ? 'object-contain' : 'object-cover'
-            }`}
-            src={url}
-          />
+          <a href={`#${event.id}`} className="relative">
+            {open && (
+              <button
+                onClick={() => closeEvent(event.id)}
+                className="absolute z-20 text-lg left-2 top-1">
+                x
+              </button>
+            )}
+
+            <Image
+              width={300}
+              height={200}
+              layout="responsive"
+              className={`bg-gray-200 rounded-t-xl h-min ${
+                !open ? 'cursor-pointer' : 'md:rounded-tl-xl'
+              } ${url ? 'object-contain' : 'object-cover'}`}
+              src={url}
+              onClick={() => openEvent(event.id)}
+            />
+          </a>
         )
       }
       return (
@@ -48,10 +72,27 @@ const Results = forwardRef(({events}, ref) => {
             const day = event.date.split('-')[2]
 
             return (
-              <div key={index}>
+              <div
+                id={event.id}
+                key={index}
+                className={`grid grid-cols-1 content-start bg-white shadow-lg rounded-t-xl rounded-b-xl ${
+                  open == event.id &&
+                  'md:col-span-3 grid-cols-1 md:grid-cols-2 grid-rows-2'
+                }`}>
                 {/* Display the event image or a default NPS image */}
-                {event.image ? createImage(event.image) : createImage()}
-                <div className="p-4 pt-4 bg-white border-t-2 border-green-800 shadow-lg rounded-b-xl">
+                {createImage(event)}
+                {event.longitude && event.latitude && open == event.id && (
+                  <MapBox
+                    latitude={event.latitude != '' ? +event.latitude : 49.2827}
+                    longitude={
+                      event.longitude != '' ? +event.longitude : 130.895
+                    }
+                  />
+                )}
+                <div
+                  className={`col-start-1 p-4 bg-white border-t-2 border-green-800 ${
+                    open ? 'rounded-b-xl md:rounded-br-none' : ''
+                  }`}>
                   {/* Park Name */}
                   <div className="flex gap-2 text-gray-500">
                     <MdPark size="1.25em" />
@@ -77,7 +118,7 @@ const Results = forwardRef(({events}, ref) => {
                           <span className="w-[20px]">
                             <IoLocationSharp size="1.25em" />
                           </span>
-                          <span>{event.location.slice(0, 33)}...</span>
+                          <span>{event.location}</span>
                         </li>
                       )}
                       {/* Times */}
@@ -126,6 +167,54 @@ const Results = forwardRef(({events}, ref) => {
                     ))}
                   </ul>
                 </div>
+                {open == event.id && (
+                  <div
+                    className={`p-4 border-t-2 border-green-800 shadow-lg bg-white ${
+                      open
+                        ? 'rounded-bl-xl md:rounded-bl-none rounded-br-xl'
+                        : 'rounded-br-xl'
+                    }`}>
+                    <span className="block mb-4 text-sm text-gray-500 uppercase">
+                      Description
+                    </span>
+                    <p>{ReactHtmlParser(event.description)}</p>
+                    {event.infourl && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          More information
+                        </span>
+                        <a
+                          href={event.infourl}
+                          target="_blank"
+                          className="text-blue-600 hover:underline">
+                          {event.infourl}
+                        </a>
+                      </>
+                    )}
+                    {event.regresinfo && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          Regristration Info
+                        </span>
+                        <p>{event.regresinfo}</p>
+                      </>
+                    )}
+
+                    {event.regresurl && (
+                      <>
+                        <span className="block mt-4 mb-2 text-sm text-gray-500 uppercase">
+                          Regristration URL
+                        </span>
+                        <a
+                          href={event.regresurl}
+                          target="_blank"
+                          className="text-blue-600 underline hover:underline-offset-2">
+                          {event.regresurl}
+                        </a>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             )
           })}
@@ -136,12 +225,20 @@ const Results = forwardRef(({events}, ref) => {
     }
   }
   return (
-    <section
-      ref={ref}
-      className="m-auto px-5 xl:px-0 lg:mb-12 max-w-[1200px] mt-20">
-      <h2 className="my-5 text-5xl font-bold text-green-800">Results</h2>
-      <Cards />
-    </section>
+    <>
+      <Head>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <section
+        ref={ref}
+        className="m-auto px-5 xl:px-0 lg:mb-12 max-w-[1200px] mt-20">
+        <h2 className="my-5 text-5xl font-bold text-green-800">Results</h2>
+        <Cards />
+      </section>
+    </>
   )
 })
 

@@ -1,35 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Parkway– Visit National Parks
 
-## Getting Started
+Parkway is the Goodreads for National Parks across America. Discover parks, save parks to you list of visited and want to visit places, and learn more about events near you. 
 
-First, run the development server:
+<br/>
+<img src="./public/images/og.png" width="100%" >
+<br/>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## 📖 Background
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+I love road tripping. On countless trips with friends and family it has been difficult to search for official parks sanctioned by the National Parks Service. Many of the websites I found were sponsored blogs that promoted already popular National Parks. What I and those around me wanted was a place to find the lesser traveled places. 
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+This is where Parkway was born. After a proof of concept MVP at Columbia college that myself and three of my classmates built, I took a break, but couldn't get this idea out of my mind. It wasn't until December of 2021, about six months after we pushed the first version when I started to rebuild the entire project from scratch. 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Fast forward to the last day of Februray 2022 and I've released a stable version of Parkway! More improvements are soon to follow, so be sure to come along me with this version. 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 🏆 Goals
 
-## Learn More
+The two main goals of this project are to:
 
-To learn more about Next.js, take a look at the following resources:
+1. Build my technical knowledge on Next.js
+2. Create a production website that REAL people can interact with and utilize
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ How Parkway Works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## 🛠 Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 🏗 **Discover** every sansctioned National Park including National Seashores, Trails, Mounuments and more...
+- 💾 **Save** all the parks you've visited or want to visit
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# visit-national-parks
+Think of Parkway as the Goodreads for parks in America. View information for a park, and if it interests you, save it to your "Want to Visit" list or your "Visited List"
+
+## 💻 Tech Stack
+
+| Front End      | Backend                           | Packages       |
+| -------------- | --------------------------------- | -------------- |
+| React/ Next js | AWS Amplify (Hosting & CI/CD)     | Formik (Forms) |
+| Tailwind css   | AWS Cognito (User Authentication) | Mapbox         |
+|                | AWS Dynamo DB (Database)          | Splitbee       |
+|                | GraphQL (API)                     |                |
+
+## 🔮 Future Features
+
+1. **Social Users**
+I would like to add the ability to allow users to search for their friends and family to see where they have visited. They could also add them to trips and plan group trips together
+
+2. **Guides**
+Currently, through the many blogs, there aren't unbiased accounts of what to do at National Parks. I think it would be great to have unbiased or park rangers give their advice to what to do at parks.
+
+# 👥 Contributing
+
+I'm glad you are considering contributing to this project. I've poured a ton of hours into this and I would love to see any of your additions. Please read the following to make contributing easier for both you and me.
+
+_Note_: If you need to access AWS credentials reach out to me and I can get you setup with that. 
+
+## Step 1: Creating a branch
+
+If you see an issue that sparks your interest or if you would like to contribute something else please follow this guide:
+
+### Branch Structure
+
+- Branches should follow this format
+  - `feature/name-of-branch` (a new feature that is being made)
+  - `update/name-of-branch` (an update to an existing feature)
+  - `bug/name-of-branch` (a bug fix)
+
+## Step 2: Create a PR
+
+Once you are happy with your branch, submit a PR with comments and a descripting documenting what you changed.
+
+When I get the notification that you submitted a PR, I will review the PR and if there are no errors, merge it into main. If however, there are errors, I will provide you with what errors exist so you can fix them.

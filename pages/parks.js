@@ -59,6 +59,7 @@ const stateCodes = [
   {code: 'WI', name: 'Wisconsin'},
   {code: 'WY', name: 'Wyoming'},
   {code: 'VI', name: 'Virgin Islands'},
+  {code: 'AS', name: 'American Samoa'},
 ]
 
 // Convert state code to state name

@@ -122,7 +122,7 @@ select {
 }
 
 .infinite-scroller {
-  /* animation: marquee 60s linear infinite; */
+  animation: marquee 120s linear infinite;
 }
 
 .infinite-slider:after {

@@ -65,6 +65,7 @@ const SearchBar = ({resultRef}) => {
       resultRef.current.scrollIntoView({behavior: 'smooth'})
       setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }
@@ -72,6 +73,7 @@ const SearchBar = ({resultRef}) => {
   const handleSubmitByPark = async (e) => {
     e.preventDefault()
     setEditStartDate(false)
+    setLoading(true)
 
     splitbee.track('Search Events', {
       filter: 'Park',
@@ -84,7 +86,9 @@ const SearchBar = ({resultRef}) => {
       )
       // Scroll to results
       resultRef.current.scrollIntoView({behavior: 'smooth'})
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
     }
   }

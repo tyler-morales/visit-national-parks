@@ -94,14 +94,14 @@ export default function Parks({nationalParks}) {
         <h1 className="mt-8 text-3xl font-bold text-center text-green-800 md:text-6xl">
           Official National Parks
         </h1>
-        <div className="grid grid-cols-1 gap-5 mt-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 mt-8 gap-y-5 md:gap-5 md:grid-cols-3">
           <MapBox
             parks={parks}
             width={mapWidth}
             passMapData={setSelectedPark}
           />
           {selectedPark != null && (
-            <div className="p-6 bg-gray-100 border-2 border-green-800 rounded-lg shadow-md">
+            <div className="w-full p-6 bg-gray-100 border-2 border-green-800 rounded-lg">
               {nationalParks
                 .filter((park) => park.parkCode == selectedPark)
                 .map((park) => {

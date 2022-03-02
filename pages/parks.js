@@ -94,7 +94,7 @@ export default function Parks({nationalParks}) {
         <h1 className="mt-8 text-3xl font-bold text-center text-green-800 md:text-6xl">
           Official National Parks
         </h1>
-        <div className="grid grid-cols-1 mt-8 gap-y-5 md:gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 mt-8 gap-y-5 lg:gap-5 lg:grid-cols-3">
           <MapBox
             parks={parks}
             width={mapWidth}

@@ -23,6 +23,8 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
 
+  console.log(visited, bookmarked)
+
   const user = checkUser()
 
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
@@ -43,11 +45,15 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       // Site is bookmarked, set UI to bookmarked
       if (userData?.bookmarked) {
         setBookmarked(true)
+      } else {
+        setBookmarked(false)
       }
 
       // Site is visited, set UI to visited
       if (userData?.visited) {
         setVisited(true)
+      } else {
+        setVisited(false)
       }
 
       if (userData != null) {

@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
 import {FiLink} from 'react-icons/fi'
+import CollectionButton from '../components/ParkPage/CollectionButton/CollectionButton'
 
 // Write state codes and state name
 const stateCodes = [
@@ -93,7 +94,7 @@ export default function Parks({nationalParks}) {
         <h1 className="mt-8 text-3xl font-bold text-center text-green-800 md:text-6xl">
           Official National Parks
         </h1>
-        <div className="grid grid-cols-3 gap-5 mt-8">
+        <div className="grid grid-cols-1 gap-5 mt-8 md:grid-cols-3">
           <MapBox
             parks={parks}
             width={mapWidth}
@@ -115,7 +116,7 @@ export default function Parks({nationalParks}) {
                           width={600}
                           src={park.image.url}
                           alt={park.image.altText}
-                          Layout="responsive"
+                          layout="responsive"
                           className="object-cover w-full rounded-md"
                         />
                         <span className="block mt-4 text-sm text-gray-400 uppercase">
@@ -133,6 +134,14 @@ export default function Parks({nationalParks}) {
                                 .split(',')
                                 .map((state, index) => stateName(state) + ' ')}
                         </p>
+
+                        {/* TODO: Add Collection Button */}
+                        {/* <CollectionButton
+                          name={name}
+                          parkCode={parkCode}
+                          fullName={fullName}
+                          url={images[0]?.url}
+                        /> */}
                       </div>
 
                       <Link href={`/park/${park.parkCode}`}>

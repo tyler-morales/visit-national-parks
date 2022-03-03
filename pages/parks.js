@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {FiLink} from 'react-icons/fi'
 import CollectionButton from '../components/ParkPage/CollectionButton/CollectionButton'
+import Head from 'next/head'
 
 // Write state codes and state name
 const stateCodes = [
@@ -90,77 +91,101 @@ export default function Parks({nationalParks}) {
     })
 
     return (
-      <Layout fullWidth>
-        <h1 className="mt-8 text-3xl font-bold text-center text-green-800 md:text-6xl">
-          Official National Parks
-        </h1>
-        <div className="grid grid-cols-1 mt-8 gap-y-5 lg:gap-5 lg:grid-cols-3">
-          <MapBox
-            parks={parks}
-            width={mapWidth}
-            passMapData={setSelectedPark}
+      <>
+        <Head>
+          <title>Official National Parks | Parkway </title>
+          <meta
+            property="og:title"
+            content="Official National Parks | Parkway "
+            key="title"
           />
-          {selectedPark != null && (
-            <div className="w-full p-6 bg-gray-100 border-2 border-green-800 rounded-lg">
-              {nationalParks
-                .filter((park) => park.parkCode == selectedPark)
-                .map((park) => {
-                  return (
-                    <div className="flex flex-col justify-between h-full">
-                      <div>
-                        <h2 className="mb-2 text-3xl font-bold text-center text-green-900">
-                          {park.name}
-                        </h2>
-                        <Image
-                          height={350}
-                          width={600}
-                          src={park.image.url}
-                          alt={park.image.altText}
-                          layout="responsive"
-                          className="object-cover w-full rounded-md"
-                        />
-                        <span className="block mt-4 text-sm text-gray-400 uppercase">
-                          description
-                        </span>
-                        <p className="mt-2 font-display">{park.description}</p>
+          <meta
+            name="description"
+            content="View all 63 official National Parks"></meta>
+          <link
+            href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+            rel="stylesheet"
+          />
+        </Head>
 
-                        <span className="block mt-4 text-sm text-gray-400 uppercase">
-                          States
-                        </span>
-                        <p className="mt-2 font-display">
-                          {park.states.length == 2
-                            ? stateName(park.states)
-                            : park.states
-                                .split(',')
-                                .map((state, index) => stateName(state) + ' ')}
-                        </p>
+        <Layout fullWidth>
+          <h1 className="mt-8 text-3xl font-bold text-center text-green-800 md:text-6xl">
+            Official National Parks
+          </h1>
+          <div className="grid grid-cols-1 mt-8 gap-y-5 lg:gap-5 lg:grid-cols-3">
+            <MapBox
+              parks={parks}
+              width={mapWidth}
+              passMapData={setSelectedPark}
+            />
+            {selectedPark != null && (
+              <div className="w-full p-6 bg-gray-100 border-2 border-green-800 rounded-lg">
+                {nationalParks
+                  .filter((park) => park.parkCode == selectedPark)
+                  .map((park, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col justify-between h-full">
+                        <div>
+                          <h2 className="mb-2 text-3xl font-bold text-center text-green-900">
+                            {park.name}
+                          </h2>
+                          <Image
+                            height={350}
+                            width={600}
+                            src={park.image.url}
+                            alt={park.image.altText}
+                            layout="responsive"
+                            className="object-cover w-full rounded-md"
+                          />
+                          <span className="block mt-4 text-sm text-gray-400 uppercase">
+                            description
+                          </span>
+                          <p className="mt-2 font-display">
+                            {park.description}
+                          </p>
 
-                        {/* TODO: Add Collection Button */}
-                        <CollectionButton
-                          // name="Acadia"
-                          parkCode={
-                            nationalParks
-                              .filter((park) => park.parkCode == selectedPark)
-                              .map((park) => park.parkCode)[0]
-                          }
-                          // fullName="Acadia National Park"
-                          // url={images[0]?.url}
-                        />
+                          <span className="block mt-4 text-sm text-gray-400 uppercase">
+                            States
+                          </span>
+                          <p className="mt-2 font-display">
+                            {park.states.length == 2
+                              ? stateName(park.states)
+                              : park.states
+                                  .split(',')
+                                  .map(
+                                    (state, index) => stateName(state) + ' '
+                                  )}
+                          </p>
+
+                          {/* TODO: Add Collection Button */}
+                          <CollectionButton
+                            // name="Acadia"
+                            parkCode={
+                              nationalParks
+                                .filter((park) => park.parkCode == selectedPark)
+                                .map((park) => park.parkCode)[0]
+                            }
+                            // fullName="Acadia National Park"
+                            // url={images[0]?.url}
+                          />
+                        </div>
+
+                        <Link href={`/park/${park.parkCode}`}>
+                          <a className="flex gap-2 text-blue-600">
+                            <FiLink size="1.25em" />
+                            <span>More Info</span>
+                          </a>
+                        </Link>
                       </div>
-
-                      <Link href={`/park/${park.parkCode}`}>
-                        <a className="flex gap-2 text-blue-600">
-                          <FiLink size="1.25em" />
-                          <span>More Info</span>
-                        </a>
-                      </Link>
-                    </div>
-                  )
-                })}
-            </div>
-          )}
-        </div>
-      </Layout>
+                    )
+                  })}
+              </div>
+            )}
+          </div>
+        </Layout>
+      </>
     )
   } else {
     return <div>Loading...</div>

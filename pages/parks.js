@@ -161,14 +161,26 @@ export default function Parks({nationalParks}) {
 
                           {/* TODO: Add Collection Button */}
                           <CollectionButton
-                            // name="Acadia"
                             parkCode={
                               nationalParks
                                 .filter((park) => park.parkCode == selectedPark)
                                 .map((park) => park.parkCode)[0]
                             }
-                            // fullName="Acadia National Park"
-                            // url={images[0]?.url}
+                            name={
+                              nationalParks
+                                .filter((park) => park.parkCode == selectedPark)
+                                .map((park) => park.name)[0]
+                            }
+                            fullName={
+                              nationalParks
+                                .filter((park) => park.parkCode == selectedPark)
+                                .map((park) => park.fullName)[0]
+                            }
+                            url={
+                              nationalParks
+                                .filter((park) => park.parkCode == selectedPark)
+                                .map((park) => park.image.url)[0]
+                            }
                           />
                         </div>
 
@@ -232,6 +244,7 @@ export async function getStaticProps() {
       .map((park) => {
         return {
           name: park.name,
+          fullName: park.fullName,
           parkCode: park.parkCode,
           image: park.images[0],
           description: park.description,

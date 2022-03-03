@@ -41,7 +41,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
 
       // const userData = data?.listSites?.items[0]
       const userData = data?.listSites?.items[0]
-      console.log(userData)
 
       // Site is bookmarked, set UI to bookmarked
       if (userData?.bookmarked) {
@@ -59,34 +58,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
 
       if (userData) {
         setId(userData?.id)
-      }
-
-      // Create a new site if the user doesn't have one with false values for bookmarked and visited
-      if (userData == undefined) {
-        console.log('Create new site')
-        setBookmarked(false)
-        setVisited(false)
-
-        const siteInfo = {
-          id,
-          name: fullName,
-          code: parkCode,
-          img: url,
-          owner: user?.username,
-          bookmarked: false,
-          visited: false,
-        }
-
-        await API.graphql({
-          query: createSite,
-          variables: {input: siteInfo},
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
-
-        setBookmarked(false)
-        setVisited(false)
-
-        console.log(`${name} added for the first time`)
       }
 
       return userData
@@ -108,20 +79,63 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
 
   const toggleVisitedQuery = async () => {
     try {
-      // A site exists, update it
-      if (!visited) {
-        await API.graphql({
-          query: updateSite,
-          variables: {
-            input: {
-              id,
-              visited: true,
-              bookmarked: false,
-              owner: user?.username,
-            },
+      // Get the specific site for the user
+      const {data} = await API.graphql({
+        query: listSites,
+        variables: {
+          filter: {
+            code: {eq: parkCode},
+            owner: {eq: user?.username},
           },
+        },
+      })
+
+      const userData = data?.listSites?.items[0]
+
+      // Create a new site if the user doesn't have one
+      if (userData == undefined) {
+        console.log('Create new site')
+        setBookmarked(false)
+        setVisited(false)
+
+        const siteInfo = {
+          id: uuidv4(),
+          name: fullName,
+          code: parkCode,
+          img: url,
+          owner: user?.username,
+          bookmarked: false,
+          visited: true,
+        }
+
+        await API.graphql({
+          query: createSite,
+          variables: {input: siteInfo},
           authMode: 'AMAZON_COGNITO_USER_POOLS',
         })
+
+        setBookmarked(false)
+        setVisited(true)
+        setToggleDropdown(false)
+
+        console.log(`${name} added for the first time`)
+      }
+      // A site exists, update it
+      if (!visited) {
+        if (userData) {
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id,
+                visited: true,
+                bookmarked: false,
+                owner: user?.username,
+              },
+            },
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+        }
         setVisited(true)
         setBookmarked(false)
         setToggleDropdown(false)
@@ -138,6 +152,47 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
     if (user) {
       setBookmarked(false)
       try {
+        // Get the specific site for the user
+        const {data} = await API.graphql({
+          query: listSites,
+          variables: {
+            filter: {
+              code: {eq: parkCode},
+              owner: {eq: user?.username},
+            },
+          },
+        })
+
+        const userData = data?.listSites?.items[0]
+
+        // Create a new site if the user doesn't have one
+        if (userData == undefined) {
+          console.log('Create new site')
+          setBookmarked(false)
+          setVisited(false)
+
+          const siteInfo = {
+            // id,
+            name: fullName,
+            code: parkCode,
+            img: url,
+            owner: user?.username,
+            bookmarked: clickType === 'bookmark' ? true : false,
+            visited: false,
+          }
+
+          await API.graphql({
+            query: createSite,
+            variables: {input: siteInfo},
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+
+          setBookmarked(false)
+          setVisited(false)
+
+          console.log(`${name} added for the first time`)
+        }
+
         const switchCollection = async (clickType) => {
           let newInput
           if (clickType == 'bookmark') {
@@ -155,11 +210,13 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
             newInput = {id, visited: false, bookmarked: false}
           }
 
-          await API.graphql({
-            query: updateSite,
-            variables: {input: newInput},
-            authMode: 'AMAZON_COGNITO_USER_POOLS',
-          })
+          if (userData) {
+            await API.graphql({
+              query: updateSite,
+              variables: {input: newInput},
+              authMode: 'AMAZON_COGNITO_USER_POOLS',
+            })
+          }
 
           console.log(`${name} ${clickType}`)
         }

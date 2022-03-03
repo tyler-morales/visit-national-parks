@@ -23,13 +23,12 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
   const [bookmarked, setBookmarked] = useState(null)
   const [id, setId] = useState(uuidv4())
 
-  console.log(visited, bookmarked)
-
   const user = checkUser()
 
   // Once the  user data loads, call this function to populate the Collection button with the correct label ('Want to visit' or 'visited')
   const fetchUserSite = async (owner, code) => {
     try {
+      // Get the specific site for the user
       const {data} = await API.graphql({
         query: listSites,
         variables: {
@@ -40,7 +39,9 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
         },
       })
 
+      // const userData = data?.listSites?.items[0]
       const userData = data?.listSites?.items[0]
+      console.log(userData)
 
       // Site is bookmarked, set UI to bookmarked
       if (userData?.bookmarked) {
@@ -56,12 +57,13 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
         setVisited(false)
       }
 
-      if (userData != null) {
+      if (userData) {
         setId(userData?.id)
       }
 
-      // Create site object if no site exists
-      if (userData == null) {
+      // Create a new site if the user doesn't have one with false values for bookmarked and visited
+      if (userData == undefined) {
+        console.log('Create new site')
         setBookmarked(false)
         setVisited(false)
 
@@ -86,23 +88,21 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
 
         console.log(`${name} added for the first time`)
       }
+
       return userData
     } catch (err) {
-      console.log('Site not added by user', err)
+      console.error('Site not added by user', err)
     }
   }
   // Only call the fetchUserSite method if `user` exists
   useSWR(user ? [user?.username, parkCode] : null, fetchUserSite)
 
+  // Open the dropdown menu
   const openDropdown = () => {
     if (!user) alert('Please sign in or create an account')
 
     if (user) {
-      if (toggleDropdown) {
-        setToggleDropdown(false)
-      } else {
-        setToggleDropdown(true)
-      }
+      toggleDropdown ? setToggleDropdown(false) : setToggleDropdown(true)
     }
   }
 
@@ -131,6 +131,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       console.error(err)
     }
   }
+
   // When the user clicks on the button, update the state in the UI and database
   const handleDBQuery = async (clickType) => {
     // Make user log in if they are not already
@@ -138,7 +139,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       setBookmarked(false)
       try {
         const switchCollection = async (clickType) => {
-          console.log(clickType)
           let newInput
           if (clickType == 'bookmark') {
             setVisited(false)
@@ -184,6 +184,7 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
     }
   }
 
+  // UI BUTTON COMPONENTS
   function Bookmark({label, icon, type, clickType}) {
     return (
       <button

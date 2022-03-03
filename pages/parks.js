@@ -160,7 +160,7 @@ export default function Parks({nationalParks}) {
                           </p>
 
                           {/* TODO: Add Collection Button */}
-                          <CollectionButton
+                          {/* <CollectionButton
                             parkCode={
                               nationalParks
                                 .filter((park) => park.parkCode == selectedPark)
@@ -181,7 +181,7 @@ export default function Parks({nationalParks}) {
                                 .filter((park) => park.parkCode == selectedPark)
                                 .map((park) => park.image.url)[0]
                             }
-                          />
+                          /> */}
                         </div>
 
                         <Link href={`/park/${park.parkCode}`}>

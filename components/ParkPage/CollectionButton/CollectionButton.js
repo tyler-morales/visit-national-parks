@@ -122,18 +122,20 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
       }
       // A site exists, update it
       if (!visited) {
-        await API.graphql({
-          query: updateSite,
-          variables: {
-            input: {
-              id,
-              visited: true,
-              bookmarked: false,
-              owner: user?.username,
+        if (userData) {
+          await API.graphql({
+            query: updateSite,
+            variables: {
+              input: {
+                id,
+                visited: true,
+                bookmarked: false,
+                owner: user?.username,
+              },
             },
-          },
-          authMode: 'AMAZON_COGNITO_USER_POOLS',
-        })
+            authMode: 'AMAZON_COGNITO_USER_POOLS',
+          })
+        }
         setVisited(true)
         setBookmarked(false)
         setToggleDropdown(false)

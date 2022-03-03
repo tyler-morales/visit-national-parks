@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {FiLink} from 'react-icons/fi'
 import CollectionButton from '../../ParkPage/CollectionButton/CollectionButton'
+
 // Write state codes and state name
 const stateCodes = [
   {code: 'AL', name: 'Alabama'},
@@ -65,6 +66,7 @@ export default function Sidebar({nationalParks, selectedPark, parkData}) {
   const stateName = (code) => {
     return stateCodes.find((state) => state.code === code).name
   }
+
   return (
     <div className="w-full p-6 bg-gray-100 border-2 border-green-800 rounded-lg">
       {nationalParks
@@ -97,7 +99,7 @@ export default function Sidebar({nationalParks, selectedPark, parkData}) {
                     ? stateName(park.states)
                     : park.states
                         .split(',')
-                        .map((state, index) => stateName(state) + ' ')}
+                        .map((state) => stateName(state) + ' ')}
                 </p>
 
                 {/* TODO: Add Collection Button */}

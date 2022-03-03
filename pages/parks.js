@@ -72,6 +72,7 @@ const stateName = (code) => {
 export default function Parks({nationalParks}) {
   const [mapWidth, setMapWidth] = useState(true)
   const [selectedPark, setSelectedPark] = useState(null)
+  const [parkData, setParkData] = useState(null)
 
   useEffect(() => {
     if (selectedPark != null) {
@@ -79,6 +80,20 @@ export default function Parks({nationalParks}) {
     } else {
       setMapWidth(true)
     }
+
+    // Send the park specific data to the Collection Button component
+    setParkData(
+      ...nationalParks
+        .filter((park) => park.parkCode == selectedPark)
+        .map((park) => {
+          return {
+            name: park.name,
+            fullName: park.fullName,
+            parkCode: park.parkCode,
+            image: park.image.url,
+          }
+        })
+    )
   }, [selectedPark])
 
   if (nationalParks) {
@@ -160,28 +175,12 @@ export default function Parks({nationalParks}) {
                           </p>
 
                           {/* TODO: Add Collection Button */}
-                          {/* <CollectionButton
-                            parkCode={
-                              nationalParks
-                                .filter((park) => park.parkCode == selectedPark)
-                                .map((park) => park.parkCode)[0]
-                            }
-                            name={
-                              nationalParks
-                                .filter((park) => park.parkCode == selectedPark)
-                                .map((park) => park.name)[0]
-                            }
-                            fullName={
-                              nationalParks
-                                .filter((park) => park.parkCode == selectedPark)
-                                .map((park) => park.fullName)[0]
-                            }
-                            url={
-                              nationalParks
-                                .filter((park) => park.parkCode == selectedPark)
-                                .map((park) => park.image.url)[0]
-                            }
-                          /> */}
+                          <CollectionButton
+                            parkCode={parkData?.parkCode}
+                            name={parkData?.name}
+                            fullName={parkData?.fullName}
+                            url={parkData?.image}
+                          />
                         </div>
 
                         <Link href={`/park/${park.parkCode}`}>

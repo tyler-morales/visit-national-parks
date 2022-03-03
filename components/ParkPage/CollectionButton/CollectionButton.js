@@ -41,7 +41,6 @@ export default function CollectionButton({parkCode, name, fullName, url}) {
 
       // const userData = data?.listSites?.items[0]
       const userData = data?.listSites?.items[0]
-      console.log(userData)
 
       // Site is bookmarked, set UI to bookmarked
       if (userData?.bookmarked) {

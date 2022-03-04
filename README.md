@@ -2,6 +2,11 @@
 
 Parkway is the Goodreads for National Parks across America. Discover parks, save parks to you list of visited and want to visit places, and learn more about events near you. 
 
+A full-stack web that helps outdoors enthusiasts discover and save their favorite National Parks across America, Parkway is the one stop shop to tracking and planning trips across the US. Leveraging the National Parks Service API in combination with Amazon Web Services, users are presented with beautifully displayed data from all 463 parks! Through Google social sign-in and email sign in, users can save the parks they’ve visited and want to visit. Built from a love of the outdoors and having struggled to find accurate and unbiased information from sponsored blogs or articles, I decided to build a solution to finding every National Park in the US. Think of Parkway as the Goodreads for National Parks!
+
+<!-- [image](https://user-images.githubusercontent.com/44333523/156787951-c45fa30b-dd5b-4ad1-835c-e40887a78a9e.png) -->
+
+
 <br/>
 <img src="./public/images/og.png" width="100%" >
 <br/>
@@ -21,8 +26,6 @@ The two main goals of this project are to:
 1. Build my technical knowledge on Next.js
 2. Create a production website that REAL people can interact with and utilize
 
-## ⚙️ How Parkway Works
-
 
 ## 🛠 Features
 
@@ -33,12 +36,12 @@ Think of Parkway as the Goodreads for parks in America. View information for a p
 
 ## 💻 Tech Stack
 
-| Front End      | Backend                           | Packages       |
-| -------------- | --------------------------------- | -------------- |
-| React/ Next js | AWS Amplify (Hosting & CI/CD)     | Formik (Forms) |
-| Tailwind css   | AWS Cognito (User Authentication) | Mapbox         |
-|                | AWS Dynamo DB (Database)          | Splitbee       |
-|                | GraphQL (API)                     |                |
+| Front End      | Backend                           | Packages            |
+| -------------- | --------------------------------- | ------------------- |
+| React/ Next js | AWS Amplify (Hosting & CI/CD)     | Formik (Forms)      |
+| Tailwind css   | AWS Cognito (User Authentication) | Mapbox              |
+|                | AWS Dynamo DB (Database)          | Splitbee (Analytics)|
+|                | GraphQL (API)                     |                     |
 
 ## 🔮 Future Features
 
